@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garza Global Graviton - Live Node Network</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #0d1117; color: #c9d1d9; margin: 0; padding: 24px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #30363d; padding-bottom: 16px; margin-bottom: 24px; }
+        .badge { background-color: #238636; color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; letter-spacing: 0.5px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .card { background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .card h3 { margin: 0 0 10px 0; color: #8b949e; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card .value { font-size: 32px; font-weight: bold; color: #58a6ff; font-feature-settings: "tnum"; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #21262d; font-size: 14px; }
+        th { color: #8b949e; background-color: #161b22; font-weight: 600; }
+        tr:hover { background-color: rgba(255,255,255,0.02); }
+        .hash { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; color: #f0883e; font-size: 13px; }
+        .node-tag { background: rgba(35, 134, 54, 0.2); color: #7ee787; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1 style="margin: 0 0 4px 0; font-size: 24px; color: #f0f6fc;">⚡ Distributed Node Cluster</h1>
+                <span style="color: #8b949e; font-size: 13px;">Real-Time Cryptographic Ledger & Merkle Consensus Monitor</span>
+            </div>
+            <span class="badge" id="system-status">ONLINE</span>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Total Verified Batches</h3>
+                <div class="value" id="total-batches">0</div>
+            </div>
+            <div class="card">
+                <h3>Elements Processed</h3>
+                <div class="value" id="total-elements">0</div>
+            </div>
+            <div class="card">
+                <h3>Avg Worker Latency</h3>
+                <div class="value" id="avg-latency">0.00 ms</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Recent Consensus Batches (SQLite Ledger)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Batch #</th>
+                        <th style="width: 200px;">Timestamp (UTC)</th>
+                        <th style="width: 140px;">Elements</th>
+                        <th style="width: 120px;">Nodes</th>
+                        <th>Consensus Merkle Root Hash</th>
+                    </tr>
+                </thead>
+                <tbody id="batch-table-body">
+                    <tr><td colspan="5" style="color:#8b949e; text-align:center; padding: 24px;">Connecting to ledger database...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchMetrics() {
+            try {
+                const statsRes = await fetch('/api/v1/stats');
+                if (statsRes.ok) {
+                    const stats = await statsRes.json();
+                    document.getElementById('total-batches').innerText = Number(stats.total_verified_batches || 0).toLocaleString();
+                    document.getElementById('total-elements').innerText = Number(stats.total_elements_processed || 0).toLocaleString();
+                    document.getElementById('avg-latency').innerText = (stats.average_worker_latency_ms || 0).toFixed(2) + ' ms';
+                }
+
+                const batchRes = await fetch('/api/v1/batches?limit=10');
+                if (batchRes.ok) {
+                    const data = await batchRes.json();
+                    const batches = data.batches || [];
+                    const tbody = document.getElementById('batch-table-body');
+                    
+                    if (batches.length > 0) {
+                        tbody.innerHTML = '';
+                        batches.forEach(b => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = 
+                                <td><b>#</b></td>
+                                <td style="color:#c9d1d9;"></td>
+                                <td></td>
+                                <td><span class="node-tag"> Nodes</span></td>
+                                <td class="hash"></td>
+                            ;
+                            tbody.appendChild(row);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+            }
+        }
+
+        fetchMetrics();
+        setInterval(fetchMetrics, 1000);
+    </script>
+</body>
+</html>

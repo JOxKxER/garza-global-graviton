@@ -1,0 +1,42 @@
+﻿services:
+  master:
+    build: .
+    container_name: compute_master
+    command: ["python", "-m", "src.main", "--master", "--min-workers", "3", "--host", "0.0.0.0", "--port", "8765"]
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./output:/app/output
+    networks:
+      - compute_net
+
+  worker_1:
+    build: .
+    container_name: worker_node_alpha
+    command: ["python", "-m", "src.main", "--worker", "--host", "master", "--port", "8765", "--worker-id", "node_alpha"]
+    depends_on:
+      - master
+    networks:
+      - compute_net
+
+  worker_2:
+    build: .
+    container_name: worker_node_beta
+    command: ["python", "-m", "src.main", "--worker", "--host", "master", "--port", "8765", "--worker-id", "node_beta"]
+    depends_on:
+      - master
+    networks:
+      - compute_net
+
+  worker_3:
+    build: .
+    container_name: worker_node_gamma
+    command: ["python", "-m", "src.main", "--worker", "--host", "master", "--port", "8765", "--worker-id", "node_gamma"]
+    depends_on:
+      - master
+    networks:
+      - compute_net
+
+networks:
+  compute_net:
+    driver: bridge

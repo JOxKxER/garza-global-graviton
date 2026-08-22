@@ -1,0 +1,2476 @@
+{
+  "snapshot_time": "20260822_075226",
+  "total_records": 247,
+  "records": [
+    {
+      "order_id": "f9a851a9",
+      "client_ref": "Mobile_Field_Intake_01",
+      "element_count": 300000,
+      "scale_factor": 2.0,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a170f07ddc499188ebd2900ef2458fcf0ad8e9f1cc13777eee684ff9aa20aab9",
+      "created_at": "2026-08-22T07:01:21.380024"
+    },
+    {
+      "order_id": "02d97636",
+      "client_ref": "Mobile_Field_Intake_01",
+      "element_count": 300000,
+      "scale_factor": 2.0,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "7a1c667882ae491240275ba98438f92bce0de4c09d033256a6567838f9c78896",
+      "created_at": "2026-08-22T07:07:44.153754"
+    },
+    {
+      "order_id": "980715c8",
+      "client_ref": "Mobile_Field_Intake_01",
+      "element_count": 300000,
+      "scale_factor": 2.0,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "51b7450779ddb21452ca026e82f02ef33dd6299c5e178bbe5f1d47e3ead66d6e",
+      "created_at": "2026-08-22T07:11:02.288793"
+    },
+    {
+      "order_id": "ed8fac03",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 749223,
+      "scale_factor": 3.78,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3bb0bedbd51c48ff156ffd1d366817b0d3beacc67e7121c78833620be51832e2",
+      "created_at": "2026-08-22T07:13:35.118113"
+    },
+    {
+      "order_id": "d07d2246",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 237694,
+      "scale_factor": 3.7,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3d1b747968a709a93d67cec20f8e79a60ab182a958307ad59ba00cc241113d2e",
+      "created_at": "2026-08-22T07:13:38.220979"
+    },
+    {
+      "order_id": "a12832a2",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 223995,
+      "scale_factor": 3.21,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "57815dd3b13ce710bd42c819b05e60a876ca26c1650725d652831938d2568ba9",
+      "created_at": "2026-08-22T07:13:41.093003"
+    },
+    {
+      "order_id": "49796fd1",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 749733,
+      "scale_factor": 1.39,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e7a5bcb7f3c7fd1dfd60d051ab0e65bf98b4cad9f8b125495a7a64291169ce04",
+      "created_at": "2026-08-22T07:13:44.395457"
+    },
+    {
+      "order_id": "bf13ec5e",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 308467,
+      "scale_factor": 2.25,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "524cfdb83211249c6ad118b1c5fb95d98f394acb14c8678b35da0b490aebc015",
+      "created_at": "2026-08-22T07:13:49.759036"
+    },
+    {
+      "order_id": "a45e9924",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 398159,
+      "scale_factor": 1.79,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5240b5f2d0599a6befc546e1334040574203b4db780e92192c0ecf0b7c4af61d",
+      "created_at": "2026-08-22T07:13:53.627351"
+    },
+    {
+      "order_id": "36db8c01",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 531313,
+      "scale_factor": 3.36,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "21732c3bdc7d1029240320f29632f6b5f04116477d5f34c09e166a55ff2bc24d",
+      "created_at": "2026-08-22T07:13:58.485612"
+    },
+    {
+      "order_id": "ee5657a8",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 674780,
+      "scale_factor": 2.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0293c0c4f31d8f9bf9bb32161f27d4b5ce0d5488f9100f58f0150925d51c0fac",
+      "created_at": "2026-08-22T07:14:03.086334"
+    },
+    {
+      "order_id": "9cf5cbb6",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 294675,
+      "scale_factor": 2.82,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a1a434025c7ad2e9c7e7d288c2f5a1d5710791b14f5198241031a25bc427ad4c",
+      "created_at": "2026-08-22T07:14:07.258333"
+    },
+    {
+      "order_id": "a0aae974",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 720133,
+      "scale_factor": 1.75,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9333448ff5b216a3ff38959091db0840730bcc0799f54b50d833683f01f555a7",
+      "created_at": "2026-08-22T07:14:11.424559"
+    },
+    {
+      "order_id": "11d5b949",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 523510,
+      "scale_factor": 3.63,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6a3b4bc7dcbffe8c7264da44bd4f9827a26895d8720891e0a6652680fa1c6767",
+      "created_at": "2026-08-22T07:14:17.251428"
+    },
+    {
+      "order_id": "5fe95d42",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 401528,
+      "scale_factor": 2.44,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "dcb8576a2c9d438da4e54579bf57e3c0502b1a168905e565989c3ba87c09a647",
+      "created_at": "2026-08-22T07:14:19.876558"
+    },
+    {
+      "order_id": "654b924c",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 564953,
+      "scale_factor": 2.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "049519126e3d41e03547873e6236d8936ef00b9622d6b3da2d889e81e3cacdb5",
+      "created_at": "2026-08-22T07:14:23.638062"
+    },
+    {
+      "order_id": "725bf6e4",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 709098,
+      "scale_factor": 2.03,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "73e03ed62634def5307f44e72211c469fcae804fedf3c73b9c525132924a0f3c",
+      "created_at": "2026-08-22T07:14:27.525253"
+    },
+    {
+      "order_id": "19640b43",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 221442,
+      "scale_factor": 3.77,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5568d8c6b0f0efc089d5726ab3e012e3ceda448f15d87269e716c3d7f07bd9c6",
+      "created_at": "2026-08-22T07:14:32.821041"
+    },
+    {
+      "order_id": "f5ce6f5e",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 523236,
+      "scale_factor": 2.2,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "80c6da16fb5180825246ebbbd3156c285bcec56a119c5b1871f3311c7ab368e1",
+      "created_at": "2026-08-22T07:14:37.767340"
+    },
+    {
+      "order_id": "632f1a9d",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 357586,
+      "scale_factor": 2.68,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "14663c114af44dceaf773f1f1585d7a86a74fdeaace22644aaa9126897dc8404",
+      "created_at": "2026-08-22T07:14:40.341521"
+    },
+    {
+      "order_id": "88a4b067",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 706964,
+      "scale_factor": 2.92,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c94a3cf68877e432b893a55698ed67bb069924939016ff79513830a7b8a2986e",
+      "created_at": "2026-08-22T07:14:44.748088"
+    },
+    {
+      "order_id": "10f66586",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 193329,
+      "scale_factor": 2.17,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a163b0179a9ba9e3cd03684c214163cf571ccb3c5c68b0785c4b4e4294ac95d1",
+      "created_at": "2026-08-22T07:15:29.619193"
+    },
+    {
+      "order_id": "567d3ed2",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 164688,
+      "scale_factor": 3.56,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9d5f78ace1fcd31b77f956ed58d04f088ffd6f0cdf54d2c821bd2659d4516c1b",
+      "created_at": "2026-08-22T07:15:35.550409"
+    },
+    {
+      "order_id": "963b6018",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 401440,
+      "scale_factor": 1.43,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3a810cce7f354f0317fcfb6baa1500bfdba679e8a74fe97ff15878e088920a1b",
+      "created_at": "2026-08-22T07:15:40.229181"
+    },
+    {
+      "order_id": "23d6b829",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 496815,
+      "scale_factor": 2.28,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "872300b795292dcb29700cdad5844c77cd86fe946c901d61ca33e2d6a298cbc6",
+      "created_at": "2026-08-22T07:15:45.837331"
+    },
+    {
+      "order_id": "2640748e",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 242943,
+      "scale_factor": 2.64,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6d34a310919f6d08eebfb2e9e8608655c1dea0c8da92ad59cd0a7df309a0e450",
+      "created_at": "2026-08-22T07:15:51.550295"
+    },
+    {
+      "order_id": "6372f15b",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 660283,
+      "scale_factor": 2.54,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "79cea7e07da08b6d9cdf6dd6f39c84a3281fd017bfd27339789c10a67d2a453c",
+      "created_at": "2026-08-22T07:15:56.478400"
+    },
+    {
+      "order_id": "0a8cbaba",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 366595,
+      "scale_factor": 1.63,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4f7d69a55f98ccfe9898bbb3009b79395ca028a2d9517e2e3605708a9978c7cd",
+      "created_at": "2026-08-22T07:16:00.112312"
+    },
+    {
+      "order_id": "14a0438e",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 574471,
+      "scale_factor": 2.57,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3ab205ad4f02912a6e30e5d11cc03699ee54f01885a6102cd79df70803b872ac",
+      "created_at": "2026-08-22T07:16:04.166089"
+    },
+    {
+      "order_id": "73ab070d",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 414323,
+      "scale_factor": 2.83,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "69eef7f61c4e48bf70311752f30a17391a18d4fc555908c62310e9f02950c74f",
+      "created_at": "2026-08-22T07:16:08.240987"
+    },
+    {
+      "order_id": "25bc31ec",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 394490,
+      "scale_factor": 3.02,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e4fa8699be6ddab29b7d6fc5fc814d8e6847f6c21dc7422aec2acded41e24edc",
+      "created_at": "2026-08-22T07:16:12.001150"
+    },
+    {
+      "order_id": "43a2adc4",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 328419,
+      "scale_factor": 1.46,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9a316cc6777fc377e61507dac7d7af7fb075ed88bc6dbfd1913e6ad5b15e4711",
+      "created_at": "2026-08-22T07:16:17.921025"
+    },
+    {
+      "order_id": "9ac68d60",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 507787,
+      "scale_factor": 2.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "ae905a64ded89726a9533dae6db43db78660b92c2635a755bbe6da9461034026",
+      "created_at": "2026-08-22T07:16:23.181305"
+    },
+    {
+      "order_id": "2ce115e1",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 468588,
+      "scale_factor": 1.66,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e81e39b2c05fdbde96426d078919bb058512725dd713cc5c7f36462ffe38cf3a",
+      "created_at": "2026-08-22T07:16:28.280740"
+    },
+    {
+      "order_id": "7ddd89c6",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 396875,
+      "scale_factor": 3.77,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "83da28b851177f5aea929e32e7b808076ec3c13e1c86e787da03b7c48e418c6d",
+      "created_at": "2026-08-22T07:16:33.989645"
+    },
+    {
+      "order_id": "8a9425e2",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 409723,
+      "scale_factor": 1.83,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "171c1f6ee30ded839f83723d90d5384fb6dbd871a8d7693e4b0d306a689009f3",
+      "created_at": "2026-08-22T07:16:38.237512"
+    },
+    {
+      "order_id": "1be620eb",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 290581,
+      "scale_factor": 2.02,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a205fb93889ba498d36a59367fb03d2d29a8338dde97a10e22929a844b48b143",
+      "created_at": "2026-08-22T07:16:42.291804"
+    },
+    {
+      "order_id": "ff494a27",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 571498,
+      "scale_factor": 2.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "01a1c66ea26bedd298c839721ae1e37f7c4d35af9c8c4b8c009c711728a9da9a",
+      "created_at": "2026-08-22T07:16:48.210300"
+    },
+    {
+      "order_id": "123b41e4",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 248288,
+      "scale_factor": 2.97,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "41f73dac685c9c0d7c4ba347241285418b9b6b7c9fa19090de6882fee0573a63",
+      "created_at": "2026-08-22T07:16:52.219920"
+    },
+    {
+      "order_id": "b481f650",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 265963,
+      "scale_factor": 3.12,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "70cd8a2850749ef8248cee3e5572e89f67db5c86699eaf7dce14cf9b22b56893",
+      "created_at": "2026-08-22T07:16:55.859309"
+    },
+    {
+      "order_id": "8797ffbb",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 712005,
+      "scale_factor": 3.62,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0c416e686213ffe8f9cce48eb2aa98d9ef032783760da102e1645b5ecc0acc15",
+      "created_at": "2026-08-22T07:17:00.378333"
+    },
+    {
+      "order_id": "3263753c",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 403210,
+      "scale_factor": 3.14,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "211b95a2cfd10c29162fe2b39cdd4295b8c878e90e3a5aef67a6952a3f9892f1",
+      "created_at": "2026-08-22T07:17:03.258476"
+    },
+    {
+      "order_id": "b5cc59b1",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 460279,
+      "scale_factor": 2.34,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "abc7993f0d6c5ce1b7d711bf06aa1b6c50a8c0bea6619f495766b98743ddfe10",
+      "created_at": "2026-08-22T07:17:07.680889"
+    },
+    {
+      "order_id": "c2d71cfe",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 443233,
+      "scale_factor": 2.17,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c90c5b450687a5864359a24224294df256d071ad73984c83900dc5ecce491875",
+      "created_at": "2026-08-22T07:17:13.427618"
+    },
+    {
+      "order_id": "9820a11c",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 234476,
+      "scale_factor": 2.43,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1693a9290c46be4e1c7d39c726f96b1c29136451cfca24b1aed1445b272a62f6",
+      "created_at": "2026-08-22T07:17:19.086371"
+    },
+    {
+      "order_id": "98ecfaa9",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 490123,
+      "scale_factor": 1.27,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "40e00b4b1ef0e07cb981f030e1f82dc8e0911dad5365c6a2c61a0fe512c44231",
+      "created_at": "2026-08-22T07:17:24.348635"
+    },
+    {
+      "order_id": "3cc6cf50",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 599700,
+      "scale_factor": 1.93,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e7e154aaf3c686247750d0f46af57722d0eb34c3280abef9c28bc0a9f7c1b06e",
+      "created_at": "2026-08-22T07:17:29.076165"
+    },
+    {
+      "order_id": "d008b9c0",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 615942,
+      "scale_factor": 2.2,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e01c49459ac47f30297466339f6a106fbddc3e0fc5d0333035e138826df9dc7a",
+      "created_at": "2026-08-22T07:17:32.151576"
+    },
+    {
+      "order_id": "31de3db6",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 192557,
+      "scale_factor": 3.22,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "64856530694c6b62bb1394cc77b185b69555b984779f115d9079cbc4902509c2",
+      "created_at": "2026-08-22T07:17:35.255738"
+    },
+    {
+      "order_id": "b145bd72",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 525357,
+      "scale_factor": 3.52,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4ca7a9af1aab211cc333a2cbb15dc35e30f9d3c04a0f26a9e8f749c8d39672e7",
+      "created_at": "2026-08-22T07:17:39.092712"
+    },
+    {
+      "order_id": "11b357ce",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 381104,
+      "scale_factor": 3.29,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "fdda47bd3eacedcfb0cf0bb4ebaaa2381d95594e660cd31b6a00964466ba8f75",
+      "created_at": "2026-08-22T07:17:43.675301"
+    },
+    {
+      "order_id": "a4e3a635",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 197849,
+      "scale_factor": 2.34,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "915d5427787d5a8fe6191e44c01d7bd03c7f22cb68d18ef66fda4f76fa0e695a",
+      "created_at": "2026-08-22T07:17:49.294190"
+    },
+    {
+      "order_id": "031280a7",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 699473,
+      "scale_factor": 2.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6e01e02ae2f81d1a4d127668fb02e62f0dd6c631a0a06fe86cf5f804d497e57a",
+      "created_at": "2026-08-22T07:17:53.403130"
+    },
+    {
+      "order_id": "a06e5ba5",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 644368,
+      "scale_factor": 2.99,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "7f3bc008e0e31b9779a57af5799dffec67e4af2589af1062415d2330ddfa3d14",
+      "created_at": "2026-08-22T07:17:56.218827"
+    },
+    {
+      "order_id": "e54cdf7d",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 480267,
+      "scale_factor": 3.34,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d89cd9132bfa5fcf07cfcaaa9909910c139d9d41f526980a88cfb762b2884cc9",
+      "created_at": "2026-08-22T07:17:59.327607"
+    },
+    {
+      "order_id": "e5d51d44",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 709668,
+      "scale_factor": 1.88,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "2ef6d415fdb1b67897f720b427b7d173121a96534c5076c7b2ba2ceabedc9878",
+      "created_at": "2026-08-22T07:18:03.450673"
+    },
+    {
+      "order_id": "705818da",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 250416,
+      "scale_factor": 2.07,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "7e33d950f9010bbc93c18e40a42e571f8deaa70f223a3e5d40bdd826c9c6e62d",
+      "created_at": "2026-08-22T07:18:08.641051"
+    },
+    {
+      "order_id": "e44c8128",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 345950,
+      "scale_factor": 2.07,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "8c5fa03c01f244afc6e88de791de0fe5ed35bdbf35f47012f5d10042b134999e",
+      "created_at": "2026-08-22T07:18:13.261487"
+    },
+    {
+      "order_id": "a78250e7",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 301770,
+      "scale_factor": 2.64,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e5f3575794b4f4763b4f218f462e76364f3cec60990d10e2e79b0507115fb736",
+      "created_at": "2026-08-22T07:18:18.552859"
+    },
+    {
+      "order_id": "eb610516",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 331138,
+      "scale_factor": 1.87,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a1fa77345a236534de0cf4f7b4114bca3f92de4e2602117eee9f6d9759fc2b57",
+      "created_at": "2026-08-22T07:18:21.861635"
+    },
+    {
+      "order_id": "61700358",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 260658,
+      "scale_factor": 2.34,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e7ebcaa2663c79e7db1929394c0207afbb4e91f1ea26b72453c7f8c2bd439e71",
+      "created_at": "2026-08-22T07:18:26.913563"
+    },
+    {
+      "order_id": "63240612",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 450591,
+      "scale_factor": 2.98,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "dd09901762ba24703f19fbeac9ee0cafd6eafe5d70642c90d8edd07af0c30790",
+      "created_at": "2026-08-22T07:18:31.633714"
+    },
+    {
+      "order_id": "9d90111c",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 293127,
+      "scale_factor": 1.98,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "8652d199a0865ba015cfc02f5e3ec84cc77cc9a0d3ed7f5c97719f7cd1cf50a1",
+      "created_at": "2026-08-22T07:18:36.537788"
+    },
+    {
+      "order_id": "e82c68d9",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 272133,
+      "scale_factor": 3.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "aecfa49f1d7860972fe1eeffa141aafeaf6f96b6199135d65496b2efeed03446",
+      "created_at": "2026-08-22T07:18:39.349085"
+    },
+    {
+      "order_id": "902dca2c",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 373573,
+      "scale_factor": 3.13,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "8a56580af7981bea9dc394d7be32a40f55a99e23e23627c69114a0ecd7fbd6c2",
+      "created_at": "2026-08-22T07:18:44.105231"
+    },
+    {
+      "order_id": "ac708c45",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 719710,
+      "scale_factor": 1.3,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "018f3e601249f68fe9138375256316cf7df2ab5114663dbd939746d9449851a0",
+      "created_at": "2026-08-22T07:18:47.602914"
+    },
+    {
+      "order_id": "1edd1fe3",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 647189,
+      "scale_factor": 3.15,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d7bd26a02836e81974892aeb54fd5d7796a278a495c4641ac83e0293e75e4876",
+      "created_at": "2026-08-22T07:18:51.208974"
+    },
+    {
+      "order_id": "816bf1d4",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 410905,
+      "scale_factor": 2.88,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "114a9364d05b9bad2d09a9c5a6152c7dbee6d057889d140a4deaba7de512a98b",
+      "created_at": "2026-08-22T07:18:55.760621"
+    },
+    {
+      "order_id": "dcce6cc6",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 155461,
+      "scale_factor": 2.49,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c4b4521861612f5a3818ba6cdd33351944a474aa1dc844cd27e49e06a3da5afb",
+      "created_at": "2026-08-22T07:19:01.701114"
+    },
+    {
+      "order_id": "dfe9d413",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 656027,
+      "scale_factor": 2.56,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a30a2755dff83d6e9286842f1f1ab03a97b03df632cbfe6fc4f56f11b4dab154",
+      "created_at": "2026-08-22T07:19:07.592399"
+    },
+    {
+      "order_id": "d1eea3f9",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 626168,
+      "scale_factor": 3.25,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "07962acc12e1fa771e0be7d1ae87aee68c3b923681bc7a3f35b29a5fa96a284e",
+      "created_at": "2026-08-22T07:19:11.081254"
+    },
+    {
+      "order_id": "f55664d6",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 387375,
+      "scale_factor": 2.17,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3745f63fdd40005bf71e0443ff6ea578f3586f56b42dc72a86a56e1c0bf6134b",
+      "created_at": "2026-08-22T07:19:14.806304"
+    },
+    {
+      "order_id": "5cf2bf29",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 345268,
+      "scale_factor": 2.56,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1e2d186349e8f0acb0612f5ed3a88c36e66b123d9984c28a4b0dbe4d9932b592",
+      "created_at": "2026-08-22T07:19:17.703587"
+    },
+    {
+      "order_id": "28072708",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 592180,
+      "scale_factor": 2.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1a2650e9663322cbb48fe1520cd7c0c6209045802b6431b78099c782c13a6f6a",
+      "created_at": "2026-08-22T07:19:21.277988"
+    },
+    {
+      "order_id": "210a44de",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 187923,
+      "scale_factor": 1.87,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "aed664b28dcda79ba108cbeee8e4655be7e0ce0dd07d846d153f03b560df1351",
+      "created_at": "2026-08-22T07:19:26.664954"
+    },
+    {
+      "order_id": "b59e1152",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 616617,
+      "scale_factor": 2.93,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1dc1abe0564e0385f94c9608c1ebcb33b6d72c21076c3b862249893f4e69b31e",
+      "created_at": "2026-08-22T07:19:29.389808"
+    },
+    {
+      "order_id": "8de15d01",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 692042,
+      "scale_factor": 2.38,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4100330170b09cf6a642a924fbd4eeca5592e9dc24b455fc765c2027c852d3bf",
+      "created_at": "2026-08-22T07:19:33.168002"
+    },
+    {
+      "order_id": "1275fcb4",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 156584,
+      "scale_factor": 2.08,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "dee6d5968d8799eb488c77d3c1085428376edc64c5c1a2f16d97123a1051aecf",
+      "created_at": "2026-08-22T07:19:37.772506"
+    },
+    {
+      "order_id": "c9473fc7",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 405989,
+      "scale_factor": 2.06,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "479988fb6ff12613e3dc37f8bdfe4080319243c2dfe589b33ecb565a4eb953b5",
+      "created_at": "2026-08-22T07:19:41.607178"
+    },
+    {
+      "order_id": "51388182",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 604442,
+      "scale_factor": 2.11,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5d52d6e8627babb3a746ebd7c7a530872a9fb0c2d27512455ee6ce809f1e7b4b",
+      "created_at": "2026-08-22T07:19:44.766917"
+    },
+    {
+      "order_id": "c72075f6",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 715772,
+      "scale_factor": 2.52,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "44269560252bcd29a78a2772b60b296134b1c19056f81ea03e4ff6380c52d5c4",
+      "created_at": "2026-08-22T07:19:49.226340"
+    },
+    {
+      "order_id": "6d7d81c2",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 512505,
+      "scale_factor": 1.97,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "da2a27280258a0eef508888acd6d5ac85f053ca3a1f2a5ee46fbfdec9abf4176",
+      "created_at": "2026-08-22T07:19:53.367254"
+    },
+    {
+      "order_id": "8ec55c63",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 580327,
+      "scale_factor": 1.28,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "b519d10935b901e8e14f63f6a31261bedadaf02cb96884723cbcf1a1fa2ab69c",
+      "created_at": "2026-08-22T07:19:58.128512"
+    },
+    {
+      "order_id": "7aa70af2",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 334530,
+      "scale_factor": 2.22,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "2d5cc3667ffb8ff9b0fea17e733b5d85f15b1826ec0d0024e388f67fb0c519eb",
+      "created_at": "2026-08-22T07:20:01.063703"
+    },
+    {
+      "order_id": "e28edd76",
+      "client_ref": "Mobile_Field_Intake_01",
+      "element_count": 300000,
+      "scale_factor": 2.0,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "8cdba3ba525315365edd9fc1f0645047425b1534392760964357f85e7f4fa7e3",
+      "created_at": "2026-08-22T07:22:41.336526"
+    },
+    {
+      "order_id": "61eaf686",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 262489,
+      "scale_factor": 1.85,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "37c7b67169dff734502139f0cae39081eead17ba3fbe1a24c5a69ba278961329",
+      "created_at": "2026-08-22T07:27:03.154917"
+    },
+    {
+      "order_id": "3ef646fb",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 268657,
+      "scale_factor": 2.09,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9bfb863d40119e9ee449da819546d0f997fdfb01e7ec1d25f91cd03c1c8a3414",
+      "created_at": "2026-08-22T07:27:06.501990"
+    },
+    {
+      "order_id": "96e2c474",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 670930,
+      "scale_factor": 3.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3bc03820dd276c64b9e12cf0f1c794ac498e3b66bef7e4b6b20e0885198946bf",
+      "created_at": "2026-08-22T07:27:09.900237"
+    },
+    {
+      "order_id": "56712e77",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 356505,
+      "scale_factor": 1.28,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "309ee7e85b59c73404a708edad0570b9e318b1aff64ea90580a9a8b3bcff6bb9",
+      "created_at": "2026-08-22T07:27:13.850224"
+    },
+    {
+      "order_id": "c0454e2d",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 540315,
+      "scale_factor": 3.31,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "81860a4ac442050243aa15a3e29b3c05d5af043b94d9519e9b2ceac3ccdd6725",
+      "created_at": "2026-08-22T07:27:18.461846"
+    },
+    {
+      "order_id": "a7c139f6",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 719676,
+      "scale_factor": 3.44,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3131c8266d408a407570c560fd9d35fb3cc59db67ef9fbced8c5ffad9ab81780",
+      "created_at": "2026-08-22T07:27:23.930950"
+    },
+    {
+      "order_id": "9de28c09",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 270852,
+      "scale_factor": 2.39,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1b2253581d53db7c769ffe80ac81c10e4f6572c084cfd8b49c6ecabb6bf3cdd0",
+      "created_at": "2026-08-22T07:27:28.121250"
+    },
+    {
+      "order_id": "f8e6e01c",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 711027,
+      "scale_factor": 3.17,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c734b426317de3a999bc71330dc66252dda522d92d18e36e78753065ce09f63c",
+      "created_at": "2026-08-22T07:27:31.102343"
+    },
+    {
+      "order_id": "0000c657",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 726647,
+      "scale_factor": 3.68,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "969e1fd731873abd53fe289d0b2f425e0ff0b94a9ac8d8a8fbbf9bc5ebbc148b",
+      "created_at": "2026-08-22T07:27:33.910733"
+    },
+    {
+      "order_id": "a3cc27ef",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 406376,
+      "scale_factor": 2.46,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e3b4615847eb997a5d8a75aa144c22c9042a8e6815d984c8c1019d77134ce315",
+      "created_at": "2026-08-22T07:27:37.920958"
+    },
+    {
+      "order_id": "bd54e513",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 749092,
+      "scale_factor": 2.03,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c92cf8fef826b52a8787cbf7267085dfd905e48857dbefa7a4ecf53bab1eb822",
+      "created_at": "2026-08-22T07:27:40.650687"
+    },
+    {
+      "order_id": "99e08f6a",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 327051,
+      "scale_factor": 3.06,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a6b14a05971804e686b9498c18b5945a793bb2d878a0825c438510e6ddbf73b5",
+      "created_at": "2026-08-22T07:27:46.542648"
+    },
+    {
+      "order_id": "3d4a6310",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 332621,
+      "scale_factor": 2.61,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "ec966aaa11fd559bfc133c68a94206a72a525250a7c2f468ea858f345849a46e",
+      "created_at": "2026-08-22T07:27:50.353967"
+    },
+    {
+      "order_id": "0ffac4e9",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 234508,
+      "scale_factor": 3.12,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "15412e0dc866cdeb66a854b53328bd3fdd9fc3a2adb1062d4aba6d984f4c4953",
+      "created_at": "2026-08-22T07:27:55.735850"
+    },
+    {
+      "order_id": "d5234455",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 700379,
+      "scale_factor": 1.84,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d6f9ea0fb20862cf9b6595ee0703955035d9839a2145feb5c1cdf38742df1a30",
+      "created_at": "2026-08-22T07:28:01.620867"
+    },
+    {
+      "order_id": "0938ec68",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 259888,
+      "scale_factor": 2.53,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "05fd4d632a292004f010c1dfd29761026e6150ad58ba9c7c7bb19ae38a161d5b",
+      "created_at": "2026-08-22T07:28:06.872010"
+    },
+    {
+      "order_id": "6f05f19d",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 435569,
+      "scale_factor": 3.75,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4354f92d1a64c84526429e7c07d46d4b3318ef3a3f6144d31afeacdb99e3fc5f",
+      "created_at": "2026-08-22T07:28:10.756213"
+    },
+    {
+      "order_id": "eae0808d",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 249949,
+      "scale_factor": 1.45,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6f08a25a141c7da8f6a965986b5dfc3605330c4a5908f7f612d02ad38992ef34",
+      "created_at": "2026-08-22T07:28:15.296726"
+    },
+    {
+      "order_id": "c45ca933",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 180284,
+      "scale_factor": 3.72,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "b27c538c91c42b7d23db9317b680836c7dbc6b15c074040bfb658d72022d021a",
+      "created_at": "2026-08-22T07:28:21.203899"
+    },
+    {
+      "order_id": "ba3039d8",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 643159,
+      "scale_factor": 2.08,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "753fadfcc2eb50265b10bfd826aa085fa881257a367b7dde7e03bbedc153d7e4",
+      "created_at": "2026-08-22T07:28:26.428341"
+    },
+    {
+      "order_id": "1ae1d064",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 208418,
+      "scale_factor": 3.2,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e424f2e07dded896b9027bd6968cd188a609a3a85f8b25d78d5ec40243480f98",
+      "created_at": "2026-08-22T07:28:30.619292"
+    },
+    {
+      "order_id": "3080285f",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 613762,
+      "scale_factor": 1.67,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d047de5f862f3ecc7779c605d94528b1e60a8fbe680eb74dfa6ce2b88d90764d",
+      "created_at": "2026-08-22T07:28:34.354718"
+    },
+    {
+      "order_id": "c330adda",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 485530,
+      "scale_factor": 2.98,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "555b34440fa754e0f6d76268060ca0a8fe1123bc8ede127c483e542a0d924863",
+      "created_at": "2026-08-22T07:28:38.657252"
+    },
+    {
+      "order_id": "75c45c09",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 400401,
+      "scale_factor": 3.42,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0779e70f48cebd573a0fb87e360346e1224867b8c45a2e70eb18d4fd8775d007",
+      "created_at": "2026-08-22T07:28:42.531394"
+    },
+    {
+      "order_id": "7f81dc79",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 253018,
+      "scale_factor": 2.16,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "afbf2c9ab194a653946bea008f09bcc1921868deb9ca70ae990c50b70c1c5038",
+      "created_at": "2026-08-22T07:28:48.435546"
+    },
+    {
+      "order_id": "8aa540bd",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 164929,
+      "scale_factor": 1.31,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "405bd9fae833e2b902ad44e1ab01a89f7b524f709786710665f9716a49a4d0f9",
+      "created_at": "2026-08-22T07:28:54.092015"
+    },
+    {
+      "order_id": "b7c2f7b2",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 579427,
+      "scale_factor": 1.27,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "eba430044fb8179f29c185b95e9fc1450a4a29265ab63cec4c8b658d99c95c9e",
+      "created_at": "2026-08-22T07:28:57.093076"
+    },
+    {
+      "order_id": "2f9f7811",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 662858,
+      "scale_factor": 1.38,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9d363ed6352a38c72f9fe813ece50fdbf6eb665d3866fa2ac07a598a701f0129",
+      "created_at": "2026-08-22T07:29:00.483415"
+    },
+    {
+      "order_id": "66316f16",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 250124,
+      "scale_factor": 3.32,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4e694aac9dbefb0106db5d042351391d5fae7f4202368a85d5db6b9a2e2ecfa9",
+      "created_at": "2026-08-22T07:29:04.298752"
+    },
+    {
+      "order_id": "b3be2630",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 512141,
+      "scale_factor": 3.72,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6e2a4e4a9ee0168356d339c11da38bec5e0cbd23cf1966d1f2dce91e5f66e3af",
+      "created_at": "2026-08-22T07:29:09.670168"
+    },
+    {
+      "order_id": "bf079ca5",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 748489,
+      "scale_factor": 1.27,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "92655d6c7c60721f4e67338a46155fc29d8c30eb6a11615b2ce86a74f7df29d7",
+      "created_at": "2026-08-22T07:29:13.605242"
+    },
+    {
+      "order_id": "cf651d65",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 351488,
+      "scale_factor": 2.02,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "fe3e277bff004fcb1a9a61ccd3a7edbcd61b8eef0b06161daf72b7032abfcf4f",
+      "created_at": "2026-08-22T07:29:17.434845"
+    },
+    {
+      "order_id": "63ec7dc8",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 619809,
+      "scale_factor": 1.4,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0dbd06fdf436b96a62add95e5c3d25102b4b05b7acfc9ccca1aeb7e2e3149882",
+      "created_at": "2026-08-22T07:29:23.072654"
+    },
+    {
+      "order_id": "17f1b845",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 222780,
+      "scale_factor": 3.05,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9c4af5fddaacc21b3ad4c1a3ec72a6c84c522569f2bb81e8d9b4aa08ad8c3830",
+      "created_at": "2026-08-22T07:29:28.962628"
+    },
+    {
+      "order_id": "07a6e6cf",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 433726,
+      "scale_factor": 1.72,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "2bb972acb17b3431ffca3dc5afd4051ea56aeb24c275031acbacd642bb8e855c",
+      "created_at": "2026-08-22T07:29:33.945220"
+    },
+    {
+      "order_id": "f6c3692e",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 612557,
+      "scale_factor": 1.31,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "69bd081f0b1c9cd2a6a949dae74537f669d9c23a415b89154bfa63e748a40399",
+      "created_at": "2026-08-22T07:29:39.432366"
+    },
+    {
+      "order_id": "32d988cf",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 347598,
+      "scale_factor": 2.61,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "b7febb7c6f8165bdaca9b72f2cde5450d82a991f8780626893d752d1c46d7d4a",
+      "created_at": "2026-08-22T07:29:43.610338"
+    },
+    {
+      "order_id": "a58754c6",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 362371,
+      "scale_factor": 1.55,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0d239a7fc7c0ea14719a484cccc90f79eed24f733bb1ca0ab81959789f2d8202",
+      "created_at": "2026-08-22T07:29:47.713439"
+    },
+    {
+      "order_id": "984fa14d",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 265534,
+      "scale_factor": 2.99,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0fd72cca709eb8a8bf2cc379f8ca7673c944973416dbdd41abfffb0f24054fbe",
+      "created_at": "2026-08-22T07:29:53.035785"
+    },
+    {
+      "order_id": "6d8e7365",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 185446,
+      "scale_factor": 3.57,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6180decf35bc696d171f9c4950d710c40906800754bba801f22f452206380c36",
+      "created_at": "2026-08-22T07:29:57.549681"
+    },
+    {
+      "order_id": "b4ca44ea",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 491873,
+      "scale_factor": 3.49,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6a86a7b529d9d58d8a05c37cd1049f2dd2e332946d41c260acb560d3c076a0c3",
+      "created_at": "2026-08-22T07:30:02.492586"
+    },
+    {
+      "order_id": "bd22b7f7",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 277179,
+      "scale_factor": 2.83,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c3ece0fd48c6069875f8fea1dd012bbd8e9cc7f0c9742950ccdb9e9d12343eda",
+      "created_at": "2026-08-22T07:30:07.746043"
+    },
+    {
+      "order_id": "6542a95c",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 605084,
+      "scale_factor": 2.31,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "73f6d008f82cbec7f2f53e022bfc29776d0e4455987035050acd5e866b125f21",
+      "created_at": "2026-08-22T07:30:13.413978"
+    },
+    {
+      "order_id": "d2bc16cc",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 302723,
+      "scale_factor": 2.14,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "421f15cf6e5c07ce63e8b3db09b957b6da5a76818ac47ea4237e8b63465df13b",
+      "created_at": "2026-08-22T07:30:16.710458"
+    },
+    {
+      "order_id": "a3ecf2d5",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 548906,
+      "scale_factor": 2.47,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "02687460ebb72ce4308d58e318894e60a7d5d70a71899b55a829bd352a2fa723",
+      "created_at": "2026-08-22T07:30:20.603145"
+    },
+    {
+      "order_id": "24c312fb",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 534359,
+      "scale_factor": 1.67,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a6b5569bfeb40953195e53579aa9816a0ace0f927b6aabc28f69dd8b02ff6dfc",
+      "created_at": "2026-08-22T07:30:24.633525"
+    },
+    {
+      "order_id": "c166a3c8",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 204273,
+      "scale_factor": 2.83,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "34f488076804cd1180aa321b2a593ae45de9cd5a8b760a8002c7a3de1aa1690a",
+      "created_at": "2026-08-22T07:30:30.382150"
+    },
+    {
+      "order_id": "cc10b186",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 492927,
+      "scale_factor": 2.59,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "12de89caf7d4b94511097f8921aa874ffcd7c230f5a26d4f573920238f1a4bd8",
+      "created_at": "2026-08-22T07:30:33.798652"
+    },
+    {
+      "order_id": "1a59918e",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 276315,
+      "scale_factor": 2.96,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0495b291c2e46759277e9e265c63b882c7d13f45ed2a79c6ca6ad18bb58838ea",
+      "created_at": "2026-08-22T07:30:38.846435"
+    },
+    {
+      "order_id": "d606c1e3",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 407329,
+      "scale_factor": 3.78,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "09496d67d7476e4ab37b7056f95b18dd1821ab8496c28ce043020c9189cda953",
+      "created_at": "2026-08-22T07:30:41.522639"
+    },
+    {
+      "order_id": "0181cd9d",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 314705,
+      "scale_factor": 2.57,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3f3ca367e7ed37422a756862aeb3edfce282a6dad6091d65f3873570a678d1d7",
+      "created_at": "2026-08-22T07:30:46.646987"
+    },
+    {
+      "order_id": "d0590c95",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 742606,
+      "scale_factor": 3.42,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "2f19318e43e1c472dddb523eb07f0164525e705c49a8d7e250b9f97da0368f7b",
+      "created_at": "2026-08-22T07:30:52.021681"
+    },
+    {
+      "order_id": "856df3e3",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 270713,
+      "scale_factor": 2.01,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0efd9ba68a0fd8a02b7efc5e00c2da24cccfc3e32ce88e2078dccc292d161cd7",
+      "created_at": "2026-08-22T07:30:56.320363"
+    },
+    {
+      "order_id": "5bcf8f0f",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 162402,
+      "scale_factor": 2.97,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3d875966ad000f5af49bd1ca0d07243db09027b9df83bd0fd159df601fc3adf9",
+      "created_at": "2026-08-22T07:31:00.918705"
+    },
+    {
+      "order_id": "6a4a8f0c",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 731289,
+      "scale_factor": 2.6,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "708451f85d7a43c7bfe2fc74d8c0905c161b8babbca374014c0c7031314e2c9f",
+      "created_at": "2026-08-22T07:31:05.147675"
+    },
+    {
+      "order_id": "4f6a8932",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 693574,
+      "scale_factor": 3.25,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "613b749e027586b0341f9d99b267d73dab7b26467fc6b013820585d48b446997",
+      "created_at": "2026-08-22T07:31:11.089640"
+    },
+    {
+      "order_id": "a72a016b",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 265550,
+      "scale_factor": 2.25,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e64037861d05157b04ba36365a31abff4a350f77bcedda9df3fe6eeec41028aa",
+      "created_at": "2026-08-22T07:31:15.241352"
+    },
+    {
+      "order_id": "fcb70c72",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 286669,
+      "scale_factor": 3.26,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0e1e14dddfe96976e71b4c8671d8b4a8caa5ac228ed796e37ef471d10e5496ac",
+      "created_at": "2026-08-22T07:31:18.234078"
+    },
+    {
+      "order_id": "29d40481",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 183863,
+      "scale_factor": 2.9,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "12352125aed08bd4aa9cd9541b981275800a0712878f5b6fc110f0c0f3806148",
+      "created_at": "2026-08-22T07:31:23.444449"
+    },
+    {
+      "order_id": "0aab7b3c",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 375105,
+      "scale_factor": 3.79,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "07168c3e2c036c3b59fd7551d5ebc00d113fa7161ab125ade606524b43793767",
+      "created_at": "2026-08-22T07:31:26.428143"
+    },
+    {
+      "order_id": "c5ddbf72",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 548996,
+      "scale_factor": 2.01,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e8525217f2bf21eb97c881b44a43bcafcfb89de4a6fa99ab33569c8b5539fa03",
+      "created_at": "2026-08-22T07:31:29.365542"
+    },
+    {
+      "order_id": "6b7c72f7",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 276860,
+      "scale_factor": 2.12,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e8a815daacc25942f6457c57741fae93d88fe0a5f29b9c79e169cd8cef529f09",
+      "created_at": "2026-08-22T07:31:34.367752"
+    },
+    {
+      "order_id": "214dbef4",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 614276,
+      "scale_factor": 2.6,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "507ff0d8ebf6b6c21ca9ac74039ba7dc053ebb38a9e16cc2ca8aa051ede82ffc",
+      "created_at": "2026-08-22T07:31:38.186458"
+    },
+    {
+      "order_id": "87a6de83",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 521405,
+      "scale_factor": 2.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0fee0967ea3c6a677e4cbb6f47c48fce249b2bff809538d397724662aaab69d4",
+      "created_at": "2026-08-22T07:31:44.035910"
+    },
+    {
+      "order_id": "9ab5ffbb",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 700855,
+      "scale_factor": 1.61,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a35ff7cf6c48ddbdc75e43522849e11481846a33003da7479ea8ab5820f0c2d8",
+      "created_at": "2026-08-22T07:31:47.471465"
+    },
+    {
+      "order_id": "e206c782",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 370431,
+      "scale_factor": 2.6,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "238a132b943cdfa7f448dee987d89844bc5670e38b6e6930e873b6cfebb5985b",
+      "created_at": "2026-08-22T07:31:52.031291"
+    },
+    {
+      "order_id": "4e6b00f9",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 519806,
+      "scale_factor": 2.39,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "853c3c2f5681f371eb7bfed85b79a24a1c9d1cd0fb8799940496c430b2450b6a",
+      "created_at": "2026-08-22T07:31:56.681682"
+    },
+    {
+      "order_id": "0e26e00b",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 601204,
+      "scale_factor": 2.29,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3dc5eef0030cef88c6cccca8dfc84c32cba6814ade9b45941f33740e5024df85",
+      "created_at": "2026-08-22T07:31:59.602867"
+    },
+    {
+      "order_id": "bde43791",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 285562,
+      "scale_factor": 1.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "001b3fa35121d44e9835645e4f7fb919124a0696e87214def529029b90389e7d",
+      "created_at": "2026-08-22T07:32:04.218374"
+    },
+    {
+      "order_id": "dd122bf6",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 699760,
+      "scale_factor": 2.92,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0cc6f55df0b9813d6b981259e9378aadbb9cf7b1aa224732f52dd06ab04f329b",
+      "created_at": "2026-08-22T07:32:06.823778"
+    },
+    {
+      "order_id": "f6465c13",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 571270,
+      "scale_factor": 3.61,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a575e4e6afb06d335fa662204b7c181a429429ed59eff377989db2a673f2eee9",
+      "created_at": "2026-08-22T07:32:12.328796"
+    },
+    {
+      "order_id": "478a2b2c",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 603135,
+      "scale_factor": 2.66,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "504effd06acbf225ea23563dcc44c1cde116bdfd122d73ab849337bba616c906",
+      "created_at": "2026-08-22T07:32:18.044928"
+    },
+    {
+      "order_id": "d9feb0e1",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 244365,
+      "scale_factor": 3.76,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "ae5582591927a69f49d816a00ac1417a773cf042a4a51ac2a4d6d4d9b2de6e4f",
+      "created_at": "2026-08-22T07:32:21.143637"
+    },
+    {
+      "order_id": "c049eecf",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 533320,
+      "scale_factor": 1.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a21120123ea23fee3a6b939cd4f2d9e905b57f47b1625f787e164ec9ae59332f",
+      "created_at": "2026-08-22T07:32:24.999618"
+    },
+    {
+      "order_id": "e8780323",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 323059,
+      "scale_factor": 1.77,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e7ecfb95684d7bafddfa1db0a9d91fe5ace2941ae922026c98c84094f0a19abb",
+      "created_at": "2026-08-22T07:32:28.593092"
+    },
+    {
+      "order_id": "a5802330",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 713337,
+      "scale_factor": 3.19,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "92652b41bc0fe66bb5381076e29809dccfe436cad8cdd9df14e3af06fc59645a",
+      "created_at": "2026-08-22T07:32:32.665398"
+    },
+    {
+      "order_id": "f1b3a219",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 507998,
+      "scale_factor": 1.5,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "431e30256a9ddcdf357ae46979d2954c97daf3bc919cad81ed07f8b9f0fa758c",
+      "created_at": "2026-08-22T07:32:36.633123"
+    },
+    {
+      "order_id": "ef137f34",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 272123,
+      "scale_factor": 3.22,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5f533d7e5dc5adfccc45566bbc48e1b18f6f215698a9dcd7ebb9acd90109ae87",
+      "created_at": "2026-08-22T07:32:41.214580"
+    },
+    {
+      "order_id": "0a98d0f7",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 271417,
+      "scale_factor": 1.24,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "67fd01b686ff6dd76ec2b5aa0779a413cbdf93afc9ee6fd4c76eb12224332607",
+      "created_at": "2026-08-22T07:32:46.334911"
+    },
+    {
+      "order_id": "e441157b",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 315527,
+      "scale_factor": 2.78,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "94addc57486ad0dea2aed878407a342a4ca03abd79e6a67a9dd2b76c54b22ff1",
+      "created_at": "2026-08-22T07:32:50.816570"
+    },
+    {
+      "order_id": "98cb9c64",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 709480,
+      "scale_factor": 2.05,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "31f8020722c00c39c7d6002f987d316451cbbf87690079da005f6bfc452313bc",
+      "created_at": "2026-08-22T07:32:55.673940"
+    },
+    {
+      "order_id": "cad95e95",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 597005,
+      "scale_factor": 2.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e8f781bcca188810b864412f852bb5469b2583a4bb56b0786c7a0e5520651528",
+      "created_at": "2026-08-22T07:33:00.559498"
+    },
+    {
+      "order_id": "e5d2e122",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 689705,
+      "scale_factor": 2.0,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "19fc2d10f4711cc702664bd2c55270d4d29980af15b8e8547557b32cccc2641f",
+      "created_at": "2026-08-22T07:33:05.682903"
+    },
+    {
+      "order_id": "89039e33",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 438547,
+      "scale_factor": 2.84,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4a79255f8ac658f2a33e2499f160ab8efbaaf5f699ee4b1ec57f08c33ff7fa70",
+      "created_at": "2026-08-22T07:33:08.221695"
+    },
+    {
+      "order_id": "10571684",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 613076,
+      "scale_factor": 2.59,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "49ddbdfbbc55a510ac409521997fdd7558b1e2ad3bd2414acb4b1afe320a4921",
+      "created_at": "2026-08-22T07:33:11.709604"
+    },
+    {
+      "order_id": "a238871f",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 436135,
+      "scale_factor": 1.84,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9d6d896a023f1f3aee5075f6292dc0d5a4cba873bd489967d31f4b8456ad5111",
+      "created_at": "2026-08-22T07:33:14.421604"
+    },
+    {
+      "order_id": "252d5a88",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 671526,
+      "scale_factor": 3.63,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "b8a7d6951ceeb2fe004c9f49eb57133343545622f45ec5a0945bbc8306c5ea6f",
+      "created_at": "2026-08-22T07:33:18.158484"
+    },
+    {
+      "order_id": "54400a7b",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 253159,
+      "scale_factor": 1.31,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e8b81ac5b679ad42d1f8a38212dab9b8273cee548fe3cb78d747cd9711406773",
+      "created_at": "2026-08-22T07:33:23.709049"
+    },
+    {
+      "order_id": "c88990d9",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 644234,
+      "scale_factor": 2.55,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "f335bda6ff7f99808dd9f827f6f5630061ce024681c204080eabb53b3a26e12e",
+      "created_at": "2026-08-22T07:33:28.271460"
+    },
+    {
+      "order_id": "fbef7957",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 435839,
+      "scale_factor": 1.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6ff04cd1b928422e537a34b75164cb94b116ce6bc53199bf897b71a365f1d908",
+      "created_at": "2026-08-22T07:33:30.969477"
+    },
+    {
+      "order_id": "f245587e",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 647931,
+      "scale_factor": 1.24,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d09ef108213d76ca95cf7ec7d396bb98f59e3cf6491f859c3173d870dc46d623",
+      "created_at": "2026-08-22T07:33:36.603330"
+    },
+    {
+      "order_id": "3aa822d8",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 738347,
+      "scale_factor": 1.91,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "425f1baad36ed5cafe18f374a619bb538d1b57ffb3ef2224f547ca377c89158d",
+      "created_at": "2026-08-22T07:33:40.824125"
+    },
+    {
+      "order_id": "1279143e",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 613047,
+      "scale_factor": 2.33,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "20f0928f532e2b6eeeb84248319ad2715378a33d69701d262e565e509b45203f",
+      "created_at": "2026-08-22T07:33:45.868837"
+    },
+    {
+      "order_id": "55ef4ef5",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 403920,
+      "scale_factor": 1.6,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "59df979dbdf69a9ddf61d4171932d3c1149c7f25c6677790043cabd2f747b96b",
+      "created_at": "2026-08-22T07:33:49.227036"
+    },
+    {
+      "order_id": "5256e242",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 160947,
+      "scale_factor": 3.06,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "2f7c8db44357972de8d756c7fa1f6904bea6e6c0773c568da73590a782f782e5",
+      "created_at": "2026-08-22T07:33:51.850730"
+    },
+    {
+      "order_id": "d01d4bfc",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 250099,
+      "scale_factor": 2.07,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "ab5573ffe4e85f296753954611053fbcf19e9c4372ac670a761c08c8ad8ba6b2",
+      "created_at": "2026-08-22T07:33:57.389152"
+    },
+    {
+      "order_id": "627cdcc1",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 312912,
+      "scale_factor": 3.8,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "3f4d9512e884d26a54e4105eece6c467a2f5c82f4ce39c1d1556ddec70790e05",
+      "created_at": "2026-08-22T07:34:00.877231"
+    },
+    {
+      "order_id": "fa9c67b6",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 735871,
+      "scale_factor": 3.67,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5ff793121576f124607ee28965983c998ff254d562d027bc5a9e1ba652008a30",
+      "created_at": "2026-08-22T07:34:03.930217"
+    },
+    {
+      "order_id": "537786f2",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 690109,
+      "scale_factor": 1.59,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "b8021604739ebb4fda7593f1844aa7b95b4099716185deca383e73d2b4ce6a0b",
+      "created_at": "2026-08-22T07:34:09.554379"
+    },
+    {
+      "order_id": "37da1a35",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 508425,
+      "scale_factor": 1.42,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "b1c6d92959d3fb01e5f28429d6cd6c8ab990832bb4e43ccec1cbec69c77f65e3",
+      "created_at": "2026-08-22T07:34:13.797219"
+    },
+    {
+      "order_id": "63140418",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 505851,
+      "scale_factor": 1.35,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "85aeff91daf4c5f1713c27d22cc04e1ce70dc2c8b190dc8c4c7ef7eead576f64",
+      "created_at": "2026-08-22T07:34:17.395195"
+    },
+    {
+      "order_id": "4617f84a",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 219781,
+      "scale_factor": 2.27,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e25f8e502c5dea0d4dea1864197d4f28c4bc4d194b9c25e0cb7ade6db22da84f",
+      "created_at": "2026-08-22T07:34:22.815797"
+    },
+    {
+      "order_id": "051c3376",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 310500,
+      "scale_factor": 3.69,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "7f49a91d2f9342a952c1674bb0d69c07ceb7169bd117438cc945fe1b61e8e5b0",
+      "created_at": "2026-08-22T07:34:26.406282"
+    },
+    {
+      "order_id": "244322cd",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 209401,
+      "scale_factor": 2.78,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "2801a69924a186cbeb06ff0797d00a8809cca64b2604e8fed37be8290ccd9d25",
+      "created_at": "2026-08-22T07:34:29.315643"
+    },
+    {
+      "order_id": "b9e49062",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 729683,
+      "scale_factor": 2.49,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1615b678eec76c94202a7f688f78b471faffef296a0ab637577d3a0127885187",
+      "created_at": "2026-08-22T07:34:32.467766"
+    },
+    {
+      "order_id": "cf64d0e6",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 356568,
+      "scale_factor": 3.21,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "211a0265841ca2023c65a8cf977f07d95153743a9d25ae2018a287e33face61c",
+      "created_at": "2026-08-22T07:34:35.867828"
+    },
+    {
+      "order_id": "9461e51c",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 282144,
+      "scale_factor": 3.76,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "70c2b0db2d3997cead69b3044ef5742f9a59d6c894855d6e51d1de3a16638b16",
+      "created_at": "2026-08-22T07:34:38.636138"
+    },
+    {
+      "order_id": "6b7dd62a",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 540661,
+      "scale_factor": 2.58,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c221ba68867da35a4df9008dd9fbc2cb0e914781fbe86e8a96779ca035167ef5",
+      "created_at": "2026-08-22T07:34:42.120970"
+    },
+    {
+      "order_id": "5fcdf66e",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 327173,
+      "scale_factor": 2.84,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "f7ae9b679a10b7d3210bd282f53c56c8a464293de181d4126a9028609a7cb118",
+      "created_at": "2026-08-22T07:34:44.983450"
+    },
+    {
+      "order_id": "6dc7963d",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 186042,
+      "scale_factor": 3.52,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5bd09cc9024e70ae098b8f26c7c042ea99ffca5b8cf08cffd9efe18da374e05a",
+      "created_at": "2026-08-22T07:34:47.807271"
+    },
+    {
+      "order_id": "791cdbc1",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 311112,
+      "scale_factor": 1.47,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "ab34664efcd91ccf2405d2c683e02318cde0ae3ca8e97ffaf154138492fe9a92",
+      "created_at": "2026-08-22T07:34:50.357474"
+    },
+    {
+      "order_id": "5c241508",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 185415,
+      "scale_factor": 1.31,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "567dce3d9df17fe92a86038cb0cdd28ff8b39bc94c518049b0f792039e4dcc11",
+      "created_at": "2026-08-22T07:34:55.769473"
+    },
+    {
+      "order_id": "582f512d",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 507172,
+      "scale_factor": 2.88,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1e978dd3cb5abc3dfbbeca6c082283890b06494ded295c9b4675d02ae7c4bbdd",
+      "created_at": "2026-08-22T07:35:00.838841"
+    },
+    {
+      "order_id": "80c156f5",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 183741,
+      "scale_factor": 1.46,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "453c4ff8b7b9862005c01327f326ade7cfd785588ddc0ec91176382c7fd811bc",
+      "created_at": "2026-08-22T07:35:05.036075"
+    },
+    {
+      "order_id": "40fa402d",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 295563,
+      "scale_factor": 3.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "f83d8dbaa150953c56db7648e6ba0240207fe689d3ed19bbf56baa86b3e6e6a9",
+      "created_at": "2026-08-22T07:35:08.656958"
+    },
+    {
+      "order_id": "20292f0d",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 706934,
+      "scale_factor": 3.79,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6eeb6516fb57e14821a240c422198544264b742305fafb6259abf6fb16a87c86",
+      "created_at": "2026-08-22T07:35:11.266591"
+    },
+    {
+      "order_id": "163dfef4",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 227825,
+      "scale_factor": 3.47,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0cdb969d4b4792b32172424f2744df5bcd9d061ad1027cb9abda5b4226581f42",
+      "created_at": "2026-08-22T07:35:14.409461"
+    },
+    {
+      "order_id": "f1860afd",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 480442,
+      "scale_factor": 1.28,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "b5b5b59902c1376268e2997d673f12d4d2beb12a3dd6a9f7c404cbde3242cdd5",
+      "created_at": "2026-08-22T07:35:20.211560"
+    },
+    {
+      "order_id": "1ee017e5",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 722780,
+      "scale_factor": 1.39,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4f3d7457616e1c4d15e0cf9146b63b43c0a6b9e7043a7e2c91901fbf11347245",
+      "created_at": "2026-08-22T07:35:23.646481"
+    },
+    {
+      "order_id": "f63a2797",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 414554,
+      "scale_factor": 3.44,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "c856132a55150679980fb61038fb0e450375c6d09230bda2eb66b5d03214403f",
+      "created_at": "2026-08-22T07:35:26.786648"
+    },
+    {
+      "order_id": "04873e9e",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 538290,
+      "scale_factor": 2.56,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d781ef741982b6d0de81e6bc773ad65d4377891edb1f08c2843ef1b0100b1722",
+      "created_at": "2026-08-22T07:35:30.868236"
+    },
+    {
+      "order_id": "ad8cb367",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 669321,
+      "scale_factor": 2.64,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e306b933b36cb8e8d285eb929f6d435fd9ef9e2ef1b7787fe40e187a4433d684",
+      "created_at": "2026-08-22T07:35:36.233440"
+    },
+    {
+      "order_id": "3ae3c387",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 819916,
+      "scale_factor": 1.76,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "edbfe78f4118345069cd17551873568d0d943e3640dfbf357a4cf1f07ef0be84",
+      "created_at": "2026-08-22T07:35:37.204824"
+    },
+    {
+      "order_id": "c05dd4bf",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 712730,
+      "scale_factor": 2.08,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "79b7ac9a88dd1b63d837b3ae4bf651cef2bf8e1e7831b20cb389921650acff9f",
+      "created_at": "2026-08-22T07:35:40.123769"
+    },
+    {
+      "order_id": "0cf42052",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 486455,
+      "scale_factor": 3.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "7f9eebd1b91cfe12d276e6946a06dece93b2746d674f9125bac3a70e5c16aeac",
+      "created_at": "2026-08-22T07:35:41.858329"
+    },
+    {
+      "order_id": "fe1d94e0",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 229653,
+      "scale_factor": 2.16,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9cc2a58c17f2608a142c6b90a4de8fc85f3b6b4eb80a5f448c5b252459eece39",
+      "created_at": "2026-08-22T07:35:42.890361"
+    },
+    {
+      "order_id": "1e033547",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 502420,
+      "scale_factor": 2.21,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "e499c5ea17ef0dcd16d711f8c505b8452b7b542ec5471a2be34ede2c106f4a39",
+      "created_at": "2026-08-22T07:35:45.553755"
+    },
+    {
+      "order_id": "27945199",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 634607,
+      "scale_factor": 3.43,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "53e9d56ef82812e18672334ecdcc70397f3f2dd45b56266c2b874138295c7427",
+      "created_at": "2026-08-22T07:35:46.406783"
+    },
+    {
+      "order_id": "6148128e",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 279204,
+      "scale_factor": 3.75,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "65ee9ec1a662636d064a4bd365918dec3320f76c3c9c91d02fa79cceddd4a059",
+      "created_at": "2026-08-22T07:35:48.777125"
+    },
+    {
+      "order_id": "c768168a",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 373701,
+      "scale_factor": 1.89,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "98aed8f387bf9073afadb3255f5b03760b9255b30e1d45ae3422ce0d4c747553",
+      "created_at": "2026-08-22T07:35:49.133876"
+    },
+    {
+      "order_id": "1e8e9827",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 266090,
+      "scale_factor": 3.32,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "87b15116d477e55225e83c21a5f7504aa98ffe6a8e46ea09e94132aacd11a456",
+      "created_at": "2026-08-22T07:35:52.190788"
+    },
+    {
+      "order_id": "6a2778d4",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 589626,
+      "scale_factor": 2.04,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "7900c43acc719504b3a810f813b42e1f598eebf28b6079fec94a07b4912aa54c",
+      "created_at": "2026-08-22T07:35:53.274917"
+    },
+    {
+      "order_id": "fd28ac92",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 722785,
+      "scale_factor": 3.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "4306765db662c1fec7d8daecd1eacb7f1795ad1f7bda0e8716c345ae8f6a2ec8",
+      "created_at": "2026-08-22T07:35:55.481421"
+    },
+    {
+      "order_id": "5dd43933",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 593504,
+      "scale_factor": 1.75,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "330a5828d392429c437c88a14a94057e5b2d61000d81b6273b85764a8f577aa4",
+      "created_at": "2026-08-22T07:35:57.394008"
+    },
+    {
+      "order_id": "c5988833",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 742697,
+      "scale_factor": 2.94,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a852461f0a656116502344a82dbb6e6ddd53506c868049484738f280eb60b3e0",
+      "created_at": "2026-08-22T07:36:00.733146"
+    },
+    {
+      "order_id": "04050df3",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 848020,
+      "scale_factor": 2.0,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "8e534843424d86c723926fd59a7e12c5900734ef35cc1a53bdba750d41273d11",
+      "created_at": "2026-08-22T07:36:01.317228"
+    },
+    {
+      "order_id": "35b4daa1",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 570624,
+      "scale_factor": 2.83,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "09185cc469026167c5878078ad8370c9bf60bc6cab12a8b718e963b25e000f7d",
+      "created_at": "2026-08-22T07:36:04.994774"
+    },
+    {
+      "order_id": "116d894a",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 451604,
+      "scale_factor": 2.6,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1fca79f0db3dc97daddbbfe5e58c0bfe48f62b05dee6d5d6a5adb741359309fa",
+      "created_at": "2026-08-22T07:36:05.512234"
+    },
+    {
+      "order_id": "0589d539",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 733295,
+      "scale_factor": 2.22,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "2b95a2496de8effe3505b32de8d2dc6fcb66ffbd9ce03b4cb0a711be25469984",
+      "created_at": "2026-08-22T07:36:08.165659"
+    },
+    {
+      "order_id": "e59c8c86",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 768690,
+      "scale_factor": 2.82,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "66bb79ef76ee5759a06b9e9f0ee807457825c4624ffe2da5a56e0cfc5dd6ee62",
+      "created_at": "2026-08-22T07:36:08.870445"
+    },
+    {
+      "order_id": "1444a2a4",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 233407,
+      "scale_factor": 2.21,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1384eb8c70580395ecc6f70a0a4cf11a12ea072f90301bc128d2edf2a9171f02",
+      "created_at": "2026-08-22T07:39:23.518528"
+    },
+    {
+      "order_id": "72b98b15",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 527314,
+      "scale_factor": 2.04,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a4e08beeb66da011941d9bc55a2b91b99236a75c90198f2fe3b314b48e8a12be",
+      "created_at": "2026-08-22T07:39:27.856385"
+    },
+    {
+      "order_id": "a8b69719",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 424919,
+      "scale_factor": 3.32,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "8f26890692be6a85a57e35b0e9046fd0306403489d059949cc525e7b30a848c2",
+      "created_at": "2026-08-22T07:39:32.897301"
+    },
+    {
+      "order_id": "263e3d49",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 639078,
+      "scale_factor": 2.48,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "91936531e327349f2356b915240cfd471bf05d706c3957f49c5fabef5c86c70a",
+      "created_at": "2026-08-22T07:39:38.768155"
+    },
+    {
+      "order_id": "7a2e7c88",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 157607,
+      "scale_factor": 3.43,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0f27c4a368aa4fea579c6a724d76fe2e2b32e3b4cfada13368a80b8a68a2d0f0",
+      "created_at": "2026-08-22T07:39:41.756883"
+    },
+    {
+      "order_id": "c56f8cbe",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 464590,
+      "scale_factor": 1.32,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "1c562b9fd7b8997001d215da8fdac9d6406ee6e74c8305e20d6946c4b752c7cf",
+      "created_at": "2026-08-22T07:39:45.688290"
+    },
+    {
+      "order_id": "6c31974e",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 644919,
+      "scale_factor": 3.4,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "9e8a943726fb75ba0c661a6015a0d502c1292e76715e552ffcb650d987d2ad80",
+      "created_at": "2026-08-22T07:39:49.757251"
+    },
+    {
+      "order_id": "18d6e3c5",
+      "client_ref": "DARPA_Edge_Intake",
+      "element_count": 493204,
+      "scale_factor": 3.26,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "56b6e9291a0c2f58c6bf51b49132a6165f42999f499971a19d1618968c067a20",
+      "created_at": "2026-08-22T07:39:54.552782"
+    },
+    {
+      "order_id": "680e7bd8",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 660201,
+      "scale_factor": 2.33,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "6a2df1027a016eccfdc193d890024c148c7f4bb66af6c1c102e34be7f6e46d12",
+      "created_at": "2026-08-22T07:39:58.669981"
+    },
+    {
+      "order_id": "acea0807",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 467740,
+      "scale_factor": 3.66,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5e9dd8c5fb0c64b9ac31206e5f11130bdd02e8568c6671ceb3714d61c605b985",
+      "created_at": "2026-08-22T07:40:02.571677"
+    },
+    {
+      "order_id": "033853da",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 639623,
+      "scale_factor": 1.23,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "79fdde768863243efcf7a9e2285f5d6dfd73a62d45318504e1a5ad3dc1f8ed41",
+      "created_at": "2026-08-22T07:46:26.162736"
+    },
+    {
+      "order_id": "301c20b2",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 691049,
+      "scale_factor": 1.21,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d92a802ed07527811cd9ec59ea01d9df4b8daafefe6bcebc7a537cad8e6a2f96",
+      "created_at": "2026-08-22T07:46:30.047259"
+    },
+    {
+      "order_id": "d6cfe556",
+      "client_ref": "Raytheon_EW_Telemetry",
+      "element_count": 280036,
+      "scale_factor": 2.36,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d37dd78352da0f6c229bbb64486a693d08a9f1fbfd3a48fa496b1b8b602a77de",
+      "created_at": "2026-08-22T07:46:34.897738"
+    },
+    {
+      "order_id": "39b9f5bf",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 511306,
+      "scale_factor": 1.21,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "8feb72c683f7cdf01f69efbacbb5f05392a32bb3a612b9baf7bfc15d06847c99",
+      "created_at": "2026-08-22T07:46:39.175153"
+    },
+    {
+      "order_id": "71335271",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 291118,
+      "scale_factor": 2.49,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "5dd4e83746495bcc4adf169893a18de72b226a8b2f55a610b78209c97a6561af",
+      "created_at": "2026-08-22T07:46:43.921311"
+    },
+    {
+      "order_id": "82518d15",
+      "client_ref": "Lockheed_Aero_Div",
+      "element_count": 348736,
+      "scale_factor": 1.9,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d4fbce42edffb35ad759b05c35f48270de87a0d39e4d94857ea52c8eec0eaed2",
+      "created_at": "2026-08-22T07:46:49.542657"
+    },
+    {
+      "order_id": "1ee1442a",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 340740,
+      "scale_factor": 1.93,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "7798da4c188c5ef997852cc20b01f0b116389ff61df7b5d1c02de8f0aa8e58fc",
+      "created_at": "2026-08-22T07:46:55.059493"
+    },
+    {
+      "order_id": "466ddaee",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 399828,
+      "scale_factor": 3.42,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "d897daf497411da27d50421f5872695b0270b1e5f3d6bd89bfb69afa4f271998",
+      "created_at": "2026-08-22T07:47:00.178678"
+    },
+    {
+      "order_id": "8f88f7cc",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 745262,
+      "scale_factor": 2.99,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "24f61f12d03fe9f710b4ad77b19c3b8667c5d7b47bcd80bc3ef1a93340739ac2",
+      "created_at": "2026-08-22T07:47:04.229403"
+    },
+    {
+      "order_id": "6482a644",
+      "client_ref": "GeneralDynamics_Mesh",
+      "element_count": 170123,
+      "scale_factor": 2.02,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "a722771a70e979aacba4bc59a42e919ce4aa3eb10b165228aba21a6c7ae6365c",
+      "created_at": "2026-08-22T07:47:08.435482"
+    },
+    {
+      "order_id": "10262859",
+      "client_ref": "Northrop_Sensor_Stream",
+      "element_count": 193991,
+      "scale_factor": 1.56,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "0d4c77c1d826c830aef24dd2acc60b8a1ef3bfc6abb9211d2d5c96f863376dd0",
+      "created_at": "2026-08-22T07:47:12.823304"
+    },
+    {
+      "order_id": "044be79b",
+      "client_ref": "Mobile_Field_Intake_01",
+      "element_count": 300000,
+      "scale_factor": 2.0,
+      "status": "COMPLETED",
+      "settled_batch": 2650,
+      "merkle_root": "989227cf17ff7f6325353f303c8a1de70aab89d8b06689380f52ee06dbaf70d9",
+      "created_at": "2026-08-22T07:51:16.032534"
+    }
+  ]
+}

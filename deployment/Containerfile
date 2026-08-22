@@ -1,0 +1,25 @@
+# Garza Global Graviton — Tactical Edge OCI Container Manifest
+# Air-Gapped Build Specifications (DoD / AFWERX Compliant)
+
+FROM python:3.11-slim
+
+# Enforce zero-trust security practices
+RUN groupadd -g 10001 graviton &&     useradd -u 10001 -g graviton -s /bin/bash -m gravitonuser
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /opt/graviton_node
+
+# Copy local application code without external downloads
+COPY 01_Docs ./01_Docs
+COPY 02_PRDs ./02_PRDs
+COPY 03_Source_Code ./03_Source_Code
+COPY 04_Legal_and_IP ./04_Legal_and_IP
+
+RUN chown -R gravitonuser:graviton /opt/graviton_node
+
+USER gravitonuser
+
+# Default entrypoint launches Master Control Center CLI
+ENTRYPOINT ["python", "03_Source_Code/main_menu.py"]

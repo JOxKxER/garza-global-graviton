@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>Garza Global Graviton - Commercial Portal</title>
+    <style>
+        :root { --bg: #0d1117; --panel: #161b22; --border: #30363d; --accent: #58a6ff; --green: #238636; --text: #c9d1d9; --blue: #1f6feb; --orange: #d29922; }
+        body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace; background: var(--bg); color: var(--text); }
+        .container { max-width: 900px; margin: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px; }
+        h1 { margin: 0; font-size: 20px; color: #fff; }
+        .badge { padding: 3px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; background: var(--green); color: #fff; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .tier-card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 16px; text-align: center; }
+        .tier-card.featured { border-color: var(--accent); }
+        .price { font-size: 24px; font-weight: bold; color: #fff; margin: 8px 0; }
+        .card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 16px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px; }
+        input { width: 100%; padding: 10px; background: #0d1117; border: 1px solid var(--border); border-radius: 4px; color: #fff; box-sizing: border-box; margin-bottom: 12px; font-family: monospace; }
+        button { width: 100%; padding: 11px; background: var(--green); color: #fff; border: none; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 8px; }
+        .btn-blue { background: var(--blue); }
+        .btn-orange { background: var(--orange); color: #000; }
+        .log-box { background: #050505; border: 1px solid var(--border); border-radius: 4px; padding: 12px; height: 100px; overflow-y: auto; font-family: monospace; font-size: 11px; color: #7ee787; white-space: pre-wrap; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+<div class=\"container\">
+    <div class=\"header\">
+        <h1>Garza Global Graviton</h1>
+        <span class=\"badge\">COMMERCIAL API ACTIVE</span>
+    </div>
+
+    <!-- Self-Serve Commercial Pricing -->
+    <div class=\"pricing-grid\">
+        <div class=\"tier-card\">
+            <h3 style=\"margin:0; color:#fff;\">Starter Shard</h3>
+            <div class=\"price\"></div>
+            <p style=\"font-size:12px; color:#8b949e;\">1,000,000 Verified Compute Elements + SHA-256 Audit Trail</p>
+            <button onclick=\"alert('Stripe direct checkout integration ready.')\">Purchase API Key</button>
+        </div>
+        <div class=\"tier-card featured\">
+            <h3 style=\"margin:0; color:var(--accent);\">Pro Cluster</h3>
+            <div class=\"price\"></div>
+            <p style=\"font-size:12px; color:#8b949e;\">5,000,000 Verified Elements + Multi-Core Parallel Routing</p>
+            <button style=\"background:var(--blue);\" onclick=\"alert('Stripe direct checkout integration ready.')\">Purchase API Key</button>
+        </div>
+        <div class=\"tier-card\">
+            <h3 style=\"margin:0; color:#fff;\">Enterprise Mesh</h3>
+            <div class=\"price\"></div>
+            <p style=\"font-size:12px; color:#8b949e;\">20,000,000 Verified Elements + Custom Merkle Proof Receipts</p>
+            <button onclick=\"alert('Stripe direct checkout integration ready.')\">Purchase API Key</button>
+        </div>
+    </div>
+
+    <!-- Active Ingress Console -->
+    <div class=\"card\">
+        <label>Active Client Key</label>
+        <input type=\"text\" id=\"apiKey\" value=\"ggg_live_secret_key_8899\">
+
+        <label>Client Reference ID</label>
+        <input type=\"text\" id=\"clientRef\" value=\"Commercial_Client_01\">
+
+        <label>Workload Elements to Process</label>
+        <input type=\"number\" id=\"elementCount\" value=\"500000\">
+
+        <button onclick=\"submitJob()\">Execute Paid Workload</button>
+        <button class=\"btn-orange\" onclick=\"window.open('/api/v1/ledger/export?format=csv', '_blank')\">Export Cryptographic Audit Receipts (CSV)</button>
+    </div>
+
+    <!-- Live Telemetry Stream -->
+    <div class=\"card\">
+        <label>Live Consensus Ingestion</label>
+        <div id=\"logs\" class=\"log-box\">Cluster ready for commercial workloads...</div>
+    </div>
+</div>
+
+<script>
+    function log(msg) {
+        const box = document.getElementById(\"logs\");
+        const ts = new Date().toISOString().split(\"T\")[1].slice(0, 8);
+        box.innerHTML = [] \n + box.innerHTML;
+    }
+
+    async function submitJob() {
+        const key = document.getElementById(\"apiKey\").value;
+        const payload = {
+            client_ref: document.getElementById(\"clientRef\").value,
+            element_count: parseInt(document.getElementById(\"elementCount\").value),
+            scale_factor: 2.0
+        };
+        log(Ingesting paid job ( elements)...);
+        try {
+            const res = await fetch(\"/api/v1/orders/submit\", {
+                method: \"POST\",
+                headers: { \"Content-Type\": \"application/json\", \"x-api-key\": key },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                log(SETTLED -> Order  | Merkle: ...);
+            } else {
+                log(Error: );
+            }
+        } catch(e) { log(Network Error: ); }
+    }
+</script>
+</body>
+</html>
