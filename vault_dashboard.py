@@ -7,7 +7,9 @@ app = Flask(__name__)
 
 LEDGER_PATH = "sovereign_ledger.json"
 
-# In-memory benchmark baseline for display
+# Live Mercury Payment Link
+MERCURY_PAYMENT_LINK = "https://app.mercury.com/pay/bsb9r5cb0pkhmcpn"
+
 PUBLIC_BENCHMARKS = {
     "queue_latency_ms": 38.5,
     "crypto_seal_ms": 11.2,
@@ -15,7 +17,6 @@ PUBLIC_BENCHMARKS = {
     "verification_state": "Synced & Immutable (SHA-256)"
 }
 
-# Anonymous top jobs ledger showcasing pipeline complexity
 RECENT_EXECUTIONS = [
     {
         "job_id": "0x8F9A...4B12",
@@ -61,8 +62,11 @@ HTML_TEMPLATE = """
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
         th { text-align: left; color: #94a3b8; padding: 10px 8px; border-bottom: 1px solid #334155; }
         td { padding: 10px 8px; border-bottom: 1px solid #1e293b; color: #cbd5e1; }
-        .cta-btn { display: inline-block; background: #0284c7; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; margin-top: 15px; }
+        .actions-group { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .cta-btn { display: inline-block; background: #0284c7; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-align: center; }
         .cta-btn:hover { background: #0369a1; }
+        .cta-btn-alt { display: inline-block; background: #059669; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; text-align: center; }
+        .cta-btn-alt:hover { background: #047857; }
     </style>
 </head>
 <body>
@@ -122,9 +126,12 @@ HTML_TEMPLATE = """
         </div>
 
         <div class="card" style="border-left-color: #10b981;">
-            <h3 style="margin-top: 0;">🔐 Provision Compute Allocation</h3>
-            <p style="color: #94a3b8; font-size: 14px; margin: 0 0 10px 0;">Deploy on-demand worker instances for high-density parameter sweeps, vector routing, or tamper-evident threshold vaulting.</p>
-            <a href="mailto:contact@garzaglobalgraviton.com" class="cta-btn">Request Compute Job</a>
+            <h3 style="margin-top: 0;">🔐 Provision Compute Allocation & Retainers</h3>
+            <p style="color: #94a3b8; font-size: 14px; margin: 0 0 15px 0;">Deploy on-demand worker instances for high-density parameter sweeps, vector routing, or tamper-evident threshold vaulting.</p>
+            <div class="actions-group">
+                <a href="{{ payment_link }}" target="_blank" class="cta-btn-alt">💳 Retain Compute ($250 Deposit via Mercury)</a>
+                <a href="mailto:contact@garzaglobalgraviton.com" class="cta-btn">Submit Custom Spec</a>
+            </div>
         </div>
     </div>
 </body>
@@ -158,7 +165,8 @@ def home():
     return render_template_string(
         HTML_TEMPLATE, 
         benchmarks=PUBLIC_BENCHMARKS, 
-        executions=RECENT_EXECUTIONS
+        executions=RECENT_EXECUTIONS,
+        payment_link=MERCURY_PAYMENT_LINK
     )
 
 @app.route('/healthz')
