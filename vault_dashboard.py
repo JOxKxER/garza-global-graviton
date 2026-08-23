@@ -72,6 +72,7 @@ HTML_TEMPLATE = """
         --muted: #94a3b8;
       }
       * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
       body {
         background-color: var(--bg);
         color: var(--text);
@@ -174,17 +175,32 @@ HTML_TEMPLATE = """
         border: 1px solid #334155;
         border-radius: 6px;
         padding: 14px;
+        cursor: pointer;
+        transition: transform 0.15s ease, border-color 0.15s ease;
+      }
+      .poc-box:hover {
+        border-color: var(--amber);
+        transform: translateY(-2px);
       }
       .poc-header {
         font-weight: bold;
         color: var(--amber);
         font-size: 14px;
         margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       .poc-desc {
         font-size: 12px;
         color: var(--muted);
         line-height: 1.4;
+      }
+      .poc-tap-hint {
+        font-size: 11px;
+        color: var(--accent);
+        margin-top: 8px;
+        font-weight: bold;
       }
 
       /* FAQ Accordion */
@@ -238,7 +254,7 @@ HTML_TEMPLATE = """
       .cta-btn { background: #059669; }
       .cta-btn-alt { background: #334155; }
       
-      /* Floating Chatbot / FAQ Estimator */
+      /* Floating Chatbot */
       #chat-launcher {
         position: fixed;
         bottom: 20px;
@@ -344,22 +360,34 @@ HTML_TEMPLATE = """
             <span class="badge">SYSTEM ONLINE</span>
         </div>
 
-        <!-- Enterprise POC / Free Trial Slices -->
+        <!-- Enterprise POC / Free Trial Slices (Clickable) -->
         <div class="card" style="border-left-color: var(--amber);">
             <div class="card-title">🔬 Enterprise Proof-of-Concept: Free Micro-Workload Slices</div>
-            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Have a large-scale or complex dataset? Request or apply an Enterprise POC Token to run an isolated benchmark slice of your architecture before production deployment:</p>
+            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Click any evaluation slice below to configure your test run in the intake form:</p>
             <div class="poc-grid">
-                <div class="poc-box">
-                    <div class="poc-header">⚡ Compute Sweep Slice (10-Param Run)</div>
+                <div class="poc-box" onclick="selectPocSlice('sweep')">
+                    <div class="poc-header">
+                        <span>⚡ Compute Sweep Slice (10-Param Run)</span>
+                        <span style="font-size: 11px;">&darr;</span>
+                    </div>
                     <div class="poc-desc">Test run a 10-parameter iteration sweep on sample data with multi-threaded vectorization benchmarks.</div>
+                    <div class="poc-tap-hint">Select &amp; Pre-Fill Form &rarr;</div>
                 </div>
-                <div class="poc-box">
-                    <div class="poc-header">🔄 High-Volume ETL Micro-Batch (10k Rows)</div>
+                <div class="poc-box" onclick="selectPocSlice('etl')">
+                    <div class="poc-header">
+                        <span>🔄 High-Volume ETL Micro-Batch (10k Rows)</span>
+                        <span style="font-size: 11px;">&darr;</span>
+                    </div>
                     <div class="poc-desc">Feed raw unformatted batch data (JSON/CSV) to evaluate cleaning accuracy, schema conformity, and throughput.</div>
+                    <div class="poc-tap-hint">Select &amp; Pre-Fill Form &rarr;</div>
                 </div>
-                <div class="poc-box">
-                    <div class="poc-header">🛡️ Cryptographic Vault Receipt Audit</div>
+                <div class="poc-box" onclick="selectPocSlice('vault')">
+                    <div class="poc-header">
+                        <span>🛡️ Cryptographic Vault Receipt Audit</span>
+                        <span style="font-size: 11px;">&darr;</span>
+                    </div>
                     <div class="poc-desc">Process sample records through SHA-256 zero-trust evidence hashing and receive a tamper-proof verification receipt.</div>
+                    <div class="poc-tap-hint">Select &amp; Pre-Fill Form &rarr;</div>
                 </div>
             </div>
         </div>
@@ -438,28 +466,28 @@ HTML_TEMPLATE = """
         </div>
 
         <!-- Token Redemption & Workload Intake Form -->
-        <div class="card" style="border-left-color: var(--green);">
+        <div class="card" id="intake-section" style="border-left-color: var(--green);">
             <div class="card-title">🚀 Workload Intake &amp; Trial / Enterprise POC Redemption</div>
             <form action="/submit" method="POST">
                 <div class="form-group">
                     <label>Full Name or Company</label>
-                    <input type="text" name="name" placeholder="Acme Corp / Jane Doe" required>
+                    <input type="text" name="name" id="input-name" placeholder="Acme Corp / Jane Doe" required>
                 </div>
                 <div class="form-group">
                     <label>Contact Email or Phone</label>
-                    <input type="text" name="email" placeholder="contact@domain.com" required>
+                    <input type="text" name="email" id="input-email" placeholder="contact@domain.com" required>
                 </div>
                 <div class="form-group">
                     <label>Access / POC Token (Optional for Free Trial or Enterprise Slice)</label>
-                    <input type="text" name="token" placeholder="e.g. GGG-ENTERPRISE-POC1 or GGG-TRIAL-8F9A2" style="font-family: monospace; border-color: var(--accent);">
+                    <input type="text" name="token" id="input-token" placeholder="e.g. GGG-ENTERPRISE-POC1 or GGG-TRIAL-8F9A2" style="font-family: monospace; border-color: var(--accent);">
                 </div>
                 <div class="form-group">
                     <label>Project Scope / Sample Data / POC Requirements</label>
-                    <textarea name="scope" rows="3" placeholder="Describe the enterprise architecture, parameter sweep requirements, or paste sample schema/JSON..." required></textarea>
+                    <textarea name="scope" id="input-scope" rows="3" placeholder="Describe the enterprise architecture, parameter sweep requirements, or paste sample schema/JSON..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Select Service / Evaluation Tier</label>
-                    <select name="tier">
+                    <select name="tier" id="select-tier">
                         <option value="Enterprise POC Slice (Free Token Evaluation)">Enterprise POC Slice (Free Token Evaluation)</option>
                         <option value="Standard Trial Run (500 rows free)">Standard Trial Run (500 rows free)</option>
                         <option value="Script Optimization / Bug Fix ($75)">Script Optimization / Bug Fix — $75</option>
@@ -505,6 +533,26 @@ HTML_TEMPLATE = """
         box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
       }
 
+      function selectPocSlice(type) {
+        var tierSelect = document.getElementById('select-tier');
+        var scopeBox = document.getElementById('input-scope');
+        var tokenBox = document.getElementById('input-token');
+        var intakeCard = document.getElementById('intake-section');
+
+        tierSelect.value = "Enterprise POC Slice (Free Token Evaluation)";
+
+        if (type === 'sweep') {
+          scopeBox.value = "Enterprise POC Request: 10-Parameter Compute Sweep Benchmark on sample multi-dimensional dataset.";
+        } else if (type === 'etl') {
+          scopeBox.value = "Enterprise POC Request: High-Volume ETL Micro-Batch (10,000 rows unformatted JSON/CSV cleaning and schema normalization).";
+        } else if (type === 'vault') {
+          scopeBox.value = "Enterprise POC Request: Cryptographic Zero-Trust Vaulting & SHA-256 Ledger Receipt Verification Audit.";
+        }
+
+        intakeCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scopeBox.focus();
+      }
+
       function askBot(topic) {
         var stream = document.getElementById('chat-stream');
         var userMsg = document.createElement('div');
@@ -521,7 +569,7 @@ HTML_TEMPLATE = """
           botMsg.innerHTML = "Estimates depend on data volume and API complexity:<br>• Under 10k rows / 1 API: ~$75-$150<br>• Automated recurring ETL: ~$250<br>• High-volume backtesting: ~$600+.<br>Submit the form above for an exact fixed quote!";
         } else if (topic === 'tokens') {
           userMsg.innerText = "How do trial & POC tokens work?";
-          botMsg.innerHTML = "Trial tokens allow 1 free test run of our data cleaning or parameter sweep engine. Paste your token in the submission box to test!";
+          botMsg.innerHTML = "Trial & POC tokens allow free test runs of our data cleaning or parameter sweep engine. Click any POC box above to auto-configure!";
         } else if (topic === 'payment') {
           userMsg.innerText = "How do I pay?";
           botMsg.innerHTML = "We send secure Stripe checkout links for Credit Card, Apple Pay, and ACH transfers upon scope confirmation.";
