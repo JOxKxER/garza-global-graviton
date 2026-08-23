@@ -1,5 +1,8 @@
 import os
 import json
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from functools import wraps
 from datetime import datetime
 from flask import Flask, jsonify, render_template_string, request, Response
@@ -12,7 +15,12 @@ SUBMISSIONS_PATH = "client_submissions.json"
 # Live Mercury Payment Link
 MERCURY_PAYMENT_LINK = "https://app.mercury.com/pay/bsb9r5cb0pkhmcpn"
 
-# Admin Credentials (Change these if desired)
+# Email Alert Configuration
+ADMIN_NOTIFICATION_EMAIL = "joxkxer@gmail.com"
+GMAIL_SENDER = "joxkxer@gmail.com"
+GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE")
+
+# Admin Dashboard Credentials
 ADMIN_USERNAME = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASS", "Graviton2026!")
 
@@ -277,6 +285,40 @@ ADMIN_TEMPLATE = """
 </html>
 """
 
+def send_admin_email_alert(submission):
+    if GMAIL_APP_PASSWORD == "PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE":
+        return
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = GMAIL_SENDER
+        msg['To'] = ADMIN_NOTIFICATION_EMAIL
+        msg['Subject'] = f"🚀 New Graviton Compute Job: {submission['category']}"
+
+        body = f"""
+New Client Workload Specification Received!
+
+Client Email: {submission['client_email']}
+Category: {submission['category']}
+Scope: {submission['scope']}
+Retainer Status: {submission['retainer_status']}
+Timestamp: {submission['timestamp']}
+
+Requirements / Notes:
+{submission['details']}
+
+View full registry:
+https://garza-global-graviton-1.onrender.com/admin/submissions
+"""
+        msg.attach(MIMEText(body, 'plain'))
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(GMAIL_SENDER, GMAIL_APP_PASSWORD.replace(" ", ""))
+        server.send_message(msg)
+        server.quit()
+    except Exception as e:
+        print(f"[ERROR] Failed to send email notification: {e}")
+
 def check_auth(username, password):
     return username == ADMIN_USERNAME and password == ADMIN_PASSWORD
 
@@ -359,6 +401,9 @@ def submit():
                 json.dump(submissions, f, indent=2)
         except Exception:
             pass
+
+        # Send instant email alert to joxkxer@gmail.com
+        send_admin_email_alert(submission_entry)
 
         return render_template_string(SUBMIT_TEMPLATE, success=True, client_email=client_email)
 
