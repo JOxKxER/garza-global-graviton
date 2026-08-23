@@ -18,7 +18,7 @@ MERCURY_PAYMENT_LINK = "https://app.mercury.com/pay/bsb9r5cb0pkhmcpn"
 # Email Alert Configuration
 ADMIN_NOTIFICATION_EMAIL = "joxkxer@gmail.com"
 GMAIL_SENDER = "joxkxer@gmail.com"
-GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE")
+GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "zveiqbuumcbsbnaj")
 
 # Admin Dashboard Credentials
 ADMIN_USERNAME = os.environ.get("ADMIN_USER", "admin")
@@ -286,16 +286,13 @@ ADMIN_TEMPLATE = """
 """
 
 def send_admin_email_alert(submission):
-    if GMAIL_APP_PASSWORD == "PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE":
-        return
     try:
         msg = MIMEMultipart()
         msg['From'] = GMAIL_SENDER
         msg['To'] = ADMIN_NOTIFICATION_EMAIL
         msg['Subject'] = f"🚀 New Graviton Compute Job: {submission['category']}"
 
-        body = f"""
-New Client Workload Specification Received!
+        body = f"""New Client Workload Specification Received!
 
 Client Email: {submission['client_email']}
 Category: {submission['category']}
@@ -311,11 +308,12 @@ https://garza-global-graviton-1.onrender.com/admin/submissions
 """
         msg.attach(MIMEText(body, 'plain'))
 
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(GMAIL_SENDER, GMAIL_APP_PASSWORD.replace(" ", ""))
-        server.send_message(msg)
-        server.quit()
+        # Direct SSL connection on Port 465 for cloud environment compatibility
+        clean_pwd = GMAIL_APP_PASSWORD.replace(" ", "").strip()
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as server:
+            server.login(GMAIL_SENDER, clean_pwd)
+            server.send_message(msg)
+        print("[SUCCESS] Dispatched email alert to admin inbox via SSL port 465.")
     except Exception as e:
         print(f"[ERROR] Failed to send email notification: {e}")
 
