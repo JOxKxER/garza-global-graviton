@@ -83,7 +83,7 @@ HTML_TEMPLATE = """
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 16px;
-        padding-bottom: 90px; /* Safe space to prevent button blocking */
+        padding-bottom: 120px;
       }
       .container {
         max-width: 950px;
@@ -109,8 +109,8 @@ HTML_TEMPLATE = """
         gap: 14px;
       }
       .header-logo {
-        width: 46px;
-        height: 46px;
+        width: 48px;
+        height: 48px;
         border-radius: 8px;
         border: 1px solid var(--accent);
         object-fit: cover;
@@ -273,41 +273,70 @@ HTML_TEMPLATE = """
       .cta-btn { background: #059669; }
       .cta-btn-alt { background: #334155; }
       
-      /* Sleek Logo Button Anchored to Outer Edge */
+      /* Large Floating Pill Launcher with Logo + FAQ & ESTIMATOR */
       #chat-launcher {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 58px;
-        height: 58px;
-        border-radius: 50%;
-        background: #0f172a;
+        bottom: 24px;
+        right: 24px;
+        height: 64px;
+        padding: 6px 22px 6px 8px;
+        border-radius: 50px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         border: 2px solid var(--accent);
         cursor: pointer;
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), 0 8px 16px rgba(0, 0, 0, 0.7);
+        box-shadow: 0 0 25px rgba(56, 189, 248, 0.45), 0 10px 25px rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        z-index: 10000;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+      #chat-launcher:hover {
+        transform: translateY(-3px) scale(1.03);
+        border-color: #ffffff;
+        box-shadow: 0 0 35px rgba(239, 68, 68, 0.5), 0 0 20px rgba(56, 189, 248, 0.8);
+      }
+      .launcher-img-wrap {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid var(--accent);
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 10000;
-        padding: 0;
-        overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background: #000;
+        flex-shrink: 0;
       }
-      #chat-launcher:hover {
-        transform: scale(1.1);
-        box-shadow: 0 0 25px rgba(239, 68, 68, 0.6), 0 0 15px rgba(56, 189, 248, 0.8);
-      }
-      #chat-launcher img {
+      .launcher-img-wrap img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
+      .launcher-text-wrap {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+      }
+      .launcher-title {
+        color: #ffffff;
+        font-weight: 900;
+        font-size: 15px;
+        letter-spacing: 0.8px;
+        line-height: 1.2;
+      }
+      .launcher-sub {
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
 
       #chat-box {
         position: fixed;
-        bottom: 86px;
-        right: 20px;
-        width: 390px;
+        bottom: 100px;
+        right: 24px;
+        width: 400px;
         max-width: 92vw;
         height: 530px;
         background: var(--panel);
@@ -320,7 +349,7 @@ HTML_TEMPLATE = """
       }
       .chat-header {
         background: #0f172a;
-        padding: 12px 16px;
+        padding: 14px 18px;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
         display: flex;
@@ -387,6 +416,9 @@ HTML_TEMPLATE = """
         .header { flex-direction: column; align-items: flex-start; }
         .actions-group { flex-direction: column; }
         .cta-btn, .cta-btn-alt { width: 100%; flex: 1 1 auto; }
+        #chat-launcher { bottom: 16px; right: 16px; padding: 4px 16px 4px 6px; height: 54px; }
+        .launcher-img-wrap { width: 42px; height: 42px; }
+        .launcher-title { font-size: 13px; }
       }
     </style>
 </head>
@@ -594,18 +626,24 @@ HTML_TEMPLATE = """
         </div>
     </div>
 
-    <!-- Floating Logo Chat Launcher Anchored to Outer Corner -->
+    <!-- Double-Sized High-Visibility Floating Pill Launcher -->
     <button id="chat-launcher" onclick="toggleChat()" title="Open Assistant &amp; Estimator">
-        <img src="/logo.jpg" alt="Garza AI Assistant" onerror="this.parentElement.innerHTML='💬'">
+        <div class="launcher-img-wrap">
+            <img src="/logo.jpg" alt="Logo" onerror="this.parentElement.innerHTML='⚡'">
+        </div>
+        <div class="launcher-text-wrap">
+            <span class="launcher-title">FAQ &amp; ESTIMATOR</span>
+            <span class="launcher-sub">Instant Assistant &rarr;</span>
+        </div>
     </button>
 
     <div id="chat-box">
         <div class="chat-header">
             <div style="display:flex; align-items:center; gap:8px;">
-                <img src="/logo.jpg" alt="Logo" style="width:20px; height:20px; border-radius:4px; object-fit:cover;" onerror="this.style.display='none'">
+                <img src="/logo.jpg" alt="Logo" style="width:22px; height:22px; border-radius:4px; object-fit:cover;" onerror="this.style.display='none'">
                 <span>Garza Global Graviton Assistant</span>
             </div>
-            <span style="cursor:pointer; font-size: 16px;" onclick="toggleChat()">✕</span>
+            <span style="cursor:pointer; font-size: 18px;" onclick="toggleChat()">✕</span>
         </div>
         <div class="chat-body" id="chat-stream">
             <div class="chat-msg msg-bot">Hello! How can I assist you with bookkeeping, calculations, or data engineering today? Tap an option below:</div>
