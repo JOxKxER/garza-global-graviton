@@ -258,42 +258,54 @@ HTML_TEMPLATE = """
       .cta-btn { background: #059669; }
       .cta-btn-alt { background: #334155; }
       
-      /* Floating Chatbot */
+      /* High-Visibility Floating Chat Launcher */
       #chat-launcher {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--accent);
+        bottom: 24px;
+        right: 24px;
+        background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
         color: #0b0f19;
-        font-weight: bold;
-        border: none;
+        font-weight: 800;
+        border: 2px solid #ffffff;
         border-radius: 50px;
-        padding: 12px 20px;
+        padding: 14px 24px;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+        box-shadow: 0 0 25px rgba(56, 189, 248, 0.75), 0 8px 16px rgba(0, 0, 0, 0.6);
         display: flex;
         align-items: center;
-        gap: 8px;
-        z-index: 1000;
+        gap: 10px;
+        z-index: 10000;
+        font-size: 15px;
+        animation: pulse-glow 2.5s infinite;
+        transition: transform 0.2s ease;
       }
+      #chat-launcher:hover {
+        transform: scale(1.05);
+      }
+      @keyframes pulse-glow {
+        0% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
+        50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.9), 0 0 10px #ffffff; }
+        100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
+      }
+
       #chat-box {
         position: fixed;
-        bottom: 75px;
-        right: 20px;
-        width: 340px;
-        max-width: 90vw;
-        height: 440px;
+        bottom: 85px;
+        right: 24px;
+        width: 380px;
+        max-width: 92vw;
+        height: 520px;
         background: var(--panel);
-        border: 1px solid #334155;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        border: 2px solid var(--accent);
+        border-radius: 14px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.85);
         display: none;
         flex-direction: column;
-        z-index: 1000;
+        z-index: 10000;
       }
       .chat-header {
         background: #0f172a;
-        padding: 12px 16px;
+        padding: 14px 18px;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
         display: flex;
@@ -301,11 +313,12 @@ HTML_TEMPLATE = """
         align-items: center;
         border-bottom: 1px solid #334155;
         font-weight: bold;
-        font-size: 13px;
+        font-size: 14px;
+        color: var(--accent);
       }
       .chat-body {
         flex: 1;
-        padding: 12px;
+        padding: 14px;
         overflow-y: auto;
         font-size: 13px;
         display: flex;
@@ -313,28 +326,36 @@ HTML_TEMPLATE = """
         gap: 10px;
       }
       .chat-msg {
-        padding: 8px 12px;
-        border-radius: 6px;
-        line-height: 1.4;
+        padding: 10px 14px;
+        border-radius: 8px;
+        line-height: 1.45;
       }
       .msg-bot { background: #1e293b; color: var(--text); align-self: flex-start; }
       .msg-user { background: #0284c7; color: white; align-self: flex-end; }
       .chat-options {
-        padding: 8px 12px;
+        padding: 10px 12px;
         background: #0f172a;
         border-top: 1px solid #334155;
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
+        max-height: 140px;
+        overflow-y: auto;
       }
       .chat-chip {
         background: #1e293b;
         color: var(--accent);
         border: 1px solid #334155;
         border-radius: 14px;
-        padding: 4px 10px;
+        padding: 5px 11px;
         font-size: 11px;
+        font-weight: 600;
         cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .chat-chip:hover {
+        background: #334155;
+        color: #ffffff;
       }
 
       .footer-links {
@@ -413,13 +434,13 @@ HTML_TEMPLATE = """
                     <div class="tool-tap">Load Template &rarr;</div>
                 </div>
 
-                <div class="tool-box" onclick="selectTool('notary')">
+                <div class="tool-box" onclick="selectTool('trades')">
                     <div>
                         <div class="tool-header">
-                            <span style="color: var(--amber);">📜 Timestamped Document Notary</span>
+                            <span style="color: var(--amber);">🛠️ Maker, CNC &amp; Trade Estimator</span>
                             <span>&darr;</span>
                         </div>
-                        <div class="tool-desc">Seal draft contracts, rental condition photos, or patent concepts with a verifiable cryptographic ledger proof.</div>
+                        <div class="tool-desc">Optimize cut lists, validate G-code toolpaths, format BOM inventories, and stamp completion certificates.</div>
                     </div>
                     <div class="tool-tap">Load Template &rarr;</div>
                 </div>
@@ -554,21 +575,25 @@ HTML_TEMPLATE = """
         </div>
     </div>
 
-    <!-- Floating Support & Estimator Chat Widget -->
-    <button id="chat-launcher" onclick="toggleChat()">💬 Quick FAQ &amp; Estimator</button>
+    <!-- High-Visibility Floating Support & Estimator Chat Widget -->
+    <button id="chat-launcher" onclick="toggleChat()">💬 Instant Assistant &amp; Estimator</button>
     <div id="chat-box">
         <div class="chat-header">
-            <span>Pipeline Assistant</span>
-            <span style="cursor:pointer;" onclick="toggleChat()">✕</span>
+            <span>🚀 Sovereign Pipeline Assistant</span>
+            <span style="cursor:pointer; font-size: 16px;" onclick="toggleChat()">✕</span>
         </div>
         <div class="chat-body" id="chat-stream">
-            <div class="chat-msg msg-bot">Hello! How can I assist you with everyday data tools, media privacy, or pricing today?</div>
+            <div class="chat-msg msg-bot">Hello! How can I assist you with your project today? Tap an option below to explore tools, pricing, or tokens:</div>
         </div>
         <div class="chat-options">
-            <span class="chat-chip" onclick="askBot('everyday')">🧹 Everyday Tools</span>
+            <span class="chat-chip" onclick="askBot('everyday')">🧹 Everyday / Spreadsheets</span>
+            <span class="chat-chip" onclick="askBot('creative')">🎨 Artists &amp; Musicians</span>
+            <span class="chat-chip" onclick="askBot('gaming')">🎮 Gamers &amp; Video</span>
+            <span class="chat-chip" onclick="askBot('trades')">🛠️ Makers &amp; Trades</span>
+            <span class="chat-chip" onclick="askBot('academics')">📚 Writers &amp; Academics</span>
+            <span class="chat-chip" onclick="askBot('estimate')">📊 Cost Estimator</span>
             <span class="chat-chip" onclick="askBot('pricing')">💰 Price List</span>
-            <span class="chat-chip" onclick="askBot('tokens')">🎟️ Trial Tokens</span>
-            <span class="chat-chip" onclick="askBot('payment')">💳 Payment Methods</span>
+            <span class="chat-chip" onclick="askBot('tokens')">🎟️ Free Trial Tokens</span>
         </div>
     </div>
 
@@ -595,9 +620,9 @@ HTML_TEMPLATE = """
         } else if (type === 'spreadsheet') {
           tierSelect.value = "Everyday / Creative Free Trial Run";
           scopeBox.value = "Task: Broken Spreadsheet & Expense Cleaner\\n- Normalize dates, fix negative currency formats, clean vendor names, and deduplicate rows.";
-        } else if (type === 'notary') {
+        } else if (type === 'trades') {
           tierSelect.value = "Everyday / Creative Free Trial Run";
-          scopeBox.value = "Task: Timestamped Document Notary\\n- Hash contract notes or property condition photos to generate a tamper-evident audit receipt.";
+          scopeBox.value = "Task: Maker / CNC / Trade Optimization\\n- Optimize sheet cut lists, validate G-code toolpaths, and structure BOM hardware inventory.";
         } else if (type === 'enterprise') {
           tierSelect.value = "Enterprise POC Slice (Free Token Evaluation)";
           scopeBox.value = "Task: Enterprise 10-Parameter Compute Sweep Slice\\n- Run a multi-threaded parameter iteration benchmark on high-density sample records.";
@@ -616,17 +641,29 @@ HTML_TEMPLATE = """
         botMsg.className = 'chat-msg msg-bot';
 
         if (topic === 'everyday') {
-          userMsg.innerText = "What everyday tools can I run?";
-          botMsg.innerHTML = "You can run:<br>• <b>Privacy Scrub:</b> Strip GPS from photos/videos.<br>• <b>Art/Music Timestamp:</b> Proof of copyright.<br>• <b>Sheet Fixer:</b> Clean messy bank/expense CSVs.<br>• <b>Gaming Logs:</b> Parse match stats & telemetry.<br>Click any card above to try it free!";
+          userMsg.innerText = "What everyday spreadsheet tools can I run?";
+          botMsg.innerHTML = "<b>Everyday Data Tools:</b><br>• <b>Bank & Expense Cleaner:</b> Fix broken dates, negative currency formats, and vendor codes.<br>• <b>Mailing List Deduplicator:</b> Capitalize names, clean duplicate leads, and unify phone formats.<br>• <b>Text Unscrambler:</b> Convert raw text lists into clean columns for Excel/Sheets.";
+        } else if (topic === 'creative') {
+          userMsg.innerText = "What tools are available for Artists and Musicians?";
+          botMsg.innerHTML = "<b>Creative & Audio Tools:</b><br>• <b>Provenance Seal:</b> Issue an immutable SHA-256 proof-of-creation stamp for songs, lyrics, and digital art.<br>• <b>Stem & Audio Transcoding:</b> Batch-convert master WAV files to 320kbps MP3s.<br>• <b>Sample Pack Organizer:</b> Clean sample libraries by BPM and musical key.";
+        } else if (topic === 'gaming') {
+          userMsg.innerText = "What can gamers and video creators do?";
+          botMsg.innerHTML = "<b>Gaming & Video Tools:</b><br>• <b>Clip Compression:</b> Compress heavy OBS/ShadowPlay footage for Discord/web.<br>• <b>Telemetry Parser:</b> Analyze match stats, FPS frame-times, and combat logs.<br>• <b>Screenshot Renamer:</b> Organize raw capture sequences with game tags.";
+        } else if (topic === 'trades') {
+          userMsg.innerText = "What tools are built for makers, CNC, and trade contractors?";
+          botMsg.innerHTML = "<b>Maker & Trades Tools:</b><br>• <b>Cut List Optimizer:</b> Calculate minimal-waste sheet metal/plywood nested cuts.<br>• <b>G-Code Validator:</b> Check rapid plunge limits and feed rates.<br>• <b>BOM Inventory Consolidator:</b> Merge hardware lists from multiple suppliers.<br>• <b>Work Completion Stamps:</b> Cryptographically certify final job photos and sign-offs.";
+        } else if (topic === 'academics') {
+          userMsg.innerText = "What is available for writers, academics, and legal work?";
+          botMsg.innerHTML = "<b>Writing & Academic Tools:</b><br>• <b>Prior-Art Manuscript Seal:</b> Cryptographically timestamp draft chapters or research prior to agent query.<br>• <b>Citation Standardizer:</b> Format references into APA/MLA/Chicago.<br>• <b>Privacy Redaction:</b> Strip SSNs and sensitive client data from agreements.";
+        } else if (topic === 'estimate') {
+          userMsg.innerText = "How are projects estimated?";
+          botMsg.innerHTML = "<b>Instant Project Estimator:</b><br>• <b>Quick Fix / Script Patch:</b> $75 (under 24h)<br>• <b>Full ETL / Media Pipeline:</b> $250 (3-5 days)<br>• <b>Enterprise Compute & Parameter Sweeps:</b> $600+<br>Submit the form above for a fixed-price statement of work!";
         } else if (topic === 'pricing') {
           userMsg.innerText = "What are the standard prices?";
-          botMsg.innerHTML = "Our à la carte pricing:<br>• <b>Script Fix / Tool:</b> $75<br>• <b>ETL Pipeline:</b> $250<br>• <b>Compute & Sweeps:</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
+          botMsg.innerHTML = "Our fixed rates:<br>• <b>Tier 1 (Optimization/Bug Fix):</b> $75<br>• <b>Tier 2 (Automated ETL Pipeline):</b> $250<br>• <b>Tier 3 (Compute & Backtesting):</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
         } else if (topic === 'tokens') {
           userMsg.innerText = "How do trial tokens work?";
-          botMsg.innerHTML = "Trial tokens allow 1 free test run of our data cleaning, media privacy, or cryptographic proof engine. Enter your token in the submission form to execute!";
-        } else if (topic === 'payment') {
-          userMsg.innerText = "How do I pay?";
-          botMsg.innerHTML = "We send secure Stripe checkout links for Credit Card, Apple Pay, and ACH transfers upon scope confirmation.";
+          botMsg.innerHTML = "Enter your trial token into the intake form to execute 1 free data clean, media privacy scrub, or 10-parameter sweep slice with a verified SHA-256 seal!";
         }
 
         stream.appendChild(userMsg);
