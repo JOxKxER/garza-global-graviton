@@ -71,6 +71,7 @@ HTML_TEMPLATE = """
         --amber: #f59e0b;
         --pink: #ec4899;
         --emerald: #10b981;
+        --cyan: #06b6d4;
         --red: #ef4444;
         --text: #e2e8f0;
         --muted: #94a3b8;
@@ -273,7 +274,7 @@ HTML_TEMPLATE = """
       .cta-btn { background: #059669; }
       .cta-btn-alt { background: #334155; }
       
-      /* Large Floating Pill Launcher with Logo + FAQ & ESTIMATOR */
+      /* Large Floating Pill Launcher */
       #chat-launcher {
         position: fixed;
         bottom: 24px;
@@ -336,9 +337,9 @@ HTML_TEMPLATE = """
         position: fixed;
         bottom: 100px;
         right: 24px;
-        width: 400px;
+        width: 410px;
         max-width: 92vw;
-        height: 530px;
+        height: 540px;
         background: var(--panel);
         border: 2px solid var(--accent);
         border-radius: 14px;
@@ -383,7 +384,7 @@ HTML_TEMPLATE = """
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
-        max-height: 150px;
+        max-height: 160px;
         overflow-y: auto;
       }
       .chat-chip {
@@ -429,46 +430,46 @@ HTML_TEMPLATE = """
                 <img src="/logo.jpg" alt="Garza Logo" class="header-logo" onerror="this.style.display='none'">
                 <div>
                     <h1>GARZA GLOBAL GRAVITON</h1>
-                    <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, Small Business Bookkeeping &amp; Sovereign Vaulting</p>
+                    <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, Gaming Engineering &amp; Sovereign Vaulting</p>
                 </div>
             </div>
             <span class="badge">SYSTEM ONLINE</span>
         </div>
 
-        <!-- Everyday, Small Business, Bookkeeping & Creative Free Trial Tools -->
-        <div class="card" style="border-left-color: var(--emerald);">
-            <div class="card-title">✨ Free Trial Workloads: Small Business, Bookkeeping &amp; Creative Tools</div>
-            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Click any business calculation or data task below to load the template into the intake form:</p>
+        <!-- Everyday, PC Gaming, Bookkeeping & Creative Free Trial Tools -->
+        <div class="card" style="border-left-color: var(--cyan);">
+            <div class="card-title">✨ Free Trial Workloads: PC Gaming, Small Business &amp; Creative Tools</div>
+            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Click any gaming, business, or data task below to load the template into the intake form:</p>
             <div class="tool-grid">
+                <div class="tool-box" onclick="selectTool('gaming_telemetry')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--cyan);">🎮 PC Gaming Telemetry &amp; 1% Lows</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Parse CapFrameX/Afterburner/HWiNFO logs, calculate 0.1% &amp; 1% frame-time drops, benchmark stability, and pinpoint micro-stutter bottlenecks.</div>
+                    </div>
+                    <div class="tool-tap">Load Template &rarr;</div>
+                </div>
+
+                <div class="tool-box" onclick="selectTool('gaming_clips')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--pink);">🎬 Clip Compression &amp; Asset Vault</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Compress heavy OBS/ShadowPlay 60FPS recordings down to Discord-ready sizes without crushing quality, and batch-rename screenshots.</div>
+                    </div>
+                    <div class="tool-tap">Load Template &rarr;</div>
+                </div>
+
                 <div class="tool-box" onclick="selectTool('bookkeeping')">
                     <div>
                         <div class="tool-header">
-                            <span style="color: var(--emerald);">💼 Bookkeeping &amp; Bank Ledger Normalizer</span>
+                            <span style="color: var(--emerald);">💼 Bookkeeping &amp; Bank Ledger</span>
                             <span>&darr;</span>
                         </div>
-                        <div class="tool-desc">Reconcile raw bank statement CSVs, fix corrupted negative numbers, standardize vendor names, and categorize expenses.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('cashflow')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--green);">📈 Cash Flow &amp; Margin Calculator</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Calculate gross margins, customer acquisition costs, break-even unit volumes, and multi-month burn rates.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('privacy')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--pink);">🛡️ Photo &amp; Video Privacy Strip</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Wipe hidden GPS location tags, camera serial numbers, and tracking metadata from photos or video clips.</div>
+                        <div class="tool-desc">Reconcile raw bank statement CSVs, fix corrupted negative numbers, standardize merchant names, and categorize expenses.</div>
                     </div>
                     <div class="tool-tap">Load Template &rarr;</div>
                 </div>
@@ -479,7 +480,7 @@ HTML_TEMPLATE = """
                             <span style="color: var(--purple);">🎨 Artist &amp; Music Proof Stamp</span>
                             <span>&darr;</span>
                         </div>
-                        <div class="tool-desc">Generate an immutable SHA-256 cryptographic birth certificate for original songs, digital art, writing, or 3D models.</div>
+                        <div class="tool-desc">Generate an immutable SHA-256 cryptographic birth certificate for original songs, digital art, writing, or 3D game assets.</div>
                     </div>
                     <div class="tool-tap">Load Template &rarr;</div>
                 </div>
@@ -514,25 +515,25 @@ HTML_TEMPLATE = """
             <div class="pricing-grid">
                 <div class="pricing-card">
                     <div>
-                        <div class="pricing-title">Script / Calculation Fix</div>
+                        <div class="pricing-title">Script / Mod / Tool Fix</div>
                         <div class="pricing-price">$75</div>
-                        <div class="pricing-desc">Ledger formatting, profit margin calculators, pandas acceleration, and quick patches.</div>
+                        <div class="pricing-desc">Game log parsers, frame-time analyzers, ledger scripts, pandas vectorization, and bug fixes.</div>
                     </div>
                     <a href="{{ tier1_link }}" target="_blank" class="checkout-btn">Checkout Tier 1 &rarr;</a>
                 </div>
                 <div class="pricing-card">
                     <div>
-                        <div class="pricing-title">Automated ETL &amp; Bookkeeping</div>
+                        <div class="pricing-title">Automated ETL &amp; Pipelines</div>
                         <div class="pricing-price">$250</div>
-                        <div class="pricing-desc">End-to-end bank transaction categorization, multi-source invoice sync, and scheduled ledger structuring.</div>
+                        <div class="pricing-desc">Match stat pipelines, clip transcoding bots, automated bank bookkeeping sync, and scheduled triggers.</div>
                     </div>
                     <a href="{{ tier2_link }}" target="_blank" class="checkout-btn" style="background: #059669;">Checkout Tier 2 &rarr;</a>
                 </div>
                 <div class="pricing-card">
                     <div>
-                        <div class="pricing-title">Compute &amp; Financial Modeling</div>
+                        <div class="pricing-title">Compute &amp; Simulation Crunch</div>
                         <div class="pricing-price">$600+</div>
-                        <div class="pricing-desc">High-density parameter sweeps, predictive financial forecasts, multi-threaded simulation crunches.</div>
+                        <div class="pricing-desc">Game server stress logs, high-density parameter sweeps, predictive financial models, batch simulations.</div>
                     </div>
                     <a href="{{ tier3_link }}" target="_blank" class="checkout-btn">Checkout Tier 3 &rarr;</a>
                 </div>
@@ -543,20 +544,20 @@ HTML_TEMPLATE = """
         <div class="card" style="border-left-color: var(--accent);">
             <div class="card-title">❓ Frequently Asked Questions &amp; Support</div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-question"><span>What services do you offer for PC Gamers &amp; Streamers?</span> <span>+</span></div>
+                <div class="faq-answer">We parse complex hardware/gameplay telemetry (CapFrameX, HWiNFO, match combat logs), calculate 1% and 0.1% low frame-time stutters, automate game clip compression without visual degradation, and format tournament match stats.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
                 <div class="faq-question"><span>Can you clean up and automate our small business bookkeeping?</span> <span>+</span></div>
                 <div class="faq-answer">Yes. We ingest raw, unformatted bank, POS, or credit card CSVs, automatically normalize vendor names, fix split dates/negative numbers, and deliver formula-ready accounting ledgers.</div>
             </div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
                 <div class="faq-question"><span>What can I do with a free trial token?</span> <span>+</span></div>
-                <div class="faq-answer">Trial tokens allow you to process a complete sample dataset (up to 500 rows of bookkeeping/transactions or 1 media file) or test-run a 10-parameter compute sweep slice with an immutable SHA-256 verification receipt at zero cost.</div>
+                <div class="faq-answer">Trial tokens allow you to process a complete sample dataset (up to 500 rows of telemetry/bookkeeping or 1 media file) or test-run a 10-parameter compute sweep slice with an immutable SHA-256 verification receipt at zero cost.</div>
             </div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
                 <div class="faq-question"><span>How does billing and payment work?</span> <span>+</span></div>
                 <div class="faq-answer">We accept all major credit cards, Apple Pay, ACH transfers, and corporate invoicing via Stripe. For custom builds, milestones are approved prior to deployment.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>Need direct technical support?</span> <span>+</span></div>
-                <div class="faq-answer">Submit your question via the form below or chat widget to connect with an engineer.</div>
             </div>
         </div>
 
@@ -586,11 +587,11 @@ HTML_TEMPLATE = """
             <div class="card-title">🚀 Workload Intake &amp; Token Redemption</div>
             <form action="/submit" method="POST">
                 <div class="form-group">
-                    <label>Full Name or Company</label>
-                    <input type="text" name="name" id="input-name" placeholder="Acme Corp / Jane Doe" required>
+                    <label>Full Name or Company / Gamer Tag</label>
+                    <input type="text" name="name" id="input-name" placeholder="Acme Corp / Jane Doe / Tag" required>
                 </div>
                 <div class="form-group">
-                    <label>Contact Email or Phone</label>
+                    <label>Contact Email or Discord</label>
                     <input type="text" name="email" id="input-email" placeholder="contact@domain.com" required>
                 </div>
                 <div class="form-group">
@@ -598,12 +599,13 @@ HTML_TEMPLATE = """
                     <input type="text" name="token" id="input-token" placeholder="e.g. GGG-TRIAL-DEMO1" style="font-family: monospace; border-color: var(--accent);">
                 </div>
                 <div class="form-group">
-                    <label>Project Scope / Paste Data or Financial Calculation Specs</label>
-                    <textarea name="scope" id="input-scope" rows="4" placeholder="Describe what you want to clean, calculate, reconcile, or stamp..." required></textarea>
+                    <label>Project Scope / Paste Telemetry, Log, Data, or Media Specs</label>
+                    <textarea name="scope" id="input-scope" rows="4" placeholder="Describe what you want to clean, analyze, compress, calculate, or stamp..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Select Service / Evaluation Tier</label>
                     <select name="tier" id="select-tier">
+                        <option value="PC Gaming & Telemetry Free Trial Run">PC Gaming &amp; Telemetry Free Trial Run</option>
                         <option value="Small Business & Bookkeeping Free Trial Run">Small Business &amp; Bookkeeping Free Trial Run</option>
                         <option value="Everyday / Creative Free Trial Run">Everyday / Creative Free Trial Run</option>
                         <option value="Enterprise POC Slice (Free Token Evaluation)">Enterprise POC Slice (Free Token Evaluation)</option>
@@ -646,17 +648,17 @@ HTML_TEMPLATE = """
             <span style="cursor:pointer; font-size: 18px;" onclick="toggleChat()">✕</span>
         </div>
         <div class="chat-body" id="chat-stream">
-            <div class="chat-msg msg-bot">Hello! How can I assist you with bookkeeping, calculations, or data engineering today? Tap an option below:</div>
+            <div class="chat-msg msg-bot">Hello! How can I assist you with PC gaming telemetry, bookkeeping, or data engineering today? Tap an option below:</div>
         </div>
         <div class="chat-options">
+            <span class="chat-chip" onclick="askBot('gaming')">🎮 PC Gaming &amp; 1% Lows</span>
+            <span class="chat-chip" onclick="askBot('clips')">🎬 Clip Compression</span>
             <span class="chat-chip" onclick="askBot('bookkeeping')">💼 Bookkeeping &amp; Reconcile</span>
             <span class="chat-chip" onclick="askBot('calculating')">📈 Profit &amp; Margin Math</span>
             <span class="chat-chip" onclick="askBot('trades')">🛠️ Job Quotes &amp; BOM Cost</span>
             <span class="chat-chip" onclick="askBot('creative')">🎨 Creative Provenance</span>
-            <span class="chat-chip" onclick="askBot('gaming')">🎮 Gaming &amp; Privacy</span>
             <span class="chat-chip" onclick="askBot('estimate')">📊 Project Cost Estimator</span>
             <span class="chat-chip" onclick="askBot('pricing')">💰 Price List</span>
-            <span class="chat-chip" onclick="askBot('tokens')">🎟️ Free Trial Tokens</span>
         </div>
     </div>
 
@@ -671,18 +673,18 @@ HTML_TEMPLATE = """
         var scopeBox = document.getElementById('input-scope');
         var intakeCard = document.getElementById('intake-section');
 
-        if (type === 'bookkeeping') {
+        if (type === 'gaming_telemetry') {
+          tierSelect.value = "PC Gaming & Telemetry Free Trial Run";
+          scopeBox.value = "Task: PC Gaming Telemetry & Frame-Time Analysis\\n- Ingest CapFrameX / HWiNFO / Afterburner benchmark logs.\\n- Calculate 0.1% & 1% low frame-time stutters, average FPS, and temperature/bottleneck curves.";
+        } else if (type === 'gaming_clips') {
+          tierSelect.value = "PC Gaming & Telemetry Free Trial Run";
+          scopeBox.value = "Task: Gameplay Clip Compression & Screenshot Organization\\n- Optimize raw OBS/ShadowPlay 60FPS recording for Discord/web sharing.\\n- Batch rename raw screenshot captures with game tags.";
+        } else if (type === 'bookkeeping') {
           tierSelect.value = "Small Business & Bookkeeping Free Trial Run";
           scopeBox.value = "Task: Bookkeeping & Bank Statement Normalizer\\n- Ingest messy bank/POS CSV transactions.\\n- Normalize merchant names, fix negative currency formatting, and categorize expenses.";
-        } else if (type === 'cashflow') {
-          tierSelect.value = "Small Business & Bookkeeping Free Trial Run";
-          scopeBox.value = "Task: Cash Flow & Profit Margin Calculations\\n- Compute break-even unit volumes, gross margins, CAC metrics, and monthly burn rate models.";
-        } else if (type === 'privacy') {
-          tierSelect.value = "Everyday / Creative Free Trial Run";
-          scopeBox.value = "Task: Photo/Video Privacy Scrubber\\n- Remove GPS/EXIF metadata from mobile images/video.\\n- Sanitize filenames and optimize file payload.";
         } else if (type === 'copyright') {
           tierSelect.value = "Everyday / Creative Free Trial Run";
-          scopeBox.value = "Task: Creative Provenance Proof Stamp\\n- Asset Type: Audio master / Illustration / Writing draft.\\n- Request: Issue immutable SHA-256 timestamp seal proving prior creation.";
+          scopeBox.value = "Task: Creative Provenance Proof Stamp\\n- Asset Type: 3D Game Model / Audio Master / Illustration / Writing.\\n- Request: Issue immutable SHA-256 timestamp seal proving prior creation.";
         } else if (type === 'trades') {
           tierSelect.value = "Small Business & Bookkeeping Free Trial Run";
           scopeBox.value = "Task: Job Quote & BOM Cut-List Optimization\\n- Calculate minimum-waste nested sheet layouts, check G-code toolpaths, and structure hardware parts inventory.";
@@ -703,7 +705,13 @@ HTML_TEMPLATE = """
         var botMsg = document.createElement('div');
         botMsg.className = 'chat-msg msg-bot';
 
-        if (topic === 'bookkeeping') {
+        if (topic === 'gaming') {
+          userMsg.innerText = "What PC Gaming services and telemetry tools do you offer?";
+          botMsg.innerHTML = "<b>PC Gaming & Telemetry Engineering:</b><br>• <b>Frame-Time & 1% Low Analysis:</b> Ingest CapFrameX, Afterburner, and PresentMon CSVs to chart micro-stutters and hardware bottlenecks.<br>• <b>Match & Combat Log Parser:</b> Parse MMO/FPS tournament combat logs into structured kill/death and damage timelines.<br>• <b>Game Config & Mod Tuning:</b> Optimize INI settings and memory allocations for maximum stability.";
+        } else if (topic === 'clips') {
+          userMsg.innerText = "How does your clip compression work?";
+          botMsg.innerHTML = "<b>Gamer Clip & Asset Optimizer:</b><br>• <b>Discord-Ready Compression:</b> Shrink 2GB raw OBS/ShadowPlay 60FPS clips under 25MB without ruining clarity.<br>• <b>Screenshot Re-Indexer:</b> Batch rename hundreds of timestamped captures into game-tagged folders.";
+        } else if (topic === 'bookkeeping') {
           userMsg.innerText = "How do your small business bookkeeping services work?";
           botMsg.innerHTML = "<b>Bookkeeping & Ledger Engineering:</b><br>• <b>Bank Statement Cleanup:</b> Strip merchant noise, standardize transaction dates, and correct sign formats (+/-).<br>• <b>Expense Categorization:</b> Map transactions to chart of accounts automatically.<br>• <b>Reconciliation Ready:</b> Output clean CSV/Excel ready for QuickBooks, Xero, or tax prep.";
         } else if (topic === 'calculating') {
@@ -714,19 +722,13 @@ HTML_TEMPLATE = """
           botMsg.innerHTML = "<b>Trades & Shop Math:</b><br>• <b>Cut List Nesting:</b> Optimize 4x8 ft sheet cuts for minimal scrap.<br>• <b>Job Quote Generator:</b> Convert material takeoffs into client-ready line items.<br>• <b>G-Code Toolpath Verification:</b> Check plunge feeds and boundary limits.";
         } else if (topic === 'creative') {
           userMsg.innerText = "What tools are available for Artists and Musicians?";
-          botMsg.innerHTML = "<b>Creative & Audio Tools:</b><br>• <b>Provenance Seal:</b> Issue an immutable SHA-256 proof-of-creation stamp for songs, lyrics, and digital art.<br>• <b>Stem Transcoding:</b> Batch-convert master WAV files to 320kbps MP3s.<br>• <b>Sample Pack Organizer:</b> Clean sample libraries by BPM and musical key.";
-        } else if (topic === 'gaming') {
-          userMsg.innerText = "What can gamers and media creators do?";
-          botMsg.innerHTML = "<b>Gaming & Media Tools:</b><br>• <b>Clip Compression:</b> Compress heavy gameplay footage for Discord/web.<br>• <b>Privacy Scrub:</b> Strip GPS location tags from photos/videos.<br>• <b>Telemetry Parser:</b> Analyze match combat logs and FPS frame-times.";
+          botMsg.innerHTML = "<b>Creative & Audio Tools:</b><br>• <b>Provenance Seal:</b> Issue an immutable SHA-256 proof-of-creation stamp for songs, lyrics, 3D meshes, and digital art.<br>• <b>Stem Transcoding:</b> Batch-convert master WAV files to 320kbps MP3s.<br>• <b>Sample Pack Organizer:</b> Clean sample libraries by BPM and musical key.";
         } else if (topic === 'estimate') {
           userMsg.innerText = "How are projects estimated?";
-          botMsg.innerHTML = "<b>Instant Project Estimator:</b><br>• <b>Quick Calculation / Ledger Fix:</b> $75 (under 24h)<br>• <b>Full ETL & Bookkeeping Pipeline:</b> $250 (3-5 days)<br>• <b>Enterprise Financial Modeling / Sweeps:</b> $600+<br>Submit the form above for a fixed-price statement of work!";
+          botMsg.innerHTML = "<b>Instant Project Estimator:</b><br>• <b>Quick Calculation / Game Script Patch:</b> $75 (under 24h)<br>• <b>Full ETL, Telemetry, or Bookkeeping Pipeline:</b> $250 (3-5 days)<br>• <b>Enterprise Compute & Simulation Crunch:</b> $600+<br>Submit the form above for a fixed-price statement of work!";
         } else if (topic === 'pricing') {
           userMsg.innerText = "What are the standard prices?";
-          botMsg.innerHTML = "Our fixed rates:<br>• <b>Tier 1 (Calculation / Fix):</b> $75<br>• <b>Tier 2 (Automated Pipeline / Bookkeeping):</b> $250<br>• <b>Tier 3 (Modeling & Compute):</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
-        } else if (topic === 'tokens') {
-          userMsg.innerText = "How do trial tokens work?";
-          botMsg.innerHTML = "Enter your trial token into the intake form to execute 1 free data clean, bookkeeping ledger reconcile, or 10-parameter sweep slice with a verified SHA-256 seal!";
+          botMsg.innerHTML = "Our fixed rates:<br>• <b>Tier 1 (Calculation / Fix):</b> $75<br>• <b>Tier 2 (Automated Pipeline / Telemetry):</b> $250<br>• <b>Tier 3 (Modeling & Compute):</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
         }
 
         stream.appendChild(userMsg);
@@ -756,6 +758,7 @@ ADMIN_TEMPLATE = """
         --amber: #f59e0b;
         --pink: #ec4899;
         --emerald: #10b981;
+        --cyan: #06b6d4;
         --red: #f43f5e;
         --orange: #fb923c;
         --text: #e2e8f0;
@@ -865,9 +868,9 @@ ADMIN_TEMPLATE = """
 
         <div class="card" style="border-left: 4px solid var(--purple);">
             <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <span style="font-weight: bold; color: white;">🎟️ Mint Standard, Business &amp; Enterprise Tokens</span>
+                <span style="font-weight: bold; color: white;">🎟️ Mint Standard, Gaming, Business &amp; Enterprise Tokens</span>
                 <div class="mint-controls">
-                    <button type="button" class="mint-btn" onclick="generateToken('standard')">+ Mint Business/Trial Token</button>
+                    <button type="button" class="mint-btn" onclick="generateToken('standard')">+ Mint Gaming/Trial Token</button>
                     <button type="button" class="mint-btn-enterprise" onclick="generateToken('enterprise')">+ Mint Enterprise POC Slice</button>
                 </div>
             </div>
@@ -1135,9 +1138,9 @@ def mint_token():
         sample_limit = "10-parameter sweep slice & cryptographic ledger audit"
     else:
         new_token = f"GGG-TRIAL-{secrets.token_hex(3).upper()}"
-        tier = "Small Business / Bookkeeping Trial"
+        tier = "PC Gaming & Telemetry Trial"
         max_rows = 500
-        sample_limit = "500 rows bookkeeping reconciliation / margin calculation"
+        sample_limit = "500 rows telemetry frame-times / 1 video clip compression"
 
     tokens[new_token] = {
         "status": "ACTIVE",
@@ -1209,7 +1212,7 @@ def submit_workload():
         "name": data.get("name", "Anonymous Prospect"),
         "contact": data.get("email", data.get("contact", "N/A")),
         "token": token_input if token_input else "None",
-        "scope": data.get("scope", data.get("requirements", "Small business / Bookkeeping inquiry")),
+        "scope": data.get("scope", data.get("requirements", "PC Gaming & Telemetry inquiry")),
         "tier": data.get("tier", data.get("budget", "Custom Project")),
         "receipt_hash": receipt_hash
     }
