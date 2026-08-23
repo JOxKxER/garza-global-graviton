@@ -3,13 +3,15 @@ import json
 import secrets
 import hashlib
 from datetime import datetime
-from flask import Flask, render_template_string, request, jsonify, redirect
+from flask import Flask, render_template_string, request, jsonify, redirect, send_file
 
 app = Flask(__name__)
 
 # File storage paths
-SUBMISSIONS_FILE = os.path.join(os.path.dirname(__file__), "client_submissions.json")
-TOKENS_FILE = os.path.join(os.path.dirname(__file__), "valid_tokens.json")
+BASE_DIR = os.path.dirname(__file__)
+SUBMISSIONS_FILE = os.path.join(BASE_DIR, "client_submissions.json")
+TOKENS_FILE = os.path.join(BASE_DIR, "valid_tokens.json")
+LOGO_FILE = os.path.join(BASE_DIR, "logo.jpg")
 
 # Pre-configured Stripe Payment Links
 STRIPE_TIER1_LINK = "https://buy.stripe.com/test_eVaeV077j8Fp9sA8ww"  # $75
@@ -32,7 +34,6 @@ def save_json(filepath, data):
     except Exception as e:
         print(f"Error writing {filepath}: {e}")
 
-# Seed default trial tokens if none exist
 def init_tokens():
     tokens = load_json(TOKENS_FILE, {})
     if not tokens:
@@ -70,6 +71,7 @@ HTML_TEMPLATE = """
         --amber: #f59e0b;
         --pink: #ec4899;
         --emerald: #10b981;
+        --red: #ef4444;
         --text: #e2e8f0;
         --muted: #94a3b8;
       }
@@ -81,6 +83,7 @@ HTML_TEMPLATE = """
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 16px;
+        padding-bottom: 90px; /* Safe space to prevent button blocking */
       }
       .container {
         max-width: 950px;
@@ -97,8 +100,20 @@ HTML_TEMPLATE = """
         align-items: center;
         border-bottom: 1px solid #334155;
         padding-bottom: 15px;
-        gap: 12px;
+        gap: 16px;
         flex-wrap: wrap;
+      }
+      .brand-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .header-logo {
+        width: 46px;
+        height: 46px;
+        border-radius: 8px;
+        border: 1px solid var(--accent);
+        object-fit: cover;
       }
       h1 { color: var(--accent); margin: 0; font-size: 22px; }
       .badge {
@@ -258,43 +273,43 @@ HTML_TEMPLATE = """
       .cta-btn { background: #059669; }
       .cta-btn-alt { background: #334155; }
       
-      /* High-Visibility Floating Chat Launcher */
+      /* Sleek Logo Button Anchored to Outer Edge */
       #chat-launcher {
         position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
-        color: #0b0f19;
-        font-weight: 800;
-        border: 2px solid #ffffff;
-        border-radius: 50px;
-        padding: 14px 24px;
+        bottom: 20px;
+        right: 20px;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #0f172a;
+        border: 2px solid var(--accent);
         cursor: pointer;
-        box-shadow: 0 0 25px rgba(56, 189, 248, 0.75), 0 8px 16px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), 0 8px 16px rgba(0, 0, 0, 0.7);
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: center;
         z-index: 10000;
-        font-size: 15px;
-        animation: pulse-glow 2.5s infinite;
-        transition: transform 0.2s ease;
+        padding: 0;
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
       #chat-launcher:hover {
-        transform: scale(1.05);
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.6), 0 0 15px rgba(56, 189, 248, 0.8);
       }
-      @keyframes pulse-glow {
-        0% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
-        50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.9), 0 0 10px #ffffff; }
-        100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
+      #chat-launcher img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
 
       #chat-box {
         position: fixed;
-        bottom: 85px;
-        right: 24px;
+        bottom: 86px;
+        right: 20px;
         width: 390px;
         max-width: 92vw;
-        height: 540px;
+        height: 530px;
         background: var(--panel);
         border: 2px solid var(--accent);
         border-radius: 14px;
@@ -305,7 +320,7 @@ HTML_TEMPLATE = """
       }
       .chat-header {
         background: #0f172a;
-        padding: 14px 18px;
+        padding: 12px 16px;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
         display: flex;
@@ -339,7 +354,7 @@ HTML_TEMPLATE = """
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
-        max-height: 160px;
+        max-height: 150px;
         overflow-y: auto;
       }
       .chat-chip {
@@ -378,9 +393,12 @@ HTML_TEMPLATE = """
 <body>
     <div class="container">
         <div class="header">
-            <div>
-                <h1>GARZA GLOBAL GRAVITON</h1>
-                <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, Small Business Bookkeeping &amp; Sovereign Vaulting</p>
+            <div class="brand-title-wrap">
+                <img src="/logo.jpg" alt="Garza Logo" class="header-logo" onerror="this.style.display='none'">
+                <div>
+                    <h1>GARZA GLOBAL GRAVITON</h1>
+                    <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, Small Business Bookkeeping &amp; Sovereign Vaulting</p>
+                </div>
             </div>
             <span class="badge">SYSTEM ONLINE</span>
         </div>
@@ -576,19 +594,25 @@ HTML_TEMPLATE = """
         </div>
     </div>
 
-    <!-- High-Visibility Floating Support & Estimator Chat Widget -->
-    <button id="chat-launcher" onclick="toggleChat()">💬 Instant Assistant &amp; Estimator</button>
+    <!-- Floating Logo Chat Launcher Anchored to Outer Corner -->
+    <button id="chat-launcher" onclick="toggleChat()" title="Open Assistant &amp; Estimator">
+        <img src="/logo.jpg" alt="Garza AI Assistant" onerror="this.parentElement.innerHTML='💬'">
+    </button>
+
     <div id="chat-box">
         <div class="chat-header">
-            <span>🚀 Sovereign Pipeline Assistant</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img src="/logo.jpg" alt="Logo" style="width:20px; height:20px; border-radius:4px; object-fit:cover;" onerror="this.style.display='none'">
+                <span>Garza Global Graviton Assistant</span>
+            </div>
             <span style="cursor:pointer; font-size: 16px;" onclick="toggleChat()">✕</span>
         </div>
         <div class="chat-body" id="chat-stream">
-            <div class="chat-msg msg-bot">Hello! How can I assist you with your business bookkeeping, calculations, or data engineering today? Tap an option below:</div>
+            <div class="chat-msg msg-bot">Hello! How can I assist you with bookkeeping, calculations, or data engineering today? Tap an option below:</div>
         </div>
         <div class="chat-options">
             <span class="chat-chip" onclick="askBot('bookkeeping')">💼 Bookkeeping &amp; Reconcile</span>
-            <span class="chat-chip" onclick="askBot('calculating')">📈 Profit &amp; Cash Flow Math</span>
+            <span class="chat-chip" onclick="askBot('calculating')">📈 Profit &amp; Margin Math</span>
             <span class="chat-chip" onclick="askBot('trades')">🛠️ Job Quotes &amp; BOM Cost</span>
             <span class="chat-chip" onclick="askBot('creative')">🎨 Creative Provenance</span>
             <span class="chat-chip" onclick="askBot('gaming')">🎮 Gaming &amp; Privacy</span>
@@ -1037,6 +1061,12 @@ RECEIPT_TEMPLATE = """
 </body>
 </html>
 """
+
+@app.route("/logo.jpg")
+def serve_logo():
+    if os.path.exists(LOGO_FILE):
+        return send_file(LOGO_FILE, mimetype="image/jpeg")
+    return ("", 404)
 
 @app.route("/")
 def dashboard():
