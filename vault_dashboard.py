@@ -205,6 +205,73 @@ SUBMIT_TEMPLATE = """
 </html>
 """
 
+ADMIN_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registry | Garza Global Graviton</title>
+    <style>
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 40px; }
+        .container { max-width: 1050px; margin: 0 auto; background: #131b2e; border: 1px solid #1e293b; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h1 { color: #f59e0b; margin-top: 0; font-size: 22px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th { text-align: left; color: #94a3b8; padding: 10px 8px; border-bottom: 1px solid #334155; }
+        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; color: #cbd5e1; vertical-align: top; }
+        .badge-paid { background: #065f46; color: #34d399; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .badge-pending { background: #78350f; color: #fcd34d; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .back-link { display: inline-block; margin-top: 20px; color: #64748b; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Sovereign Client Submissions Registry</h1>
+        <p style="color: #94a3b8; font-size: 14px;">Total Logged Inquiries: <strong>{{ submissions|length }}</strong></p>
+
+        {% if submissions %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Client Email</th>
+                    <th>Category</th>
+                    <th>Scope</th>
+                    <th>Retainer Status</th>
+                    <th>Requirements / Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in submissions|reverse %}
+                <tr>
+                    <td style="font-family: monospace; color: #94a3b8;">{{ item.timestamp[:19] }}</td>
+                    <td style="font-weight: bold; color: #38bdf8;">{{ item.client_email }}</td>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.scope }}</td>
+                    <td>
+                        {% if "Paid" in item.retainer_status %}
+                            <span class="badge-paid">{{ item.retainer_status }}</span>
+                        {% else %}
+                            <span class="badge-pending">{{ item.retainer_status }}</span>
+                        {% endif %}
+                    </td>
+                    <td style="max-width: 300px; word-wrap: break-word;">{{ item.details }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="color: #64748b; font-style: italic;">No client workload specs logged yet.</p>
+        {% endif %}
+
+        <br>
+        <a href="/" class="back-link">← Return to Public Dashboard</a>
+    </div>
+</body>
+</html>
+"""
+
 def log_dashboard_event():
     ledger_data = []
     if os.path.exists(LEDGER_PATH):
@@ -273,6 +340,17 @@ def submit():
         return render_template_string(SUBMIT_TEMPLATE, success=True, client_email=client_email)
 
     return render_template_string(SUBMIT_TEMPLATE, success=False)
+
+@app.route('/admin/submissions')
+def admin_submissions():
+    submissions = []
+    if os.path.exists(SUBMISSIONS_PATH):
+        try:
+            with open(SUBMISSIONS_PATH, "r") as f:
+                submissions = json.load(f)
+        except Exception:
+            submissions = []
+    return render_template_string(ADMIN_TEMPLATE, submissions=submissions)
 
 @app.route('/healthz')
 def health():
