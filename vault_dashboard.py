@@ -52,7 +52,7 @@ def check_exploit_policy(text, tier):
     text_lower = text.lower()
     for pat in PUBLIC_EXPLOIT_PATTERNS:
         if re.search(pat, text_lower):
-            return False, "REJECTED - Exploitation Policy Violation: Exploitation tools targeting public multiplayer games are strictly prohibited."
+            return False, "REJECTED - Exploitation Policy Violation: Tools targeting public competitive multiplayer are prohibited."
     return True, "Verified Fair-Play Compliant"
 
 def init_defaults():
@@ -592,6 +592,8 @@ HTML_TEMPLATE = """
         justify-content: space-between;
         font-size: 12px;
         color: var(--muted);
+        flex-wrap: wrap;
+        gap: 10px;
       }
       .footer-links a { color: var(--muted); text-decoration: none; }
       .footer-links a:hover { color: var(--accent); }
@@ -625,10 +627,10 @@ HTML_TEMPLATE = """
             <span class="fairplay-icon">⚠️</span>
             <div class="fairplay-content">
                 <div class="fairplay-title">Gaming Integrity &amp; Dual-Zone Fair-Play Warning Policy</div>
-                Garza Global Graviton enforces strict cryptographic integrity and fair-play boundaries across all compute pipelines:
+                Garza Global Graviton enforces strict cryptographic integrity and legal fair-play boundaries across all compute pipelines:
                 <div class="warning-tag-box">
                     <div><span>✓ PERMITTED (Private Sovereign Zone):</span> Custom server scripting, host physics mods, house rules, offline 3D game asset creation, and private squad P2P mesh LANs.</div>
-                    <div style="margin-top:4px;"><span class="prohibited">✕ STRICTLY PROHIBITED (Public Zone):</span> Memory injection (DLL hooks), aimbots, recoil macros, ESP overlays, or bypass tools targeting public competitive matchmaking games. All incoming public requests are automatically filtered and rejected.</div>
+                    <div style="margin-top:4px;"><span class="prohibited">✕ STRICTLY PROHIBITED (Public Zone):</span> Memory injection (DLL hooks), aimbots, recoil macros, ESP overlays, or bypass tools targeting public competitive matchmaking games. All incoming public requests are automatically filtered, rejected, and logged.</div>
                 </div>
             </div>
         </div>
@@ -822,8 +824,8 @@ HTML_TEMPLATE = """
                 <div class="faq-answer">We run your prompts and specifications through high-memory compute clusters to output 2K PBR game textures, low-poly 3D models, or standalone automation bots, all stamped with immutable SHA-256 copyright seals.</div>
             </div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>What can I do with a free trial token?</span> <span>+</span></div>
-                <div class="faq-answer">Trial tokens allow you to process a complete sample dataset (up to 500 rows of telemetry/bookkeeping, 1 AI asset generation, or 1 server setup) with an immutable SHA-256 verification receipt at zero cost.</div>
+                <div class="faq-question"><span>What are your Terms of Service and Liability limits?</span> <span>+</span></div>
+                <div class="faq-answer">All services are provided on an 'as-is' basis. We reserve the full right to refuse or revoke service for Terms of Service violations. View our full legal terms via the footer link.</div>
             </div>
         </div>
 
@@ -887,12 +889,18 @@ HTML_TEMPLATE = """
                     <button type="submit" class="cta-btn">Submit Workload Request</button>
                     <a href="https://github.com/JOxKxER/garza-global-graviton" target="_blank" class="cta-btn-alt">GitHub Architecture Repository</a>
                 </div>
+                <p style="font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center;">
+                    By submitting, you agree to our <a href="/terms" style="color: var(--accent);">Terms of Service</a> &amp; Dual-Zone Fair-Play Policies.
+                </p>
             </form>
         </div>
 
         <div class="footer-links">
             <span>&copy; Garza Global Graviton LLC</span>
-            <a href="/admin/submissions">Operator Ledger &amp; Token Mint</a>
+            <div>
+                <a href="/terms" style="margin-right: 14px;">Terms of Service &amp; Legal Liability</a>
+                <a href="/admin/submissions">Operator Ledger &amp; Token Mint</a>
+            </div>
         </div>
     </div>
 
@@ -1004,6 +1012,104 @@ HTML_TEMPLATE = """
         stream.scrollTop = stream.scrollHeight;
       }
     </script>
+</body>
+</html>
+"""
+
+TERMS_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service & Legal Disclaimer | Garza Global Graviton</title>
+    <style>
+      :root {
+        --bg: #0b0f19;
+        --panel: #131b2e;
+        --border: #1e293b;
+        --accent: #38bdf8;
+        --green: #34d399;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+      }
+      * { box-sizing: border-box; }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 24px 16px;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 860px;
+        margin: 0 auto;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+      h1 { color: var(--accent); font-size: 24px; margin-top: 0; border-bottom: 1px solid #334155; padding-bottom: 12px; }
+      h2 { color: #f8fafc; font-size: 16px; margin-top: 24px; margin-bottom: 8px; border-left: 3px solid var(--accent); padding-left: 10px; }
+      p, li { font-size: 13px; color: #cbd5e1; }
+      ul { padding-left: 20px; }
+      .callout {
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin: 16px 0;
+        font-size: 12px;
+      }
+      .back-btn {
+        display: inline-block;
+        margin-top: 24px;
+        background: #0284c7;
+        color: white;
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 13px;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Terms of Service &amp; Legal Operating Agreement</h1>
+        <p style="color: var(--muted); font-size: 12px;">Effective Date: August 24, 2026 | Garza Global Graviton LLC | State of Illinois, USA</p>
+
+        <h2>1. Acceptance of Operating Terms</h2>
+        <p>By accessing this site, executing workloads, redeeming sovereign trial tokens, or purchasing services through Garza Global Graviton LLC ("Company", "we", "us"), you agree to be bound by these Terms of Service. If you do not agree, you must immediately discontinue use of all pipelines, tools, and servers.</p>
+
+        <h2>2. Scope of Services &amp; Dual-Zone Gaming Policy</h2>
+        <p>Garza Global Graviton LLC provides high-performance data engineering, cryptographic proof stamping, ad-hoc mesh networking, custom server provisioning, and AI asset creation tools.</p>
+        <div class="callout">
+            <b>• Private Sovereign Zone (Permitted):</b> Hosts running private dedicated servers, local co-op LANs, or private matches possess full freedom to configure custom game physics, test experimental mods, and enforce house rules.<br><br>
+            <b>• Public Competitive Gaming (Strictly Prohibited):</b> Our pipelines strictly prohibit any script, program, or AI generation designed to manipulate public multiplayer games (e.g. memory injection, aimbots, triggerbots, recoil compensation macros, or anti-cheat bypass tools). All incoming public requests are automatically filtered and rejected.
+        </div>
+
+        <h2>3. Unilateral Right to Refuse or Revoke Service</h2>
+        <p>Garza Global Graviton LLC reserves the absolute, unilateral right to refuse service, terminate active execution instances, revoke access tokens, or ban any user/IP address at our sole discretion, without prior notice, for any violation of our Fair-Play Policies, submission of malicious binaries, or attempted infrastructure abuse.</p>
+
+        <h2>4. "As-Is" Provision &amp; Warranty Disclaimer</h2>
+        <p>All software, calculations, server configurations, AI assets, and cryptographic verification receipts are provided on an <b>"AS IS"</b> and <b>"AS AVAILABLE"</b> basis. We make no warranty that services will be uninterrupted, error-free, or meet specific third-party platform terms outside our direct control.</p>
+
+        <h2>5. Absolute Limitation of Liability</h2>
+        <p>To the maximum extent permitted by applicable law, Garza Global Graviton LLC, its members, and contractors shall not be liable for any indirect, incidental, special, consequential, or punitive damages (including loss of profits, data loss, gaming account bans, business interruption, or hardware failure) arising out of your use of our software or servers. Our total aggregate liability for any claim shall not exceed the actual amount paid by you for the specific service in dispute.</p>
+
+        <h2>6. Intellectual Property &amp; Cryptographic Evidence</h2>
+        <p>Clients retain full ownership of their raw submitted datasets and prompts. Cryptographic SHA-256 receipts issued by the pipeline serve as deterministic mathematical proofs of existence. All proprietary pipeline harnesses, token mint engines, and site architectures remain the intellectual property of Garza Global Graviton LLC.</p>
+
+        <h2>7. Governing Law</h2>
+        <p>These terms shall be governed by and construed in accordance with the laws of the <b>State of Illinois</b>, United States, without regard to conflict of law provisions.</p>
+
+        <a href="/" class="back-btn">&larr; Return to Live Dashboard</a>
+    </div>
 </body>
 </html>
 """
@@ -1388,6 +1494,10 @@ def serve_logo():
     if os.path.exists(LOGO_FILE):
         return send_file(LOGO_FILE, mimetype="image/jpeg")
     return ("", 404)
+
+@app.route("/terms")
+def terms_page():
+    return render_template_string(TERMS_TEMPLATE)
 
 @app.route("/")
 def dashboard():
