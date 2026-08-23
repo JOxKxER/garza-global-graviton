@@ -1,19 +1,20 @@
 import os
 import json
 import secrets
+import hashlib
 from datetime import datetime
-from flask import Flask, render_template_string, request, jsonify
+from flask import Flask, render_template_string, request, jsonify, redirect
 
 app = Flask(__name__)
 
-# File paths
+# File storage paths
 SUBMISSIONS_FILE = os.path.join(os.path.dirname(__file__), "client_submissions.json")
 TOKENS_FILE = os.path.join(os.path.dirname(__file__), "valid_tokens.json")
 
-# Pre-configured Stripe Payment Links (replace with your live links when ready)
-STRIPE_TIER1_LINK = "https://buy.stripe.com/test_eVaeV077j8Fp9sA8ww" # $75
-STRIPE_TIER2_LINK = "https://buy.stripe.com/test_7sIeV08bncVB34ccMN" # $250
-STRIPE_TIER3_LINK = "https://buy.stripe.com/test_3csbIQ63ff3J34c8wx" # $600
+# Pre-configured Stripe Payment Links
+STRIPE_TIER1_LINK = "https://buy.stripe.com/test_eVaeV077j8Fp9sA8ww"  # $75
+STRIPE_TIER2_LINK = "https://buy.stripe.com/test_7sIeV08bncVB34ccMN"  # $250
+STRIPE_TIER3_LINK = "https://buy.stripe.com/test_3csbIQ63ff3J34c8wx"  # $600
 
 def load_json(filepath, default_val):
     if not os.path.exists(filepath):
@@ -47,6 +48,14 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18405631729"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-18405631729');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garza Global Graviton | Sovereign Vault & Compute Pipeline</title>
@@ -568,7 +577,7 @@ def mint_token():
         "created": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
     }
     save_json(TOKENS_FILE, tokens)
-    return jsonify({"status": "minted", "token": new_token})
+    return redirect("/admin/submissions")
 
 @app.route("/submit", methods=["POST"])
 def submit_workload():
@@ -588,8 +597,6 @@ def submit_workload():
         else:
             token_status = "Invalid Token"
 
-    # Generate cryptographic SHA-256 receipt for the submitted payload
-    import hashlib
     now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
     receipt_seed = f"{data.get('name')}-{data.get('email')}-{now_str}-{token_input}"
     receipt_hash = hashlib.sha256(receipt_seed.encode("utf-8")).hexdigest()
