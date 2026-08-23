@@ -131,7 +131,6 @@ HTML_TEMPLATE = """
       .metric-title { color: var(--muted); font-size: 14px; }
       .metric-value { font-weight: bold; color: #f8fafc; font-family: monospace; font-size: 14px; }
       
-      /* Pricing Cards */
       .pricing-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -163,7 +162,6 @@ HTML_TEMPLATE = """
       }
       .checkout-btn:hover { background: #0369a1; }
 
-      /* Form inputs */
       .form-group { margin-bottom: 14px; }
       label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
       input, select, textarea {
@@ -219,7 +217,6 @@ HTML_TEMPLATE = """
             <span class="badge">SYSTEM ONLINE</span>
         </div>
 
-        <!-- À La Carte Pricing Matrix & Direct Checkout -->
         <div class="card" style="border-left-color: var(--purple);">
             <div class="card-title">📦 À La Carte Pipeline Services &amp; Instant Checkout</div>
             <div class="pricing-grid">
@@ -250,7 +247,6 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
-        <!-- Live Infrastructure Benchmarks -->
         <div class="card">
             <div class="card-title">⚡ Live Infrastructure Benchmarks</div>
             <div class="metric">
@@ -271,7 +267,6 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
-        <!-- Token Redemption & Workload Intake Form -->
         <div class="card" style="border-left-color: var(--green);">
             <div class="card-title">🚀 Workload Intake &amp; Trial Token Redemption</div>
             <form action="/submit" method="POST">
@@ -396,19 +391,16 @@ ADMIN_TEMPLATE = """
     <div class="container">
         <div class="header">
             <h1>Operator Control: Submissions &amp; Token Mint</h1>
-            <span style="color: var(--green); font-weight: bold; font-family: monospace;">Leads: {{ submissions|length }} | Tokens: {{ tokens|length }}</span>
+            <span style="color: var(--green); font-weight: bold; font-family: monospace;">Leads: {{ submissions|length }} | Tokens: <span id="token-count">{{ tokens|length }}</span></span>
         </div>
 
-        <!-- Token Mint Box -->
         <div class="card" style="border-left: 4px solid var(--purple);">
             <div style="display:flex; justify-content: space-between; align-items: center;">
                 <span style="font-weight: bold; color: white;">🎟️ Mint New Prospect Trial Token</span>
-                <form action="/admin/mint_token" method="POST" style="margin:0;">
-                    <button type="submit" class="mint-btn">+ Generate New Trial Token</button>
-                </form>
+                <button type="button" class="mint-btn" onclick="generateToken()">+ Generate New Trial Token</button>
             </div>
             <div class="table-wrapper">
-                <table>
+                <table id="token-table">
                     <thead>
                         <tr>
                             <th>Token Key</th>
@@ -417,7 +409,7 @@ ADMIN_TEMPLATE = """
                             <th>Created Date</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="token-tbody">
                         {% for key, val in tokens.items() %}
                         <tr>
                             <td style="font-family: monospace; color: var(--accent); font-weight: bold;">{{ key }}</td>
@@ -431,7 +423,6 @@ ADMIN_TEMPLATE = """
             </div>
         </div>
 
-        <!-- Inbound Submissions Table -->
         <div class="card" style="border-left: 4px solid var(--green);">
             <span style="font-weight: bold; color: white;">📥 Inbound Client Pipeline Requests</span>
             <div class="table-wrapper">
@@ -466,6 +457,31 @@ ADMIN_TEMPLATE = """
 
         <a href="/" class="back-link">&larr; Return to Live Dashboard</a>
     </div>
+
+    <script>
+      async function generateToken() {
+        try {
+          const res = await fetch('/admin/mint_token', { method: 'POST' });
+          const data = await res.json();
+          if (data.status === 'minted') {
+            const tbody = document.getElementById('token-tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td style="font-family: monospace; color: var(--accent); font-weight: bold;">${data.token}</td>
+              <td style="color: var(--green); font-weight: bold;">ACTIVE</td>
+              <td>${data.tier} (${data.max_rows} max rows)</td>
+              <td>${data.created}</td>
+            `;
+            tbody.appendChild(row);
+            
+            const countSpan = document.getElementById('token-count');
+            countSpan.innerText = parseInt(countSpan.innerText || '0') + 1;
+          }
+        } catch(e) {
+          console.error("Token minting error:", e);
+        }
+      }
+    </script>
 </body>
 </html>
 """
@@ -570,21 +586,27 @@ def admin_submissions():
 def mint_token():
     tokens = load_json(TOKENS_FILE, {})
     new_token = f"GGG-TRIAL-{secrets.token_hex(3).upper()}"
+    created_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
     tokens[new_token] = {
         "status": "ACTIVE",
         "tier": "Trial Run",
         "max_rows": 500,
-        "created": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        "created": created_at
     }
     save_json(TOKENS_FILE, tokens)
-    return redirect("/admin/submissions")
+    return jsonify({
+        "status": "minted",
+        "token": new_token,
+        "tier": "Trial Run",
+        "max_rows": 500,
+        "created": created_at
+    })
 
 @app.route("/submit", methods=["POST"])
 def submit_workload():
     data = request.form.to_dict() if request.form else (request.get_json(silent=True) or {})
     token_input = data.get("token", "").strip().upper()
     
-    # Token validation
     tokens = load_json(TOKENS_FILE, {})
     token_status = "No Token Applied"
     if token_input:
