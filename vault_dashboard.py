@@ -1,7 +1,8 @@
 import os
 import json
+from functools import wraps
 from datetime import datetime
-from flask import Flask, jsonify, render_template_string, request, redirect, url_for
+from flask import Flask, jsonify, render_template_string, request, Response
 
 app = Flask(__name__)
 
@@ -10,6 +11,10 @@ SUBMISSIONS_PATH = "client_submissions.json"
 
 # Live Mercury Payment Link
 MERCURY_PAYMENT_LINK = "https://app.mercury.com/pay/bsb9r5cb0pkhmcpn"
+
+# Admin Credentials (Change these if desired)
+ADMIN_USERNAME = os.environ.get("ADMIN_USER", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASS", "Graviton2026!")
 
 PUBLIC_BENCHMARKS = {
     "queue_latency_ms": 38.5,
@@ -272,6 +277,24 @@ ADMIN_TEMPLATE = """
 </html>
 """
 
+def check_auth(username, password):
+    return username == ADMIN_USERNAME and password == ADMIN_PASSWORD
+
+def authenticate():
+    return Response(
+        'Authentication required to access sovereign registry.\n', 401,
+        {'WWW-Authenticate': 'Basic realm="Login Required"'}
+    )
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 def log_dashboard_event():
     ledger_data = []
     if os.path.exists(LEDGER_PATH):
@@ -342,6 +365,7 @@ def submit():
     return render_template_string(SUBMIT_TEMPLATE, success=False)
 
 @app.route('/admin/submissions')
+@requires_auth
 def admin_submissions():
     submissions = []
     if os.path.exists(SUBMISSIONS_PATH):
