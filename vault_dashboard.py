@@ -37,8 +37,8 @@ def init_tokens():
     tokens = load_json(TOKENS_FILE, {})
     if not tokens:
         tokens = {
-            "GGG-TRIAL-DEMO1": {"status": "ACTIVE", "tier": "Trial Run", "max_rows": 500, "created": datetime.utcnow().strftime("%Y-%m-%d")},
-            "GGG-TRIAL-DEMO2": {"status": "ACTIVE", "tier": "Trial Run", "max_rows": 500, "created": datetime.utcnow().strftime("%Y-%m-%d")}
+            "GGG-TRIAL-DEMO1": {"status": "ACTIVE", "tier": "Standard Trial", "max_rows": 500, "sample_limit": "500 rows sample cleaning & validation", "created": "2026-08-23 12:00:00 UTC"},
+            "GGG-ENTERPRISE-POC1": {"status": "ACTIVE", "tier": "Enterprise POC Slice", "max_rows": 50000, "sample_limit": "10-parameter sweep slice & cryptographic ledger audit", "created": "2026-08-23 12:00:00 UTC"}
         }
         save_json(TOKENS_FILE, tokens)
 
@@ -67,6 +67,7 @@ HTML_TEMPLATE = """
         --accent: #38bdf8;
         --green: #34d399;
         --purple: #a855f7;
+        --amber: #f59e0b;
         --text: #e2e8f0;
         --muted: #94a3b8;
       }
@@ -162,6 +163,52 @@ HTML_TEMPLATE = """
       }
       .checkout-btn:hover { background: #0369a1; }
 
+      .poc-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+        margin-top: 10px;
+      }
+      .poc-box {
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 14px;
+      }
+      .poc-header {
+        font-weight: bold;
+        color: var(--amber);
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .poc-desc {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
+      /* FAQ Accordion */
+      .faq-item {
+        border-bottom: 1px solid #334155;
+        padding: 12px 0;
+      }
+      .faq-item:last-child { border-bottom: none; }
+      .faq-question {
+        cursor: pointer;
+        font-weight: bold;
+        color: #f8fafc;
+        display: flex;
+        justify-content: space-between;
+      }
+      .faq-answer {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+        margin-top: 8px;
+        display: none;
+      }
+      .faq-item.active .faq-answer { display: block; }
+
       .form-group { margin-bottom: 14px; }
       label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
       input, select, textarea {
@@ -190,6 +237,86 @@ HTML_TEMPLATE = """
       }
       .cta-btn { background: #059669; }
       .cta-btn-alt { background: #334155; }
+      
+      /* Floating Chatbot / FAQ Estimator */
+      #chat-launcher {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--accent);
+        color: #0b0f19;
+        font-weight: bold;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 1000;
+      }
+      #chat-box {
+        position: fixed;
+        bottom: 75px;
+        right: 20px;
+        width: 340px;
+        max-width: 90vw;
+        height: 440px;
+        background: var(--panel);
+        border: 1px solid #334155;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        display: none;
+        flex-direction: column;
+        z-index: 1000;
+      }
+      .chat-header {
+        background: #0f172a;
+        padding: 12px 16px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #334155;
+        font-weight: bold;
+        font-size: 13px;
+      }
+      .chat-body {
+        flex: 1;
+        padding: 12px;
+        overflow-y: auto;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .chat-msg {
+        padding: 8px 12px;
+        border-radius: 6px;
+        line-height: 1.4;
+      }
+      .msg-bot { background: #1e293b; color: var(--text); align-self: flex-start; }
+      .msg-user { background: #0284c7; color: white; align-self: flex-end; }
+      .chat-options {
+        padding: 8px 12px;
+        background: #0f172a;
+        border-top: 1px solid #334155;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .chat-chip {
+        background: #1e293b;
+        color: var(--accent);
+        border: 1px solid #334155;
+        border-radius: 14px;
+        padding: 4px 10px;
+        font-size: 11px;
+        cursor: pointer;
+      }
+
       .footer-links {
         margin-top: 25px;
         display: flex;
@@ -217,8 +344,29 @@ HTML_TEMPLATE = """
             <span class="badge">SYSTEM ONLINE</span>
         </div>
 
+        <!-- Enterprise POC / Free Trial Slices -->
+        <div class="card" style="border-left-color: var(--amber);">
+            <div class="card-title">🔬 Enterprise Proof-of-Concept: Free Micro-Workload Slices</div>
+            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Have a large-scale or complex dataset? Request or apply an Enterprise POC Token to run an isolated benchmark slice of your architecture before production deployment:</p>
+            <div class="poc-grid">
+                <div class="poc-box">
+                    <div class="poc-header">⚡ Compute Sweep Slice (10-Param Run)</div>
+                    <div class="poc-desc">Test run a 10-parameter iteration sweep on sample data with multi-threaded vectorization benchmarks.</div>
+                </div>
+                <div class="poc-box">
+                    <div class="poc-header">🔄 High-Volume ETL Micro-Batch (10k Rows)</div>
+                    <div class="poc-desc">Feed raw unformatted batch data (JSON/CSV) to evaluate cleaning accuracy, schema conformity, and throughput.</div>
+                </div>
+                <div class="poc-box">
+                    <div class="poc-header">🛡️ Cryptographic Vault Receipt Audit</div>
+                    <div class="poc-desc">Process sample records through SHA-256 zero-trust evidence hashing and receive a tamper-proof verification receipt.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- À La Carte Pricing Matrix & Direct Checkout -->
         <div class="card" style="border-left-color: var(--purple);">
-            <div class="card-title">📦 À La Carte Pipeline Services &amp; Instant Checkout</div>
+            <div class="card-title">📦 À La Carte Production Services &amp; Instant Checkout</div>
             <div class="pricing-grid">
                 <div class="pricing-card">
                     <div>
@@ -247,6 +395,28 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
+        <!-- Frequently Asked Questions & Support -->
+        <div class="card" style="border-left-color: var(--accent);">
+            <div class="card-title">❓ Frequently Asked Questions &amp; Support</div>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-question"><span>How does billing and checkout work?</span> <span>+</span></div>
+                <div class="faq-answer">We accept all major credit cards, ACH transfers, and corporate invoicing via Stripe. For milestone jobs, you are billed upon project scope approval. Retainers are billed monthly with no lock-in contracts.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-question"><span>What is the standard turnaround time?</span> <span>+</span></div>
+                <div class="faq-answer">Tier 1 script optimizations are delivered within 24 to 48 hours. Custom ETL pipelines and batch compute runs typically complete within 3 to 5 business days.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-question"><span>How do I redeem a free trial or POC access token?</span> <span>+</span></div>
+                <div class="faq-answer">Enter your trial token into the project submission form below. The pipeline will execute a sample dataset run and return a verified SHA-256 receipt at zero cost.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-question"><span>Need direct technical support?</span> <span>+</span></div>
+                <div class="faq-answer">Email us directly with your architecture questions or submit the intake form below for an engineer review within 4 hours.</div>
+            </div>
+        </div>
+
+        <!-- Live Infrastructure Benchmarks -->
         <div class="card">
             <div class="card-title">⚡ Live Infrastructure Benchmarks</div>
             <div class="metric">
@@ -267,8 +437,9 @@ HTML_TEMPLATE = """
             </div>
         </div>
 
+        <!-- Token Redemption & Workload Intake Form -->
         <div class="card" style="border-left-color: var(--green);">
-            <div class="card-title">🚀 Workload Intake &amp; Trial Token Redemption</div>
+            <div class="card-title">🚀 Workload Intake &amp; Trial / Enterprise POC Redemption</div>
             <form action="/submit" method="POST">
                 <div class="form-group">
                     <label>Full Name or Company</label>
@@ -279,17 +450,18 @@ HTML_TEMPLATE = """
                     <input type="text" name="email" placeholder="contact@domain.com" required>
                 </div>
                 <div class="form-group">
-                    <label>Trial Token (Optional for 1 Free Demo Execution)</label>
-                    <input type="text" name="token" placeholder="e.g. GGG-TRIAL-8F9A2" style="font-family: monospace; border-color: var(--accent);">
+                    <label>Access / POC Token (Optional for Free Trial or Enterprise Slice)</label>
+                    <input type="text" name="token" placeholder="e.g. GGG-ENTERPRISE-POC1 or GGG-TRIAL-8F9A2" style="font-family: monospace; border-color: var(--accent);">
                 </div>
                 <div class="form-group">
-                    <label>Project Scope / Raw Sample Data</label>
-                    <textarea name="scope" rows="3" placeholder="Describe the data format, API extraction, compute sweep, or paste your sample JSON/CSV..." required></textarea>
+                    <label>Project Scope / Sample Data / POC Requirements</label>
+                    <textarea name="scope" rows="3" placeholder="Describe the enterprise architecture, parameter sweep requirements, or paste sample schema/JSON..." required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Select Service / Tier</label>
+                    <label>Select Service / Evaluation Tier</label>
                     <select name="tier">
-                        <option value="Trial Token Run (1 Free Verification)">Trial Token Run (Free)</option>
+                        <option value="Enterprise POC Slice (Free Token Evaluation)">Enterprise POC Slice (Free Token Evaluation)</option>
+                        <option value="Standard Trial Run (500 rows free)">Standard Trial Run (500 rows free)</option>
                         <option value="Script Optimization / Bug Fix ($75)">Script Optimization / Bug Fix — $75</option>
                         <option value="Automated ETL & API Pipeline ($250)" selected>Automated ETL &amp; API Pipeline — $250</option>
                         <option value="Enterprise Compute & Backtesting ($600+)">Enterprise Compute &amp; Backtesting — $600+</option>
@@ -308,6 +480,58 @@ HTML_TEMPLATE = """
             <a href="/admin/submissions">Operator Ledger &amp; Token Mint</a>
         </div>
     </div>
+
+    <!-- Floating Support & Estimator Chat Widget -->
+    <button id="chat-launcher" onclick="toggleChat()">💬 Quick FAQ &amp; Estimator</button>
+    <div id="chat-box">
+        <div class="chat-header">
+            <span>Pipeline Assistant</span>
+            <span style="cursor:pointer;" onclick="toggleChat()">✕</span>
+        </div>
+        <div class="chat-body" id="chat-stream">
+            <div class="chat-msg msg-bot">Hello! How can I assist you with your data pipeline, Enterprise POC, or pricing today?</div>
+        </div>
+        <div class="chat-options">
+            <span class="chat-chip" onclick="askBot('pricing')">💰 Price List</span>
+            <span class="chat-chip" onclick="askBot('estimate')">📊 Estimate Project</span>
+            <span class="chat-chip" onclick="askBot('tokens')">🎟️ Trial & POC Tokens</span>
+            <span class="chat-chip" onclick="askBot('payment')">💳 Payment Methods</span>
+        </div>
+    </div>
+
+    <script>
+      function toggleChat() {
+        var box = document.getElementById('chat-box');
+        box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
+      }
+
+      function askBot(topic) {
+        var stream = document.getElementById('chat-stream');
+        var userMsg = document.createElement('div');
+        userMsg.className = 'chat-msg msg-user';
+        
+        var botMsg = document.createElement('div');
+        botMsg.className = 'chat-msg msg-bot';
+
+        if (topic === 'pricing') {
+          userMsg.innerText = "What are the standard prices?";
+          botMsg.innerHTML = "Our à la carte pricing:<br>• <b>Script Fix:</b> $75<br>• <b>ETL Pipeline:</b> $250<br>• <b>Compute & Sweeps:</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
+        } else if (topic === 'estimate') {
+          userMsg.innerText = "How do you estimate projects?";
+          botMsg.innerHTML = "Estimates depend on data volume and API complexity:<br>• Under 10k rows / 1 API: ~$75-$150<br>• Automated recurring ETL: ~$250<br>• High-volume backtesting: ~$600+.<br>Submit the form above for an exact fixed quote!";
+        } else if (topic === 'tokens') {
+          userMsg.innerText = "How do trial & POC tokens work?";
+          botMsg.innerHTML = "Trial tokens allow 1 free test run of our data cleaning or parameter sweep engine. Paste your token in the submission box to test!";
+        } else if (topic === 'payment') {
+          userMsg.innerText = "How do I pay?";
+          botMsg.innerHTML = "We send secure Stripe checkout links for Credit Card, Apple Pay, and ACH transfers upon scope confirmation.";
+        }
+
+        stream.appendChild(userMsg);
+        stream.appendChild(botMsg);
+        stream.scrollTop = stream.scrollHeight;
+      }
+    </script>
 </body>
 </html>
 """
@@ -327,6 +551,9 @@ ADMIN_TEMPLATE = """
         --accent: #38bdf8;
         --green: #34d399;
         --purple: #a855f7;
+        --amber: #f59e0b;
+        --red: #f43f5e;
+        --orange: #fb923c;
         --text: #e2e8f0;
         --muted: #94a3b8;
       }
@@ -369,21 +596,59 @@ ADMIN_TEMPLATE = """
       }
       table {
         width: 100%;
-        min-width: 600px;
+        min-width: 700px;
         border-collapse: collapse;
         font-size: 13px;
       }
       th { text-align: left; color: var(--muted); padding: 10px 8px; border-bottom: 1px solid #334155; }
       td { padding: 10px 8px; border-bottom: 1px solid #334155; color: #cbd5e1; }
+      .mint-controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
       .mint-btn {
         background: var(--purple);
         color: white;
         border: none;
-        padding: 8px 16px;
+        padding: 8px 14px;
         border-radius: 6px;
         font-weight: bold;
         cursor: pointer;
       }
+      .mint-btn-enterprise {
+        background: var(--amber);
+        color: #0b0f19;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .btn-revoke {
+        background: #475569;
+        color: var(--orange);
+        border: 1px solid #64748b;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: bold;
+        margin-right: 4px;
+      }
+      .btn-delete {
+        background: #450a0a;
+        color: #f87171;
+        border: 1px solid #7f1d1d;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: bold;
+      }
+      .btn-revoke:hover { background: var(--orange); color: black; }
+      .btn-delete:hover { background: var(--red); color: white; }
       .back-link { display: inline-block; margin-top: 18px; color: var(--accent); text-decoration: none; font-weight: bold; }
     </style>
 </head>
@@ -391,13 +656,16 @@ ADMIN_TEMPLATE = """
     <div class="container">
         <div class="header">
             <h1>Operator Control: Submissions &amp; Token Mint</h1>
-            <span style="color: var(--green); font-weight: bold; font-family: monospace;">Leads: {{ submissions|length }} | Tokens: <span id="token-count">{{ tokens|length }}</span></span>
+            <span style="color: var(--green); font-weight: bold; font-family: monospace;">Leads: {{ submissions|length }} | Active/Total Tokens: <span id="token-count">{{ tokens|length }}</span></span>
         </div>
 
         <div class="card" style="border-left: 4px solid var(--purple);">
-            <div style="display:flex; justify-content: space-between; align-items: center;">
-                <span style="font-weight: bold; color: white;">🎟️ Mint New Prospect Trial Token</span>
-                <button type="button" class="mint-btn" onclick="generateToken()">+ Generate New Trial Token</button>
+            <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <span style="font-weight: bold; color: white;">🎟️ Mint Standard &amp; Enterprise POC Tokens</span>
+                <div class="mint-controls">
+                    <button type="button" class="mint-btn" onclick="generateToken('standard')">+ Mint Standard Trial (500 Rows)</button>
+                    <button type="button" class="mint-btn-enterprise" onclick="generateToken('enterprise')">+ Mint Enterprise POC Slice</button>
+                </div>
             </div>
             <div class="table-wrapper">
                 <table id="token-table">
@@ -406,16 +674,23 @@ ADMIN_TEMPLATE = """
                             <th>Token Key</th>
                             <th>Status</th>
                             <th>Tier Scope</th>
-                            <th>Created Date</th>
+                            <th>Evaluation Limit / Snippet Scope</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="token-tbody">
                         {% for key, val in tokens.items() %}
-                        <tr>
-                            <td style="font-family: monospace; color: var(--accent); font-weight: bold;">{{ key }}</td>
-                            <td style="color: {{ 'var(--green)' if val.status == 'ACTIVE' else 'var(--muted)' }}; font-weight: bold;">{{ val.status }}</td>
-                            <td>{{ val.tier }} ({{ val.max_rows }} max rows)</td>
-                            <td>{{ val.created }}</td>
+                        <tr id="row-{{ key }}">
+                            <td style="font-family: monospace; color: {{ 'var(--amber)' if 'ENTERPRISE' in key else 'var(--accent)' }}; font-weight: bold;">{{ key }}</td>
+                            <td id="status-{{ key }}" style="color: {{ 'var(--green)' if val.status == 'ACTIVE' else ('var(--orange)' if val.status == 'REVOKED' else 'var(--muted)') }}; font-weight: bold;">{{ val.status }}</td>
+                            <td>{{ val.tier }}</td>
+                            <td>{{ val.sample_limit }}</td>
+                            <td>
+                                {% if val.status == 'ACTIVE' %}
+                                <button class="btn-revoke" id="btn-rev-{{ key }}" onclick="revokeToken('{{ key }}')">Revoke</button>
+                                {% endif %}
+                                <button class="btn-delete" onclick="deleteToken('{{ key }}')">Delete</button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -459,18 +734,28 @@ ADMIN_TEMPLATE = """
     </div>
 
     <script>
-      async function generateToken() {
+      async function generateToken(tokenType) {
         try {
-          const res = await fetch('/admin/mint_token', { method: 'POST' });
+          const res = await fetch('/admin/mint_token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: tokenType })
+          });
           const data = await res.json();
           if (data.status === 'minted') {
             const tbody = document.getElementById('token-tbody');
             const row = document.createElement('tr');
+            row.id = `row-${data.token}`;
+            const color = data.token.includes('ENTERPRISE') ? 'var(--amber)' : 'var(--accent)';
             row.innerHTML = `
-              <td style="font-family: monospace; color: var(--accent); font-weight: bold;">${data.token}</td>
-              <td style="color: var(--green); font-weight: bold;">ACTIVE</td>
-              <td>${data.tier} (${data.max_rows} max rows)</td>
-              <td>${data.created}</td>
+              <td style="font-family: monospace; color: ${color}; font-weight: bold;">${data.token}</td>
+              <td id="status-${data.token}" style="color: var(--green); font-weight: bold;">ACTIVE</td>
+              <td>${data.tier}</td>
+              <td>${data.sample_limit}</td>
+              <td>
+                <button class="btn-revoke" id="btn-rev-${data.token}" onclick="revokeToken('${data.token}')">Revoke</button>
+                <button class="btn-delete" onclick="deleteToken('${data.token}')">Delete</button>
+              </td>
             `;
             tbody.appendChild(row);
             
@@ -479,6 +764,49 @@ ADMIN_TEMPLATE = """
           }
         } catch(e) {
           console.error("Token minting error:", e);
+        }
+      }
+
+      async function revokeToken(tokenKey) {
+        if (!confirm(`Revoke token ${tokenKey}? It can no longer be used.`)) return;
+        try {
+          const res = await fetch('/admin/revoke_token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: tokenKey })
+          });
+          const data = await res.json();
+          if (data.status === 'revoked') {
+            const statusCell = document.getElementById(`status-${tokenKey}`);
+            if (statusCell) {
+              statusCell.innerText = 'REVOKED';
+              statusCell.style.color = 'var(--orange)';
+            }
+            const revBtn = document.getElementById(`btn-rev-${tokenKey}`);
+            if (revBtn) revBtn.remove();
+          }
+        } catch(e) {
+          console.error("Revoke error:", e);
+        }
+      }
+
+      async function deleteToken(tokenKey) {
+        if (!confirm(`Permanently delete token ${tokenKey}?`)) return;
+        try {
+          const res = await fetch('/admin/delete_token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: tokenKey })
+          });
+          const data = await res.json();
+          if (data.status === 'deleted') {
+            const row = document.getElementById(`row-${tokenKey}`);
+            if (row) row.remove();
+            const countSpan = document.getElementById('token-count');
+            countSpan.innerText = Math.max(0, parseInt(countSpan.innerText || '1') - 1);
+          }
+        } catch(e) {
+          console.error("Delete error:", e);
         }
       }
     </script>
@@ -510,7 +838,7 @@ RECEIPT_TEMPLATE = """
         border: 1px solid #1e293b;
         border-radius: 12px;
         padding: 32px;
-        max-width: 520px;
+        max-width: 540px;
         text-align: center;
         box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       }
@@ -551,12 +879,13 @@ RECEIPT_TEMPLATE = """
 <body>
     <div class="card">
         <h2>✓ Workload Sealed &amp; Enqueued</h2>
-        <div class="token-badge">Status: {{ token_status }}</div>
-        <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Your parameters have passed cryptographic integrity checks. Below is your deterministic execution receipt:</p>
+        <div class="token-badge">Evaluation Status: {{ token_status }}</div>
+        <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Your dataset parameters have passed cryptographic integrity verification. Below is your deterministic proof receipt:</p>
         
         <div class="receipt-box">
             <b>JOB REF:</b> 0x{{ receipt_hash[:16] }}...<br>
             <b>SHA-256 SEAL:</b> {{ receipt_hash }}<br>
+            <b>SCOPE LIMIT:</b> {{ sample_limit }}<br>
             <b>TIMESTAMP:</b> {{ timestamp }}<br>
             <b>STATUS:</b> VERIFIED &amp; QUEUED
         </div>
@@ -584,23 +913,60 @@ def admin_submissions():
 
 @app.route("/admin/mint_token", methods=["POST"])
 def mint_token():
+    data = request.get_json(silent=True) or {}
+    token_type = data.get("type", "standard")
     tokens = load_json(TOKENS_FILE, {})
-    new_token = f"GGG-TRIAL-{secrets.token_hex(3).upper()}"
+    
     created_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    if token_type == "enterprise":
+        new_token = f"GGG-ENTERPRISE-{secrets.token_hex(3).upper()}"
+        tier = "Enterprise POC Slice"
+        max_rows = 50000
+        sample_limit = "10-parameter sweep slice & cryptographic ledger audit"
+    else:
+        new_token = f"GGG-TRIAL-{secrets.token_hex(3).upper()}"
+        tier = "Standard Trial Run"
+        max_rows = 500
+        sample_limit = "500 rows sample cleaning & validation"
+
     tokens[new_token] = {
         "status": "ACTIVE",
-        "tier": "Trial Run",
-        "max_rows": 500,
+        "tier": tier,
+        "max_rows": max_rows,
+        "sample_limit": sample_limit,
         "created": created_at
     }
     save_json(TOKENS_FILE, tokens)
     return jsonify({
         "status": "minted",
         "token": new_token,
-        "tier": "Trial Run",
-        "max_rows": 500,
+        "tier": tier,
+        "max_rows": max_rows,
+        "sample_limit": sample_limit,
         "created": created_at
     })
+
+@app.route("/admin/revoke_token", methods=["POST"])
+def revoke_token():
+    data = request.get_json(silent=True) or {}
+    token_key = data.get("token", "").strip().upper()
+    tokens = load_json(TOKENS_FILE, {})
+    if token_key in tokens:
+        tokens[token_key]["status"] = "REVOKED"
+        save_json(TOKENS_FILE, tokens)
+        return jsonify({"status": "revoked", "token": token_key})
+    return jsonify({"status": "not_found"}), 404
+
+@app.route("/admin/delete_token", methods=["POST"])
+def delete_token():
+    data = request.get_json(silent=True) or {}
+    token_key = data.get("token", "").strip().upper()
+    tokens = load_json(TOKENS_FILE, {})
+    if token_key in tokens:
+        del tokens[token_key]
+        save_json(TOKENS_FILE, tokens)
+        return jsonify({"status": "deleted", "token": token_key})
+    return jsonify({"status": "not_found"}), 404
 
 @app.route("/submit", methods=["POST"])
 def submit_workload():
@@ -608,12 +974,17 @@ def submit_workload():
     token_input = data.get("token", "").strip().upper()
     
     tokens = load_json(TOKENS_FILE, {})
-    token_status = "No Token Applied"
+    token_status = "Standard Intake"
+    sample_limit = "Full Scope Quote Review"
+    
     if token_input:
         if token_input in tokens and tokens[token_input]["status"] == "ACTIVE":
             tokens[token_input]["status"] = "REDEEMED"
             save_json(TOKENS_FILE, tokens)
-            token_status = f"Redeemed: {token_input}"
+            token_status = f"Redeemed: {tokens[token_input]['tier']}"
+            sample_limit = tokens[token_input].get("sample_limit", "Trial Execution")
+        elif token_input in tokens and tokens[token_input]["status"] == "REVOKED":
+            token_status = "Token Has Been Revoked"
         elif token_input in tokens:
             token_status = "Token Already Redeemed"
         else:
@@ -641,6 +1012,7 @@ def submit_workload():
         return render_template_string(
             RECEIPT_TEMPLATE,
             token_status=token_status,
+            sample_limit=sample_limit,
             receipt_hash=receipt_hash,
             timestamp=now_str
         )
