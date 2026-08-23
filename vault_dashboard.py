@@ -1,8 +1,7 @@
 import os
 import json
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import urllib.request
+import urllib.parse
 from functools import wraps
 from datetime import datetime
 from flask import Flask, jsonify, render_template_string, request, Response
@@ -15,10 +14,8 @@ SUBMISSIONS_PATH = "client_submissions.json"
 # Live Mercury Payment Link
 MERCURY_PAYMENT_LINK = "https://app.mercury.com/pay/bsb9r5cb0pkhmcpn"
 
-# Email Alert Configuration
-ADMIN_NOTIFICATION_EMAIL = "joxkxer@gmail.com"
-GMAIL_SENDER = "joxkxer@gmail.com"
-GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "zveiqbuumcbsbnaj")
+# Live Formspree HTTPS Relay Endpoint
+FORMSPREE_URL = os.environ.get("FORMSPREE_URL", "https://formspree.io/f/mgawqbje")
 
 # Admin Dashboard Credentials
 ADMIN_USERNAME = os.environ.get("ADMIN_USER", "admin")
@@ -285,37 +282,28 @@ ADMIN_TEMPLATE = """
 </html>
 """
 
-def send_admin_email_alert(submission):
+def dispatch_https_alert(submission):
     try:
-        msg = MIMEMultipart()
-        msg['From'] = GMAIL_SENDER
-        msg['To'] = ADMIN_NOTIFICATION_EMAIL
-        msg['Subject'] = f"🚀 New Graviton Compute Job: {submission['category']}"
-
-        body = f"""New Client Workload Specification Received!
-
-Client Email: {submission['client_email']}
-Category: {submission['category']}
-Scope: {submission['scope']}
-Retainer Status: {submission['retainer_status']}
-Timestamp: {submission['timestamp']}
-
-Requirements / Notes:
-{submission['details']}
-
-View full registry:
-https://garza-global-graviton-1.onrender.com/admin/submissions
-"""
-        msg.attach(MIMEText(body, 'plain'))
-
-        # Direct SSL connection on Port 465 for cloud environment compatibility
-        clean_pwd = GMAIL_APP_PASSWORD.replace(" ", "").strip()
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as server:
-            server.login(GMAIL_SENDER, clean_pwd)
-            server.send_message(msg)
-        print("[SUCCESS] Dispatched email alert to admin inbox via SSL port 465.")
+        url = FORMSPREE_URL if FORMSPREE_URL.startswith("http") else f"https://formspree.io/f/{FORMSPREE_URL}"
+        payload = {
+            "_subject": f"🚀 New Graviton Workload Spec: {submission['category']}",
+            "client_email": submission['client_email'],
+            "category": submission['category'],
+            "scope": submission['scope'],
+            "retainer_status": submission['retainer_status'],
+            "details": submission['details'],
+            "timestamp": submission['timestamp']
+        }
+        data = json.dumps(payload).encode('utf-8')
+        req = urllib.request.Request(
+            url, 
+            data=data, 
+            headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'}
+        )
+        with urllib.request.urlopen(req, timeout=5) as response:
+            print("[SUCCESS] Dispatched HTTPS email alert via Formspree.")
     except Exception as e:
-        print(f"[ERROR] Failed to send email notification: {e}")
+        print(f"[ERROR] HTTPS relay dispatch failed: {e}")
 
 def check_auth(username, password):
     return username == ADMIN_USERNAME and password == ADMIN_PASSWORD
@@ -400,8 +388,8 @@ def submit():
         except Exception:
             pass
 
-        # Send instant email alert to joxkxer@gmail.com
-        send_admin_email_alert(submission_entry)
+        # Dispatch instant alert via Formspree HTTPS
+        dispatch_https_alert(submission_entry)
 
         return render_template_string(SUBMIT_TEMPLATE, success=True, client_email=client_email)
 
