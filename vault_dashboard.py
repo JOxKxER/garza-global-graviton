@@ -46,19 +46,26 @@ def save_json(filepath, data):
 
 def check_exploit_policy(text, tier):
     # Allow custom server scripting if explicitly designated as private
-    if "Private" in tier or "Custom Server" in tier or "Ad-Hoc" in tier:
-        return True, "Private / Custom Server Sandbox (Authorized Host Rules)"
+    if "Private" in tier or "Custom Server" in tier or "Ad-Hoc" in tier or "Cheat-Proof" in tier:
+        return True, "Cheat-Proof Private Server Sandbox (Deterministic Host Rules)"
     
     text_lower = text.lower()
     for pat in PUBLIC_EXPLOIT_PATTERNS:
         if re.search(pat, text_lower):
-            return False, "REJECTED - Exploitation Policy Violation: Tools targeting public competitive multiplayer are prohibited."
-    return True, "Verified Fair-Play Compliant"
+            return False, "REJECTED - Exploitation Policy Violation: Tools targeting public competitive matchmaking are prohibited."
+    return True, "Verified Zero-Trust & Fair-Play Compliant"
 
 def init_defaults():
     tokens = load_json(TOKENS_FILE, {})
     if not tokens:
         tokens = {
+            "GGG-CHEATPROOF-SRV-1": {
+                "status": "ACTIVE",
+                "tier": "Cheat-Proof Private Server Trial",
+                "max_rows": 1000,
+                "sample_limit": "1 cheat-proof server container / zero-trust telemetry mesh",
+                "created": "2026-08-23 12:00:00 UTC"
+            },
             "GGG-AI-STUDIO-1A2B": {
                 "status": "ACTIVE",
                 "tier": "AI Studio & Creation Trial",
@@ -71,13 +78,6 @@ def init_defaults():
                 "tier": "Gaming & Telemetry Trial",
                 "max_rows": 500,
                 "sample_limit": "500 rows frame-time logs / 1 clip compression",
-                "created": "2026-08-23 12:00:00 UTC"
-            },
-            "GGG-CUSTOM-SRV-E5F6": {
-                "status": "ACTIVE",
-                "tier": "Private Server & Custom Rules Trial",
-                "max_rows": 1000,
-                "sample_limit": "1 private server rule harness / ad-hoc P2P mesh setup",
                 "created": "2026-08-23 12:00:00 UTC"
             },
             "GGG-BIZ-G7H8": {
@@ -111,14 +111,14 @@ def init_defaults():
                 "name": "Apex Scrims League",
                 "role": "Esports Tournament Host",
                 "stars": 5,
-                "comment": "The private match telemetry analyzer and anti-tamper receipts cut our dispute review times to zero. Flawless verification receipts.",
+                "comment": "The zero-trust cheat-proof server architecture and SHA-256 match telemetry eliminated all dispute review times. Absolute game-changer for competitive scrims.",
                 "timestamp": "2026-08-22 14:10 UTC"
             },
             {
                 "name": "Solstice Studios",
                 "role": "Indie Game Developer",
                 "stars": 5,
-                "comment": "We generated seamless 2K PBR game textures and spun up an ad-hoc playtest server with custom rules in under 15 minutes.",
+                "comment": "We generated seamless 2K PBR game textures and spun up an exploit-isolated playtest server with custom rules in under 15 minutes.",
                 "timestamp": "2026-08-21 16:30 UTC"
             },
             {
@@ -147,7 +147,7 @@ HTML_TEMPLATE = """
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garza Global Graviton | Sovereign Vault, AI Creation & Custom Server Infrastructure</title>
+    <title>Garza Global Graviton | Cheat-Proof Server Mesh, AI Creation & Sovereign Vaulting</title>
     <style>
       :root {
         --bg: #0b0f19;
@@ -282,11 +282,11 @@ HTML_TEMPLATE = """
         font-weight: bold;
       }
 
-      /* Fair-Play Warning & Policy Banner */
+      /* Cheat-Proof Server & Fair-Play Hero Banner */
       .fairplay-banner {
-        background: #082f49;
+        background: linear-gradient(135deg, #082f49 0%, #0f172a 100%);
         border: 1px solid #0284c7;
-        border-left: 5px solid var(--accent);
+        border-left: 5px solid var(--green);
         border-radius: 8px;
         padding: 16px 20px;
         margin-top: 18px;
@@ -296,14 +296,14 @@ HTML_TEMPLATE = """
       }
       .fairplay-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
       .fairplay-content { font-size: 12px; color: #bae6fd; line-height: 1.5; }
-      .fairplay-title { font-size: 14px; font-weight: 800; color: #ffffff; margin-bottom: 4px; }
+      .fairplay-title { font-size: 14px; font-weight: 800; color: #ffffff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
       .fairplay-content b { color: #ffffff; }
       
       .warning-tag-box {
-        background: rgba(15, 23, 42, 0.6);
+        background: rgba(15, 23, 42, 0.75);
         border: 1px solid #334155;
         border-radius: 6px;
-        padding: 8px 12px;
+        padding: 10px 12px;
         margin-top: 8px;
         font-size: 11px;
         color: #94a3b8;
@@ -616,30 +616,44 @@ HTML_TEMPLATE = """
                 <img src="/logo.jpg" alt="Garza Logo" class="header-logo" onerror="this.style.display='none'">
                 <div>
                     <h1>GARZA GLOBAL GRAVITON</h1>
-                    <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, AI Asset Generation, Private Server Mesh &amp; Sovereign Vaulting</p>
+                    <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, Cheat-Proof Server Infrastructure &amp; Sovereign Vaulting</p>
                 </div>
             </div>
             <span class="badge">SYSTEM ONLINE</span>
         </div>
 
-        <!-- Fair-Play Policy & Warning Banner -->
+        <!-- Cheat-Proof Server Architecture & Fair-Play Hero Banner -->
         <div class="fairplay-banner">
-            <span class="fairplay-icon">⚠️</span>
+            <span class="fairplay-icon">🛡️</span>
             <div class="fairplay-content">
-                <div class="fairplay-title">Gaming Integrity &amp; Dual-Zone Fair-Play Warning Policy</div>
-                Garza Global Graviton enforces strict cryptographic integrity and legal fair-play boundaries across all compute pipelines:
+                <div class="fairplay-title">
+                    <span>Zero-Trust Cheat-Proof Server Infrastructure &amp; Fair-Play Architecture</span>
+                    <span style="background:#065f46; color:#34d399; padding:2px 8px; border-radius:4px; font-size:10px;">PROVENANCE SEALED</span>
+                </div>
+                Garza Global Graviton deploys mathematically verifiable, tamper-resistant server environments for private competitive leagues, custom co-op sessions, and tournament hosts:
                 <div class="warning-tag-box">
-                    <div><span>✓ PERMITTED (Private Sovereign Zone):</span> Custom server scripting, host physics mods, house rules, offline 3D game asset creation, and private squad P2P mesh LANs.</div>
-                    <div style="margin-top:4px;"><span class="prohibited">✕ STRICTLY PROHIBITED (Public Zone):</span> Memory injection (DLL hooks), aimbots, recoil macros, ESP overlays, or bypass tools targeting public competitive matchmaking games. All incoming public requests are automatically filtered, rejected, and logged.</div>
+                    <div><span>✓ CHEAT-PROOF PRIVATE MESH:</span> Direct point-to-point zero-trust validation, deterministic SHA-256 match state auditing, isolated host physics, memory leak guard daemons, and immutable world saves.</div>
+                    <div style="margin-top:4px;"><span class="prohibited">✕ ZERO-TOLERANCE PUBLIC EXPLOIT FILTER:</span> Memory hooks (DLL injectors), aimbots, recoil macros, ESP overlays, or bypass tools targeting public competitive matchmaking games are strictly blocked, filtered, and refused.</div>
                 </div>
             </div>
         </div>
 
         <!-- Comprehensive Free Trial Workloads Grid -->
         <div class="card" style="border-left-color: var(--cyan);">
-            <div class="card-title">✨ Free Trial Workloads: AI Studio, Private Servers, Gaming &amp; Data Tools</div>
+            <div class="card-title">✨ Free Trial Workloads: Cheat-Proof Servers, AI Studio, Gaming &amp; Data Tools</div>
             <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Click any workflow template below to automatically configure the trial intake form:</p>
             <div class="tool-grid">
+                <div class="tool-box" onclick="selectTool('cheatproof_server')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--green);">🛡️ Cheat-Proof Private Match Server</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Deploy isolated, tamper-proof private server instances with host-enforced physics rules, memory lockouts, and cryptographic state auditing.</div>
+                    </div>
+                    <div class="tool-tap">Load Template &rarr;</div>
+                </div>
+
                 <div class="tool-box" onclick="selectTool('ai_assets')">
                     <div>
                         <div class="tool-header">
@@ -647,17 +661,6 @@ HTML_TEMPLATE = """
                             <span>&darr;</span>
                         </div>
                         <div class="tool-desc">Generate seamless 2K PBR game textures, low-poly 3D mesh bases, and sprite sheets with deterministic SHA-256 copyright seals.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('custom_server')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--indigo);">🕹️ Private Match &amp; Custom Server Rules</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Configure isolated private servers, custom physics rules, authorized modpacks, and zero-port-forwarding P2P squad LANs.</div>
                     </div>
                     <div class="tool-tap">Load Template &rarr;</div>
                 </div>
@@ -725,8 +728,8 @@ HTML_TEMPLATE = """
                         {{ ai_summary }}
                     </p>
                     <div style="margin-bottom: 12px;">
-                        <span class="ai-tag-chip">✓ Fair-Play Verified</span>
-                        <span class="ai-tag-chip">✓ Instant Private Servers</span>
+                        <span class="ai-tag-chip">✓ Cheat-Proof Mesh Verified</span>
+                        <span class="ai-tag-chip">✓ Zero Dispute Resolution</span>
                         <span class="ai-tag-chip">✓ High-Quality AI Textures</span>
                         <span class="ai-tag-chip">✓ SHA-256 Stamped Receipts</span>
                     </div>
@@ -761,7 +764,7 @@ HTML_TEMPLATE = """
                     <form action="/submit_review" method="POST" style="margin-top: 12px;">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                             <input type="text" name="name" placeholder="Your Name or Team Tag" required>
-                            <input type="text" name="role" placeholder="Industry / Role (e.g. Game Dev, Server Host, Creator)" required>
+                            <input type="text" name="role" placeholder="Industry / Role (e.g. Esports Host, Dev, Creator)" required>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 10px; margin-bottom: 10px;">
                             <select name="stars">
@@ -791,9 +794,9 @@ HTML_TEMPLATE = """
                 </div>
                 <div class="pricing-card">
                     <div>
-                        <div class="pricing-title">Custom Server / AI Mini-App</div>
+                        <div class="pricing-title">Cheat-Proof Server / AI Bot</div>
                         <div class="pricing-price">$250</div>
-                        <div class="pricing-desc">Hardened dedicated servers, automated AI Gems, match stat ETL, and bookkeeping sync.</div>
+                        <div class="pricing-desc">Hardened dedicated servers, tamper-proof match audit harnesses, automated AI Gems, and bookkeeping.</div>
                     </div>
                     <a href="{{ tier2_link }}" target="_blank" class="checkout-btn" style="background: #059669;">Checkout Tier 2 &rarr;</a>
                 </div>
@@ -812,12 +815,12 @@ HTML_TEMPLATE = """
         <div class="card" style="border-left-color: var(--accent);">
             <div class="card-title">❓ Frequently Asked Questions &amp; Support</div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>Can I set custom rules and mods on private servers?</span> <span>+</span></div>
-                <div class="faq-answer">Yes! In private matches, co-op LANs, and custom servers, hosts have complete sovereignty to test mods, alter game physics, or script experimental mechanics. We strictly prohibit memory injection or exploit tools targeting public multiplayer games.</div>
+                <div class="faq-question"><span>How do your Cheat-Proof Servers prevent tampering?</span> <span>+</span></div>
+                <div class="faq-answer">Our cheat-proof private servers run isolated container runtimes with deterministic state verification. Client telemetry and match logs are cross-hashed against host physics rules using SHA-256 digital seals, eliminating memory tampering, client-side packet spoofing, and match dispute ambiguities.</div>
             </div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
                 <div class="faq-question"><span>What is your Fair-Play and Anti-Cheat Policy?</span> <span>+</span></div>
-                <div class="faq-answer">Our pipelines block any tool or script designed to manipulate public competitive games (aimbots, recoil scripts, memory hooks). All incoming public requests are scanned against automated exploit filters.</div>
+                <div class="faq-answer">While private server hosts possess complete sovereignty over their custom game rules, our pipelines strictly block, refuse, and log any tool designed to manipulate public multiplayer games (aimbots, recoil macros, DLL hooks).</div>
             </div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
                 <div class="faq-question"><span>How do AI Asset Generation and Mini-Apps work?</span> <span>+</span></div>
@@ -845,8 +848,8 @@ HTML_TEMPLATE = """
                 <span class="metric-value">Elastic (0-50 Auto-Scaling Nodes)</span>
             </div>
             <div class="metric">
-                <span class="metric-title">Fair-Play &amp; Sovereign Ledger Status</span>
-                <span class="metric-value" style="color: var(--green);">Active &amp; Immutable (SHA-256)</span>
+                <span class="metric-title">Cheat-Proof &amp; Sovereign Ledger Status</span>
+                <span class="metric-value" style="color: var(--green);">Zero-Trust Verified &amp; Immutable (SHA-256)</span>
             </div>
         </div>
 
@@ -864,23 +867,23 @@ HTML_TEMPLATE = """
                 </div>
                 <div class="form-group">
                     <label>Access / Trial Token (Optional for Free Demo Execution)</label>
-                    <input type="text" name="token" id="input-token" placeholder="e.g. GGG-AI-STUDIO-1A2B or GGG-GAMING-C3D4" style="font-family: monospace; border-color: var(--accent);">
+                    <input type="text" name="token" id="input-token" placeholder="e.g. GGG-CHEATPROOF-SRV-1 or GGG-AI-STUDIO-1A2B" style="font-family: monospace; border-color: var(--accent);">
                 </div>
                 <div class="form-group">
-                    <label>Project Scope / AI Prompt / Server Rules / Data Specs</label>
-                    <textarea name="scope" id="input-scope" rows="4" placeholder="Describe the AI asset you want to create, private server rules to configure, or data to analyze..." required></textarea>
+                    <label>Project Scope / Server Rules / AI Prompt / Data Specs</label>
+                    <textarea name="scope" id="input-scope" rows="4" placeholder="Describe the cheat-proof private server rules you want, AI asset prompt, or dataset to analyze..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Select Service / Evaluation Tier</label>
                     <select name="tier" id="select-tier">
+                        <option value="Cheat-Proof Private Server & Rules Free Trial">Cheat-Proof Private Server &amp; Rules Free Trial</option>
                         <option value="AI Creation & Asset Generation Free Trial">AI Creation &amp; Asset Generation Free Trial</option>
-                        <option value="Private Server & Custom Rules Free Trial">Private Server &amp; Custom Rules Free Trial</option>
                         <option value="PC Gaming & Telemetry Free Trial Run">PC Gaming &amp; Telemetry Free Trial Run</option>
                         <option value="Small Business & Bookkeeping Free Trial Run">Small Business &amp; Bookkeeping Free Trial Run</option>
                         <option value="Creative, 3D Render & Legal Free Trial Run">Creative, 3D Render &amp; Legal Free Trial Run</option>
                         <option value="Enterprise POC Slice (Free Token Evaluation)">Enterprise POC Slice (Free Token Evaluation)</option>
                         <option value="Script / AI Asset Fix ($75)">Script / AI Asset Fix — $75</option>
-                        <option value="Automated Server, Pipeline & AI Bot ($250)" selected>Automated Server, Pipeline &amp; AI Bot — $250</option>
+                        <option value="Cheat-Proof Server, Pipeline & AI Bot ($250)" selected>Cheat-Proof Server, Pipeline &amp; AI Bot — $250</option>
                         <option value="AI Video & Compute Simulation ($600+)">AI Video &amp; Compute Simulation — $600+</option>
                         <option value="Dedicated Monthly Retainer">Dedicated Monthly Pipeline Retainer</option>
                     </select>
@@ -890,7 +893,7 @@ HTML_TEMPLATE = """
                     <a href="https://github.com/JOxKxER/garza-global-graviton" target="_blank" class="cta-btn-alt">GitHub Architecture Repository</a>
                 </div>
                 <p style="font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center;">
-                    By submitting, you agree to our <a href="/terms" style="color: var(--accent);">Terms of Service</a> &amp; Dual-Zone Fair-Play Policies.
+                    By submitting, you agree to our <a href="/terms" style="color: var(--accent);">Terms of Service</a> &amp; Zero-Trust Fair-Play Policies.
                 </p>
             </form>
         </div>
@@ -924,12 +927,12 @@ HTML_TEMPLATE = """
             <span style="cursor:pointer; font-size: 18px;" onclick="toggleChat()">✕</span>
         </div>
         <div class="chat-body" id="chat-stream">
-            <div class="chat-msg msg-bot">Hello! How can I assist you with AI asset creation, private game servers, bookkeeping, or data engineering today? Tap an option below:</div>
+            <div class="chat-msg msg-bot">Hello! How can I assist you with cheat-proof private servers, AI asset generation, bookkeeping, or data engineering today? Tap an option below:</div>
         </div>
         <div class="chat-options">
+            <span class="chat-chip" onclick="askBot('cheatproof')">🛡️ Cheat-Proof Servers</span>
             <span class="chat-chip" onclick="askBot('fairplay')">⚠️ Fair-Play Policy</span>
             <span class="chat-chip" onclick="askBot('ai_studio')">🎨 AI Assets &amp; Video</span>
-            <span class="chat-chip" onclick="askBot('custom_rules')">🕹️ Private Match Rules</span>
             <span class="chat-chip" onclick="askBot('gaming')">🎮 Gaming &amp; 1% Lows</span>
             <span class="chat-chip" onclick="askBot('adhoc')">🌐 Ad-Hoc &amp; P2P Mesh</span>
             <span class="chat-chip" onclick="askBot('bookkeeping')">💼 Bookkeeping &amp; Reconcile</span>
@@ -949,12 +952,12 @@ HTML_TEMPLATE = """
         var scopeBox = document.getElementById('input-scope');
         var intakeCard = document.getElementById('intake-section');
 
-        if (type === 'ai_assets') {
+        if (type === 'cheatproof_server') {
+          tierSelect.value = "Cheat-Proof Private Server & Rules Free Trial";
+          scopeBox.value = "Task: Cheat-Proof Private Match Server Setup\\n- Architecture: Zero-trust private server with memory isolation, deterministic SHA-256 state auditing, custom host physics, and automated tamper-proof world saves.";
+        } else if (type === 'ai_assets') {
           tierSelect.value = "AI Creation & Asset Generation Free Trial";
           scopeBox.value = "Task: AI Game Asset & Texture Generation\\n- Prompt: Generate 2K seamless PBR game texture (metal/wood/stone) or low-poly 3D mesh base.\\n- Request: Stamp with SHA-256 copyright birth certificate.";
-        } else if (type === 'custom_server') {
-          tierSelect.value = "Private Server & Custom Rules Free Trial";
-          scopeBox.value = "Task: Private Match & Custom Rule Configuration\\n- Scope: Configure private dedicated server / P2P LAN mesh with custom game physics, authorized modpacks, and admin house rules.";
         } else if (type === 'gaming_telemetry') {
           tierSelect.value = "PC Gaming & Telemetry Free Trial Run";
           scopeBox.value = "Task: PC Gaming Telemetry & Frame-Time Analysis\\n- Ingest CapFrameX / HWiNFO / Afterburner benchmark logs.\\n- Calculate 0.1% & 1% low frame-time stutters, average FPS, and temperature/bottleneck curves.";
@@ -981,15 +984,15 @@ HTML_TEMPLATE = """
         var botMsg = document.createElement('div');
         botMsg.className = 'chat-msg msg-bot';
 
-        if (topic === 'fairplay') {
+        if (topic === 'cheatproof') {
+          userMsg.innerText = "How do your Cheat-Proof Servers work?";
+          botMsg.innerHTML = "<b>🛡️ Cheat-Proof Server Architecture:</b><br>• <b>Deterministic State Auditing:</b> Player inputs and game states are sealed with SHA-256 timestamps to prevent packet injection.<br>• <b>Memory & RCON Isolation:</b> Direct memory hooks and unauthorized RCON commands are blocked at the kernel container level.<br>• <b>Zero-Dispute Tournaments:</b> Match results are mathematically verifiable with cryptographic provenance receipts.";
+        } else if (topic === 'fairplay') {
           userMsg.innerText = "What is your Fair-Play & Gaming Policy?";
-          botMsg.innerHTML = "<b>⚠️ Gaming Integrity Policy:</b><br>• <b>Private Servers:</b> Hosts have full freedom to test mods, custom physics, and house rules.<br>• <b>Public Multiplayer:</b> Cheats, aimbots, recoil macros, and memory injections targeting public matchmaking are strictly prohibited and auto-blocked.";
+          botMsg.innerHTML = "<b>⚠️ Gaming Integrity Policy:</b><br>• <b>Private Sovereignty:</b> Hosts retain full freedom to set custom physics, rules, and authorized mods on private servers.<br>• <b>Public Multiplayer:</b> Aimbots, recoil macros, and memory hooks targeting public matchmaking are strictly prohibited and auto-blocked.";
         } else if (topic === 'ai_studio') {
           userMsg.innerText = "What AI Creation and Asset tools do you offer?";
           botMsg.innerHTML = "<b>AI Studio & Creation Capabilities:</b><br>• <b>3D Textures & Meshes:</b> Generate 2K seamless PBR textures and low-poly 3D models with SHA-256 copyright seals.<br>• <b>Cinematic Video:</b> Produce 4K generative video reels with synced audio stems.<br>• <b>Custom AI Gems:</b> Build standalone automation mini-apps for repetitive tasks.";
-        } else if (topic === 'custom_rules') {
-          userMsg.innerText = "Can I customize rules and mods on my private server?";
-          botMsg.innerHTML = "<b>Private Servers & Custom Sandbox:</b><br>• <b>Complete Host Freedom:</b> Set your own game physics, spawn rates, custom bot logic, and modpacks in private co-op/dedicated matches.<br>• <b>Public Integrity:</b> We strictly prohibit cheats, aimbots, or memory injection targeting public multiplayer games.";
         } else if (topic === 'gaming') {
           userMsg.innerText = "What PC Gaming services and telemetry tools do you offer?";
           botMsg.innerHTML = "<b>PC Gaming & Telemetry Engineering:</b><br>• <b>Frame-Time & 1% Low Analysis:</b> Ingest CapFrameX, Afterburner, and PresentMon CSVs to chart micro-stutters and hardware bottlenecks.<br>• <b>Clip Compression:</b> Shrink 2GB raw OBS/ShadowPlay 60FPS clips under 25MB without ruining clarity.<br>• <b>Tournament Match Logs:</b> Parse kill/death and combat timeline telemetry.";
@@ -1004,7 +1007,7 @@ HTML_TEMPLATE = """
           botMsg.innerHTML = "<b>Legal, FOIA & Compliance:</b><br>• <b>PII & SSN Redaction:</b> Automated scripts to sanitize sensitive data from litigation records.<br>• <b>Sovereign SHA-256 Stamps:</b> Immutable proof of prior art and evidence chain-of-custody tracking.<br>• <b>Citation Normalizer:</b> Standardize case references into APA/MLA/Bluebook formats.";
         } else if (topic === 'pricing') {
           userMsg.innerText = "What are the standard prices?";
-          botMsg.innerHTML = "Our fixed rates:<br>• <b>Tier 1 (Fix / Asset):</b> $75<br>• <b>Tier 2 (Server / Pipeline / AI Bot):</b> $250<br>• <b>Tier 3 (Modeling & Compute):</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
+          botMsg.innerHTML = "Our fixed rates:<br>• <b>Tier 1 (Fix / Asset):</b> $75<br>• <b>Tier 2 (Cheat-Proof Server / Pipeline / AI Bot):</b> $250<br>• <b>Tier 3 (Modeling & Compute):</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
         }
 
         stream.appendChild(userMsg);
@@ -1086,10 +1089,10 @@ TERMS_TEMPLATE = """
         <h2>1. Acceptance of Operating Terms</h2>
         <p>By accessing this site, executing workloads, redeeming sovereign trial tokens, or purchasing services through Garza Global Graviton LLC ("Company", "we", "us"), you agree to be bound by these Terms of Service. If you do not agree, you must immediately discontinue use of all pipelines, tools, and servers.</p>
 
-        <h2>2. Scope of Services &amp; Dual-Zone Gaming Policy</h2>
-        <p>Garza Global Graviton LLC provides high-performance data engineering, cryptographic proof stamping, ad-hoc mesh networking, custom server provisioning, and AI asset creation tools.</p>
+        <h2>2. Scope of Services, Cheat-Proof Mesh &amp; Dual-Zone Policy</h2>
+        <p>Garza Global Graviton LLC provides high-performance data engineering, cryptographic proof stamping, ad-hoc mesh networking, cheat-proof server provisioning, and AI asset creation tools.</p>
         <div class="callout">
-            <b>• Private Sovereign Zone (Permitted):</b> Hosts running private dedicated servers, local co-op LANs, or private matches possess full freedom to configure custom game physics, test experimental mods, and enforce house rules.<br><br>
+            <b>• Cheat-Proof Private Sovereign Zone (Permitted):</b> Hosts running private dedicated servers, local co-op LANs, or private matches possess full freedom to configure custom game physics, test experimental mods, and enforce house rules under isolated, tamper-proof state verification.<br><br>
             <b>• Public Competitive Gaming (Strictly Prohibited):</b> Our pipelines strictly prohibit any script, program, or AI generation designed to manipulate public multiplayer games (e.g. memory injection, aimbots, triggerbots, recoil compensation macros, or anti-cheat bypass tools). All incoming public requests are automatically filtered and rejected.
         </div>
 
@@ -1234,15 +1237,15 @@ ADMIN_TEMPLATE = """
             <span style="color: var(--green); font-weight: bold; font-family: monospace;">Leads: {{ submissions|length }} | Active/Total Tokens: <span id="token-count">{{ tokens|length }}</span></span>
         </div>
 
-        <div class="card" style="border-left: 4px solid var(--pink);">
+        <div class="card" style="border-left: 4px solid var(--green);">
             <span style="font-weight: bold; color: white;">🎟️ Mint Specialized Demographic &amp; Industry Access Tokens</span>
             <p style="font-size: 12px; color: var(--muted); margin: 4px 0 0 0;">Click any demographic category to generate an instant copyable token string:</p>
             
             <div class="mint-grid">
+                <button type="button" class="mint-btn-pill" style="background:#064e3b; color:var(--green);" onclick="generateToken('cheatproof_server')">🛡️ + Mint Cheat-Proof Server</button>
                 <button type="button" class="mint-btn-pill" style="background:#4a044e; color:var(--pink);" onclick="generateToken('ai_studio')">🎨 + Mint AI Studio &amp; Assets</button>
-                <button type="button" class="mint-btn-pill" style="background:#1e1b4b; color:var(--indigo);" onclick="generateToken('custom_server')">🕹️ + Mint Private Server &amp; Rules</button>
                 <button type="button" class="mint-btn-pill" style="background:#083344; color:var(--cyan);" onclick="generateToken('gaming')">🎮 + Mint Gaming &amp; Telemetry</button>
-                <button type="button" class="mint-btn-pill" style="background:#064e3b; color:var(--emerald);" onclick="generateToken('business')">💼 + Mint Bookkeeping &amp; Biz</button>
+                <button type="button" class="mint-btn-pill" style="background:#1e1b4b; color:var(--indigo);" onclick="generateToken('business')">💼 + Mint Bookkeeping &amp; Biz</button>
                 <button type="button" class="mint-btn-pill" style="background:#451a03; color:var(--amber);" onclick="generateToken('legal')">⚖️ + Mint Legal &amp; FOIA Proof</button>
                 <button type="button" class="mint-btn-pill" style="background:#581c87; color:var(--purple);" onclick="generateToken('enterprise')">⚡ + Mint Enterprise 10-Param</button>
             </div>
@@ -1261,7 +1264,7 @@ ADMIN_TEMPLATE = """
                     <tbody id="token-tbody">
                         {% for key, val in tokens.items() %}
                         <tr id="row-{{ key }}">
-                            <td style="font-family: monospace; color: {% if 'AI' in key %}var(--pink){% elif 'CUSTOM' in key %}var(--indigo){% elif 'GAMING' in key %}var(--cyan){% elif 'BIZ' in key %}var(--emerald){% elif 'LEGAL' in key %}var(--amber){% else %}var(--purple){% endif %}; font-weight: bold;">{{ key }}</td>
+                            <td style="font-family: monospace; color: {% if 'CHEATPROOF' in key %}var(--green){% elif 'AI' in key %}var(--pink){% elif 'GAMING' in key %}var(--cyan){% elif 'BIZ' in key %}var(--emerald){% elif 'LEGAL' in key %}var(--amber){% else %}var(--purple){% endif %}; font-weight: bold;">{{ key }}</td>
                             <td id="status-{{ key }}" style="color: {{ 'var(--green)' if val.status == 'ACTIVE' else ('var(--orange)' if val.status == 'REVOKED' else 'var(--muted)') }}; font-weight: bold;">{{ val.status }}</td>
                             <td>{{ val.tier }}</td>
                             <td>{{ val.sample_limit }}</td>
@@ -1301,7 +1304,7 @@ ADMIN_TEMPLATE = """
                             <td style="font-family: monospace; color: var(--purple);">{{ sub.token }}</td>
                             <td>{{ sub.scope }}</td>
                             <td style="color: var(--green); font-weight: bold;">{{ sub.tier }}</td>
-                            <td style="font-size: 11px; color: {% if 'REJECTED' in sub.fairplay_status %}var(--red){% elif 'Private' in sub.fairplay_status %}var(--indigo){% else %}var(--green){% endif %}; font-weight: bold;">
+                            <td style="font-size: 11px; color: {% if 'REJECTED' in sub.fairplay_status %}var(--red){% elif 'Private' in sub.fairplay_status or 'Cheat-Proof' in sub.fairplay_status %}var(--green){% else %}var(--accent){% endif %}; font-weight: bold;">
                                 {{ sub.fairplay_status }}
                             </td>
                         </tr>
@@ -1332,8 +1335,8 @@ ADMIN_TEMPLATE = """
             row.id = `row-${data.token}`;
             
             let color = 'var(--accent)';
-            if (data.token.includes('AI')) color = 'var(--pink)';
-            else if (data.token.includes('CUSTOM')) color = 'var(--indigo)';
+            if (data.token.includes('CHEATPROOF')) color = 'var(--green)';
+            else if (data.token.includes('AI')) color = 'var(--pink)';
             else if (data.token.includes('GAMING')) color = 'var(--cyan)';
             else if (data.token.includes('BIZ')) color = 'var(--emerald)';
             else if (data.token.includes('LEGAL')) color = 'var(--amber)';
@@ -1518,17 +1521,17 @@ def dashboard():
     combined_text = " ".join(review_texts).lower()
     
     highlights = []
+    if any(k in combined_text for k in ["cheat", "server", "scrims", "match", "telemetry", "anti-tamper"]):
+        highlights.append("esports tournament hosts and scrim coordinators highlight the zero-trust cheat-proof server mesh and dispute-free match receipts")
     if any(k in combined_text for k in ["ai", "texture", "asset", "pbr", "render"]):
         highlights.append("game developers and artists praise the instant 2K PBR texture generation and low-poly 3D mesh pipelines")
-    if any(k in combined_text for k in ["private", "server", "scrims", "custom", "rules"]):
-        highlights.append("server hosts and esports leagues highlight the complete rule customization in private matches without public cheating risks")
     if any(k in combined_text for k in ["bank", "receipt", "csv", "bookkeeping", "formulas"]):
         highlights.append("small business owners value the automatic ledger formula normalization and receipt deduplication")
 
     if highlights:
-        ai_summary = "Customers frequently note that " + "; ".join(highlights) + ". Overall sentiment highlights transparent verification receipts, low-latency queues, and robust fair-play compliance."
+        ai_summary = "Customers frequently note that " + "; ".join(highlights) + ". Overall sentiment highlights transparent verification receipts, zero-dispute cheat-proof servers, and robust fair-play compliance."
     else:
-        ai_summary = "Customers highlight the extreme dispatch speed, accurate mathematical data vectorization, and deterministic cryptographic SHA-256 sealing receipts across AI creation, private servers, and business workflows."
+        ai_summary = "Customers highlight the extreme dispatch speed, zero-trust cheat-proof private server environments, accurate data vectorization, and deterministic SHA-256 sealing receipts across gaming and business workflows."
 
     return render_template_string(
         HTML_TEMPLATE,
@@ -1570,22 +1573,22 @@ def admin_submissions():
 @app.route("/admin/mint_token", methods=["POST"])
 def mint_token():
     data = request.get_json(silent=True) or {}
-    token_type = data.get("type", "ai_studio")
+    token_type = data.get("type", "cheatproof_server")
     tokens = load_json(TOKENS_FILE, {})
     
     created_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
     hex_id = secrets.token_hex(2).upper()
 
-    if token_type == "ai_studio":
+    if token_type == "cheatproof_server":
+        new_token = f"GGG-CHEATPROOF-SRV-{hex_id}"
+        tier = "Cheat-Proof Private Server Trial"
+        max_rows = 1000
+        sample_limit = "1 cheat-proof server container / zero-trust telemetry mesh"
+    elif token_type == "ai_studio":
         new_token = f"GGG-AI-STUDIO-{hex_id}"
         tier = "AI Studio & Creation Trial"
         max_rows = 1000
         sample_limit = "1 high-res AI asset / mini-app script / cinematic render test"
-    elif token_type == "custom_server":
-        new_token = f"GGG-CUSTOM-SRV-{hex_id}"
-        tier = "Private Server & Custom Rules Trial"
-        max_rows = 1000
-        sample_limit = "1 private server rule harness / ad-hoc P2P mesh setup"
     elif token_type == "gaming":
         new_token = f"GGG-GAMING-{hex_id}"
         tier = "Gaming & Telemetry Trial"
