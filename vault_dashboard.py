@@ -1,11 +1,12 @@
 import os
 import json
 from datetime import datetime
-from flask import Flask, jsonify, render_template_string
+from flask import Flask, jsonify, render_template_string, request, redirect, url_for
 
 app = Flask(__name__)
 
 LEDGER_PATH = "sovereign_ledger.json"
+SUBMISSIONS_PATH = "client_submissions.json"
 
 # Live Mercury Payment Link
 MERCURY_PAYMENT_LINK = "https://app.mercury.com/pay/bsb9r5cb0pkhmcpn"
@@ -130,9 +131,75 @@ HTML_TEMPLATE = """
             <p style="color: #94a3b8; font-size: 14px; margin: 0 0 15px 0;">Deploy on-demand worker instances for high-density parameter sweeps, vector routing, or tamper-evident threshold vaulting.</p>
             <div class="actions-group">
                 <a href="{{ payment_link }}" target="_blank" class="cta-btn-alt">💳 Retain Compute ($250 Deposit via Mercury)</a>
-                <a href="mailto:contact@garzaglobalgraviton.com" class="cta-btn">Submit Custom Spec</a>
+                <a href="/submit" class="cta-btn">Submit Workload Specification</a>
             </div>
         </div>
+    </div>
+</body>
+</html>
+"""
+
+SUBMIT_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Workload Spec | Garza Global Graviton</title>
+    <style>
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 40px; }
+        .container { max-width: 750px; margin: 0 auto; background: #131b2e; border: 1px solid #1e293b; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h1 { color: #38bdf8; margin-top: 0; font-size: 22px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+        label { display: block; margin-top: 15px; color: #94a3b8; font-size: 14px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; margin-top: 6px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #fff; box-sizing: border-box; font-family: inherit; }
+        input:focus, select:focus, textarea:focus { border-color: #38bdf8; outline: none; }
+        .btn-submit { background: #0284c7; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 15px; }
+        .btn-submit:hover { background: #0369a1; }
+        .back-link { display: inline-block; margin-top: 20px; color: #64748b; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: #94a3b8; }
+        .success-box { background: #064e3b; border: 1px solid #059669; padding: 15px; border-radius: 6px; color: #a7f3d0; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Submit Compute Workload & Specification</h1>
+        
+        {% if success %}
+        <div class="success-box">
+            ✓ <strong>Specification Logged:</strong> Your workload request has been queued in our sovereign intake registry. We will review the parameters and contact you at <strong>{{ client_email }}</strong> to coordinate node provisioning.
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/submit">
+            <label>Contact Email</label>
+            <input type="email" name="email" placeholder="you@organization.com" required>
+
+            <label>Workload Category</label>
+            <select name="category">
+                <option value="Multi-Variable Parameter Sweep">Multi-Variable Parameter Sweep / Backtest</option>
+                <option value="High-Density Batch Processing">High-Density Data Batch Crunching (ETL / Cleaning)</option>
+                <option value="Zero-Trust Threshold Vaulting">Cryptographic Threshold Vaulting & Sealing</option>
+                <option value="Private Vector Stream / Daemon">Encrypted Telemetry Stream & Vector Routing</option>
+                <option value="Custom Compute Architecture">Custom Computational Architecture</option>
+            </select>
+
+            <label>Estimated Dataset Scope or Record Count</label>
+            <input type="text" name="scope" placeholder="e.g. 50,000 records, 5 GB CSV, 10,000 iterations" required>
+
+            <label>Detailed Execution Requirements / Parameters</label>
+            <textarea name="details" rows="5" placeholder="Specify mathematical models, transformations, required output formats (CSV, sealed JSON ledger), or deadline constraints." required></textarea>
+
+            <label>Retainer Status</label>
+            <select name="retainer_status">
+                <option value="Paid via Mercury">Retainer Paid ($250 Deposit via Mercury)</option>
+                <option value="Pending Review / Spec Quote">Request Custom Scope Quote First</option>
+            </select>
+
+            <button type="submit" class="btn-submit">Register Workload Spec</button>
+        </form>
+
+        <br>
+        <a href="/" class="back-link">← Return to Live Dashboard</a>
     </div>
 </body>
 </html>
@@ -168,6 +235,44 @@ def home():
         executions=RECENT_EXECUTIONS,
         payment_link=MERCURY_PAYMENT_LINK
     )
+
+@app.route('/submit', methods=['GET', 'POST'])
+def submit():
+    if request.method == 'POST':
+        client_email = request.form.get('email')
+        category = request.form.get('category')
+        scope = request.form.get('scope')
+        details = request.form.get('details')
+        retainer_status = request.form.get('retainer_status')
+
+        submission_entry = {
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "client_email": client_email,
+            "category": category,
+            "scope": scope,
+            "details": details,
+            "retainer_status": retainer_status
+        }
+
+        submissions = []
+        if os.path.exists(SUBMISSIONS_PATH):
+            try:
+                with open(SUBMISSIONS_PATH, "r") as f:
+                    submissions = json.load(f)
+            except Exception:
+                submissions = []
+
+        submissions.append(submission_entry)
+
+        try:
+            with open(SUBMISSIONS_PATH, "w") as f:
+                json.dump(submissions, f, indent=2)
+        except Exception:
+            pass
+
+        return render_template_string(SUBMIT_TEMPLATE, success=True, client_email=client_email)
+
+    return render_template_string(SUBMIT_TEMPLATE, success=False)
 
 @app.route('/healthz')
 def health():
