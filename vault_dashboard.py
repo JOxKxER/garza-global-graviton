@@ -4,7 +4,7 @@ import urllib.request
 import urllib.parse
 from functools import wraps
 from datetime import datetime
-from flask import Flask, jsonify, render_template_string, request, Response
+from flask import Flask, jsonify, render_template_string, request, Response, redirect, url_for
 
 app = Flask(__name__)
 
@@ -221,24 +221,33 @@ ADMIN_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Registry | Garza Global Graviton</title>
+    <title>Admin Command Center | Garza Global Graviton</title>
     <style>
-        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 40px; }
-        .container { max-width: 1050px; margin: 0 auto; background: #131b2e; border: 1px solid #1e293b; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        h1 { color: #f59e0b; margin-top: 0; font-size: 22px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 30px; }
+        .container { max-width: 1200px; margin: 0 auto; background: #131b2e; border: 1px solid #1e293b; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h1 { color: #f59e0b; margin-top: 0; font-size: 22px; border-bottom: 1px solid #334155; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        th { text-align: left; color: #94a3b8; padding: 10px 8px; border-bottom: 1px solid #334155; }
-        td { padding: 12px 8px; border-bottom: 1px solid #1e293b; color: #cbd5e1; vertical-align: top; }
-        .badge-paid { background: #065f46; color: #34d399; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
-        .badge-pending { background: #78350f; color: #fcd34d; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        th { text-align: left; color: #94a3b8; padding: 12px 10px; border-bottom: 1px solid #334155; }
+        td { padding: 14px 10px; border-bottom: 1px solid #1e293b; color: #cbd5e1; vertical-align: middle; }
+        .badge-paid { background: #065f46; color: #34d399; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
+        .badge-pending { background: #78350f; color: #fcd34d; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
+        .btn-action { display: inline-block; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; text-decoration: none; margin-right: 6px; margin-bottom: 4px; }
+        .btn-accept { background: #059669; color: white; }
+        .btn-accept:hover { background: #047857; }
+        .btn-counter { background: #d97706; color: white; }
+        .btn-counter:hover { background: #b45309; }
+        .btn-provision { background: #0284c7; color: white; }
+        .btn-provision:hover { background: #0369a1; }
         .back-link { display: inline-block; margin-top: 20px; color: #64748b; text-decoration: none; font-size: 14px; }
         .back-link:hover { color: #94a3b8; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔒 Sovereign Client Submissions Registry</h1>
-        <p style="color: #94a3b8; font-size: 14px;">Total Logged Inquiries: <strong>{{ submissions|length }}</strong></p>
+        <h1>
+            <span>⚡ Garza Global Graviton | Inbound Command Center</span>
+            <span style="font-size: 14px; color: #94a3b8; font-weight: normal;">Active Inquiries: {{ submissions|length }}</span>
+        </h1>
 
         {% if submissions %}
         <table>
@@ -246,19 +255,27 @@ ADMIN_TEMPLATE = """
                 <tr>
                     <th>Timestamp</th>
                     <th>Client Email</th>
-                    <th>Category</th>
-                    <th>Scope</th>
-                    <th>Retainer Status</th>
-                    <th>Requirements / Notes</th>
+                    <th>Category & Scope</th>
+                    <th>Status</th>
+                    <th>Client Parameters</th>
+                    <th style="min-width: 320px;">1-Click Dispatch Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in submissions|reverse %}
+                {% set accept_subject = "Confirmed: Compute Node Provisioning - Garza Global Graviton" | urlencode %}
+                {% set accept_body = ("Hi,\\n\\nWe reviewed your specification for " ~ item.category ~ " (" ~ item.scope ~ ").\\n\\nYour compute reservation has been approved. Please reply directly to this email with your dataset attachment or secure download link, and we will begin processing immediately.\\n\\nIf you have not yet completed the initial compute deposit, you can retain your worker allocation here:\\n" ~ payment_link ~ "\\n\\nBest regards,\\nJoel Garza\\nGarza Global Graviton LLC") | urlencode %}
+                
+                {% set quote_subject = "Scope Assessment & Custom Quote - Garza Global Graviton" | urlencode %}
+                {% set quote_body = ("Hi,\\n\\nThank you for submitting your workload spec for " ~ item.category ~ ".\\n\\nBased on your requested scope (" ~ item.scope ~ "), we have structured a dedicated multi-node compute allocation. Estimated delivery turnaround is 24 hours from data ingestion.\\n\\nProposed Execution Package: $500 (Covers dedicated multi-threaded processing + SHA-256 sovereign ledger seal).\\n\\nTo accept and lock in this compute run, you can submit the retainer here:\\n" ~ payment_link ~ "\\n\\nBest regards,\\nJoel Garza\\nGarza Global Graviton LLC") | urlencode %}
+                
                 <tr>
-                    <td style="font-family: monospace; color: #94a3b8;">{{ item.timestamp[:19] }}</td>
+                    <td style="font-family: monospace; color: #94a3b8; font-size: 11px;">{{ item.timestamp[:19] }}</td>
                     <td style="font-weight: bold; color: #38bdf8;">{{ item.client_email }}</td>
-                    <td>{{ item.category }}</td>
-                    <td>{{ item.scope }}</td>
+                    <td>
+                        <strong>{{ item.category }}</strong><br>
+                        <span style="color: #94a3b8; font-size: 12px;">{{ item.scope }}</span>
+                    </td>
                     <td>
                         {% if "Paid" in item.retainer_status %}
                             <span class="badge-paid">{{ item.retainer_status }}</span>
@@ -266,13 +283,17 @@ ADMIN_TEMPLATE = """
                             <span class="badge-pending">{{ item.retainer_status }}</span>
                         {% endif %}
                     </td>
-                    <td style="max-width: 300px; word-wrap: break-word;">{{ item.details }}</td>
+                    <td style="max-width: 260px; font-size: 12px; color: #cbd5e1; word-wrap: break-word;">{{ item.details }}</td>
+                    <td>
+                        <a href="mailto:{{ item.client_email }}?subject={{ accept_subject }}&body={{ accept_body }}" class="btn-action btn-accept">📧 1-Click Accept & Request Data</a>
+                        <a href="mailto:{{ item.client_email }}?subject={{ quote_subject }}&body={{ quote_body }}" class="btn-action btn-counter">💼 1-Click Counter / Quote ($500)</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         {% else %}
-        <p style="color: #64748b; font-style: italic;">No client workload specs logged yet.</p>
+        <p style="color: #64748b; font-style: italic; padding: 20px 0;">No client workload specs logged yet.</p>
         {% endif %}
 
         <br>
@@ -405,7 +426,11 @@ def admin_submissions():
                 submissions = json.load(f)
         except Exception:
             submissions = []
-    return render_template_string(ADMIN_TEMPLATE, submissions=submissions)
+    return render_template_string(
+        ADMIN_TEMPLATE, 
+        submissions=submissions,
+        payment_link=MERCURY_PAYMENT_LINK
+    )
 
 @app.route('/healthz')
 def health():
