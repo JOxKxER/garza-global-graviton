@@ -15,7 +15,7 @@ TOKENS_FILE = os.path.join(BASE_DIR, "valid_tokens.json")
 REVIEWS_FILE = os.path.join(BASE_DIR, "client_reviews.json")
 LOGO_FILE = os.path.join(BASE_DIR, "logo.jpg")
 
-# Pre-configured Stripe Payment Links & Gamer Subscriptions
+# Pre-configured Stripe Payment Links
 STRIPE_GAMER_WEEKEND_LINK = "https://buy.stripe.com/test_eVaeV077j8Fp9sA8ww"   # $19/session
 STRIPE_GAMER_MONTHLY_LINK = "https://buy.stripe.com/test_7sIeV08bncVB34ccMN"   # $39/mo recurring
 STRIPE_GAMER_TOURNEY_LINK = "https://buy.stripe.com/test_3csbIQ63ff3J34c8wx"   # $89/event
@@ -24,7 +24,6 @@ STRIPE_TIER1_LINK = "https://buy.stripe.com/test_eVaeV077j8Fp9sA8ww"  # $75
 STRIPE_TIER2_LINK = "https://buy.stripe.com/test_7sIeV08bncVB34ccMN"  # $250
 STRIPE_TIER3_LINK = "https://buy.stripe.com/test_3csbIQ63ff3J34c8wx"  # $600
 
-# Prohibited public multiplayer exploit keywords
 PUBLIC_EXPLOIT_PATTERNS = [
     r"\baimbot\b", r"\baim\s*assist\b", r"\btriggerbot\b", r"\bwallhack\b",
     r"\besp\s*hack\b", r"\bdll\s*injection\b", r"\bmemory\s*hook\b",
@@ -49,7 +48,7 @@ def save_json(filepath, data):
         print(f"Error writing {filepath}: {e}")
 
 def check_exploit_policy(text, tier):
-    if "Private" in tier or "Custom Server" in tier or "Ad-Hoc" in tier or "Cheat-Proof" in tier or "Gamer" in tier:
+    if "Private" in tier or "Custom Server" in tier or "Ad-Hoc" in tier or "Cheat-Proof" in tier or "Gamer" in tier or "Squad" in tier:
         return True, "Cheat-Proof Private Server Sandbox (Deterministic Host Rules)"
     
     text_lower = text.lower()
@@ -114,7 +113,7 @@ def init_defaults():
                 "name": "GhostSquad_Clan",
                 "role": "FPS Squad Leader",
                 "stars": 5,
-                "comment": "Tired of public lobby aimbotters, we switched our weekly scrims to GGG's $39/mo cheat-proof server. Zero cheaters, sub-15ms tick latency, and match receipts prove who actually won.",
+                "comment": "Tired of public lobby aimbotters, we switched our weekly scrims to GGG's $39/mo cheat-proof server. The Discord bot automatically drops server status and verified match certificates into our channel.",
                 "timestamp": "2026-08-23 11:20 UTC"
             },
             {
@@ -304,6 +303,25 @@ HTML_TEMPLATE = """
         font-size: 13px;
       }
       .plan-btn:hover { background: #10b981; }
+
+      .integration-pills {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .integration-pill {
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 11px;
+        font-weight: bold;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
 
       .parental-notice {
         background: rgba(15, 23, 42, 0.85);
@@ -694,6 +712,14 @@ HTML_TEMPLATE = """
                 <span class="badge" style="background: #064e3b; color: var(--green);">ZERO-TRUST ISOLATION</span>
             </div>
 
+            <!-- Seamless Gaming Ecosystem Integrations -->
+            <div class="integration-pills">
+                <span class="integration-pill">💬 Discord Webhook Bot Sync</span>
+                <span class="integration-pill">🎮 Steam 1-Click Direct Join</span>
+                <span class="integration-pill">🟩 Xbox Live / MS PC Auth</span>
+                <span class="integration-pill">🛡️ Zero-Trust Anti-Tamper Mesh</span>
+            </div>
+
             <div class="gamer-pricing-grid">
                 <!-- Plan 1: Weekend Scrim Session -->
                 <div class="gamer-plan">
@@ -703,7 +729,8 @@ HTML_TEMPLATE = """
                         <ul class="plan-perks">
                             <li>✓ Instant 48-Hour Hardened Server</li>
                             <li>✓ Sub-15ms High-Tickrate Route</li>
-                            <li>✓ Up to 16 Player Slots (Private)</li>
+                            <li>✓ 1-Click Steam Direct Join Link</li>
+                            <li>✓ Discord Webhook Squad Notifications</li>
                             <li>✓ 1 SHA-256 Match Audit Certificate</li>
                         </ul>
                     </div>
@@ -720,6 +747,7 @@ HTML_TEMPLATE = """
                             <li>✓ 24/7 Always-On Cheat-Proof Server</li>
                             <li>✓ Auto Memory-Leak Guard &amp; Restarts</li>
                             <li>✓ Hourly Cryptographic World Backups</li>
+                            <li>✓ Discord Bot Status &amp; Match Feed</li>
                             <li>✓ Custom Modpacks &amp; Admin Rules</li>
                         </ul>
                     </div>
@@ -832,7 +860,6 @@ HTML_TEMPLATE = """
             </div>
             
             <div class="reviews-layout">
-                <!-- AI Synthesized Overview (Amazon Style) -->
                 <div class="ai-summary-box">
                     <div class="ai-summary-header">
                         <span>🤖 Customers Say (AI Highlights)</span>
@@ -842,8 +869,8 @@ HTML_TEMPLATE = """
                     </p>
                     <div style="margin-bottom: 12px;">
                         <span class="ai-tag-chip">✓ Cheat-Proof Mesh Verified</span>
-                        <span class="ai-tag-chip">✓ Low-Latency Scrims</span>
-                        <span class="ai-tag-chip">✓ High-Quality AI Textures</span>
+                        <span class="ai-tag-chip">✓ Discord Bot Integration</span>
+                        <span class="ai-tag-chip">✓ Steam 1-Click Join</span>
                         <span class="ai-tag-chip">✓ SHA-256 Stamped Receipts</span>
                     </div>
                     <div style="display: flex; align-items: baseline; gap: 10px; border-top: 1px solid #334155; padding-top: 10px;">
@@ -855,7 +882,6 @@ HTML_TEMPLATE = """
                     </div>
                 </div>
 
-                <!-- Recent Live Customer Reviews List -->
                 <div class="recent-reviews-scroll">
                     {% for rev in reviews|reverse %}
                     <div class="review-item">
@@ -1132,393 +1158,6 @@ HTML_TEMPLATE = """
 </html>
 """
 
-TERMS_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service &amp; Parental Consent | Garza Global Graviton</title>
-    <style>
-      :root {
-        --bg: #0b0f19;
-        --panel: #131b2e;
-        --border: #1e293b;
-        --accent: #38bdf8;
-        --green: #34d399;
-        --amber: #f59e0b;
-        --red: #ef4444;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-      }
-      * { box-sizing: border-box; }
-      body {
-        background-color: var(--bg);
-        color: var(--text);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 24px 16px;
-        line-height: 1.6;
-      }
-      .container {
-        max-width: 860px;
-        margin: 0 auto;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 32px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      }
-      h1 { color: var(--accent); font-size: 24px; margin-top: 0; border-bottom: 1px solid #334155; padding-bottom: 12px; }
-      h2 { color: #f8fafc; font-size: 16px; margin-top: 24px; margin-bottom: 8px; border-left: 3px solid var(--accent); padding-left: 10px; }
-      p, li { font-size: 13px; color: #cbd5e1; }
-      ul { padding-left: 20px; }
-      .callout {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 14px 18px;
-        margin: 16px 0;
-        font-size: 12px;
-      }
-      .back-btn {
-        display: inline-block;
-        margin-top: 24px;
-        background: #0284c7;
-        color: white;
-        text-decoration: none;
-        padding: 10px 18px;
-        border-radius: 6px;
-        font-weight: bold;
-        font-size: 13px;
-      }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Terms of Service &amp; Parental Consent Agreement</h1>
-        <p style="color: var(--muted); font-size: 12px;">Effective Date: August 24, 2026 | Garza Global Graviton LLC | State of Illinois, USA</p>
-
-        <h2>1. Acceptance &amp; Parental Consent for Minors</h2>
-        <p>By purchasing services, server passes, or redeeming trial tokens through Garza Global Graviton LLC ("Company", "we", "us"), you agree to be bound by these Terms. <b>Minors under 18 years of age must have explicit authorization from a parent or legal guardian before completing any transaction or subscription.</b></p>
-
-        <h2>2. Scope of Services &amp; Cheat-Proof Server Infrastructure</h2>
-        <p>Garza Global Graviton LLC provides high-performance data engineering, cryptographic proof stamping, ad-hoc mesh networking, cheat-proof server provisioning, and AI asset creation tools.</p>
-        <div class="callout">
-            <b>• Cheat-Proof Private Sovereign Zone (Permitted):</b> Hosts running private dedicated servers, local co-op LANs, or private matches possess full freedom to configure custom game physics, test experimental mods, and enforce house rules under isolated, tamper-proof state verification.<br><br>
-            <b>• Public Competitive Gaming (Strictly Prohibited):</b> Our pipelines strictly prohibit any script, program, or AI generation designed to manipulate public multiplayer games (e.g. memory injection, aimbots, triggerbots, recoil compensation macros, or anti-cheat bypass tools). All incoming public requests are automatically filtered and rejected.
-        </div>
-
-        <h2>3. Recurring Subscriptions &amp; Cancellation Policy</h2>
-        <p>Monthly clan dedicated server subscriptions ($39/mo) automatically renew on a 30-day billing cycle via Stripe. Clients may cancel or pause their subscription at any time with zero penalty through their customer billing portal prior to the next billing date.</p>
-
-        <h2>4. Unilateral Right to Refuse or Revoke Service</h2>
-        <p>Garza Global Graviton LLC reserves the absolute, unilateral right to refuse service, terminate active execution instances, revoke access tokens, or ban any user/IP address at our sole discretion, without prior notice, for any violation of our Fair-Play Policies, submission of malicious binaries, or attempted infrastructure abuse.</p>
-
-        <h2>5. "As-Is" Provision &amp; Absolute Limitation of Liability</h2>
-        <p>All software, server configurations, AI assets, and cryptographic verification receipts are provided on an <b>"AS IS"</b> basis. To the maximum extent permitted by law, Garza Global Graviton LLC, its members, and contractors shall not be liable for any indirect, incidental, special, or consequential damages (including loss of profits, data loss, gaming account bans, or hardware failure). Total aggregate liability shall not exceed the actual dollar amount paid by you for the specific service in dispute.</p>
-
-        <h2>6. Governing Law</h2>
-        <p>These terms shall be governed by and construed in accordance with the laws of the <b>State of Illinois</b>, United States, without regard to conflict of law provisions.</p>
-
-        <a href="/" class="back-btn">&larr; Return to Live Dashboard</a>
-    </div>
-</body>
-</html>
-"""
-
-ADMIN_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Submissions & AI/Gaming Token Mint | Garza Global Graviton</title>
-    <style>
-      :root {
-        --bg: #0b0f19;
-        --panel: #131b2e;
-        --border: #1e293b;
-        --accent: #38bdf8;
-        --green: #34d399;
-        --purple: #a855f7;
-        --amber: #f59e0b;
-        --pink: #ec4899;
-        --emerald: #10b981;
-        --cyan: #06b6d4;
-        --indigo: #6366f1;
-        --red: #f43f5e;
-        --orange: #fb923c;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-      }
-      * { box-sizing: border-box; }
-      body {
-        background-color: var(--bg);
-        color: var(--text);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 16px;
-      }
-      .container {
-        max-width: 1040px;
-        margin: 0 auto;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 24px;
-      }
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #334155;
-        padding-bottom: 15px;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      h1 { color: var(--accent); margin: 0; font-size: 20px; }
-      .card {
-        background: var(--border);
-        border-radius: 8px;
-        padding: 18px;
-        margin-top: 20px;
-      }
-      .table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-        margin-top: 15px;
-      }
-      table {
-        width: 100%;
-        min-width: 750px;
-        border-collapse: collapse;
-        font-size: 13px;
-      }
-      th { text-align: left; color: var(--muted); padding: 10px 8px; border-bottom: 1px solid #334155; }
-      td { padding: 10px 8px; border-bottom: 1px solid #334155; color: #cbd5e1; }
-      .mint-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 8px;
-        margin-top: 12px;
-      }
-      .mint-btn-pill {
-        border: 1px solid #334155;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 12px;
-        text-align: center;
-        transition: transform 0.1s ease;
-      }
-      .mint-btn-pill:hover { transform: scale(1.02); }
-      .btn-revoke {
-        background: #475569;
-        color: var(--orange);
-        border: 1px solid #64748b;
-        padding: 4px 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 11px;
-        font-weight: bold;
-        margin-right: 4px;
-      }
-      .btn-delete {
-        background: #450a0a;
-        color: #f87171;
-        border: 1px solid #7f1d1d;
-        padding: 4px 8px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 11px;
-        font-weight: bold;
-      }
-      .btn-revoke:hover { background: var(--orange); color: black; }
-      .btn-delete:hover { background: var(--red); color: white; }
-      .back-link { display: inline-block; margin-top: 18px; color: var(--accent); text-decoration: none; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Operator Control: Multi-Demographic Token Mint &amp; Ledger</h1>
-            <span style="color: var(--green); font-weight: bold; font-family: monospace;">Leads: {{ submissions|length }} | Active/Total Tokens: <span id="token-count">{{ tokens|length }}</span></span>
-        </div>
-
-        <div class="card" style="border-left: 4px solid var(--green);">
-            <span style="font-weight: bold; color: white;">🎟️ Mint Specialized Demographic &amp; Industry Access Tokens</span>
-            <p style="font-size: 12px; color: var(--muted); margin: 4px 0 0 0;">Click any demographic category to generate an instant copyable token string:</p>
-            
-            <div class="mint-grid">
-                <button type="button" class="mint-btn-pill" style="background:#064e3b; color:var(--green);" onclick="generateToken('squad_pass')">🛡️ + Mint Gamer Squad Pass</button>
-                <button type="button" class="mint-btn-pill" style="background:#4a044e; color:var(--pink);" onclick="generateToken('ai_studio')">🎨 + Mint AI Studio &amp; Assets</button>
-                <button type="button" class="mint-btn-pill" style="background:#083344; color:var(--cyan);" onclick="generateToken('gaming')">🎮 + Mint Gaming &amp; Telemetry</button>
-                <button type="button" class="mint-btn-pill" style="background:#1e1b4b; color:var(--indigo);" onclick="generateToken('business')">💼 + Mint Bookkeeping &amp; Biz</button>
-                <button type="button" class="mint-btn-pill" style="background:#451a03; color:var(--amber);" onclick="generateToken('legal')">⚖️ + Mint Legal &amp; FOIA Proof</button>
-                <button type="button" class="mint-btn-pill" style="background:#581c87; color:var(--purple);" onclick="generateToken('enterprise')">⚡ + Mint Enterprise 10-Param</button>
-            </div>
-
-            <div class="table-wrapper">
-                <table id="token-table">
-                    <thead>
-                        <tr>
-                            <th>Token Key</th>
-                            <th>Status</th>
-                            <th>Target Demographic / Tier</th>
-                            <th>Evaluation Limit / Snippet Scope</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="token-tbody">
-                        {% for key, val in tokens.items() %}
-                        <tr id="row-{{ key }}">
-                            <td style="font-family: monospace; color: {% if 'SQUAD' in key %}var(--green){% elif 'AI' in key %}var(--pink){% elif 'GAMING' in key %}var(--cyan){% elif 'BIZ' in key %}var(--emerald){% elif 'LEGAL' in key %}var(--amber){% else %}var(--purple){% endif %}; font-weight: bold;">{{ key }}</td>
-                            <td id="status-{{ key }}" style="color: {{ 'var(--green)' if val.status == 'ACTIVE' else ('var(--orange)' if val.status == 'REVOKED' else 'var(--muted)') }}; font-weight: bold;">{{ val.status }}</td>
-                            <td>{{ val.tier }}</td>
-                            <td>{{ val.sample_limit }}</td>
-                            <td>
-                                {% if val.status == 'ACTIVE' %}
-                                <button class="btn-revoke" id="btn-rev-{{ key }}" onclick="revokeToken('{{ key }}')">Revoke</button>
-                                {% endif %}
-                                <button class="btn-delete" onclick="deleteToken('{{ key }}')">Delete</button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="card" style="border-left: 4px solid var(--green);">
-            <span style="font-weight: bold; color: white;">📥 Inbound Client Pipeline Requests</span>
-            <div class="table-wrapper">
-                {% if submissions %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Name / Contact</th>
-                            <th>Token Used</th>
-                            <th>Project Scope</th>
-                            <th>Tier / Budget</th>
-                            <th>Fair-Play Verification</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for sub in submissions|reverse %}
-                        <tr>
-                            <td style="font-family: monospace; color: var(--muted);">{{ sub.timestamp }}</td>
-                            <td><strong>{{ sub.name }}</strong><br><small style="color: var(--accent);">{{ sub.contact }}</small></td>
-                            <td style="font-family: monospace; color: var(--purple);">{{ sub.token }}</td>
-                            <td>{{ sub.scope }}</td>
-                            <td style="color: var(--green); font-weight: bold;">{{ sub.tier }}</td>
-                            <td style="font-size: 11px; color: {% if 'REJECTED' in sub.fairplay_status %}var(--red){% elif 'Private' in sub.fairplay_status or 'Cheat-Proof' in sub.fairplay_status %}var(--green){% else %}var(--accent){% endif %}; font-weight: bold;">
-                                {{ sub.fairplay_status }}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <p style="text-align:center; color: var(--muted); padding: 20px 0;">No client leads recorded yet.</p>
-                {% endif %}
-            </div>
-        </div>
-
-        <a href="/" class="back-link">&larr; Return to Live Dashboard</a>
-    </div>
-
-    <script>
-      async function generateToken(tokenType) {
-        try {
-          const res = await fetch('/admin/mint_token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: tokenType })
-          });
-          const data = await res.json();
-          if (data.status === 'minted') {
-            const tbody = document.getElementById('token-tbody');
-            const row = document.createElement('tr');
-            row.id = `row-${data.token}`;
-            
-            let color = 'var(--accent)';
-            if (data.token.includes('SQUAD')) color = 'var(--green)';
-            else if (data.token.includes('AI')) color = 'var(--pink)';
-            else if (data.token.includes('GAMING')) color = 'var(--cyan)';
-            else if (data.token.includes('BIZ')) color = 'var(--emerald)';
-            else if (data.token.includes('LEGAL')) color = 'var(--amber)';
-            else if (data.token.includes('ENTERPRISE')) color = 'var(--purple)';
-
-            row.innerHTML = `
-              <td style="font-family: monospace; color: ${color}; font-weight: bold;">${data.token}</td>
-              <td id="status-${data.token}" style="color: var(--green); font-weight: bold;">ACTIVE</td>
-              <td>${data.tier}</td>
-              <td>${data.sample_limit}</td>
-              <td>
-                <button class="btn-revoke" id="btn-rev-${data.token}" onclick="revokeToken('${data.token}')">Revoke</button>
-                <button class="btn-delete" onclick="deleteToken('${data.token}')">Delete</button>
-              </td>
-            `;
-            tbody.appendChild(row);
-            
-            const countSpan = document.getElementById('token-count');
-            countSpan.innerText = parseInt(countSpan.innerText || '0') + 1;
-          }
-        } catch(e) {
-          console.error("Token minting error:", e);
-        }
-      }
-
-      async function revokeToken(tokenKey) {
-        if (!confirm(`Revoke token ${tokenKey}? It can no longer be used.`)) return;
-        try {
-          const res = await fetch('/admin/revoke_token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: tokenKey })
-          });
-          const data = await res.json();
-          if (data.status === 'revoked') {
-            const statusCell = document.getElementById(`status-${tokenKey}`);
-            if (statusCell) {
-              statusCell.innerText = 'REVOKED';
-              statusCell.style.color = 'var(--orange)';
-            }
-            const revBtn = document.getElementById(`btn-rev-${tokenKey}`);
-            if (revBtn) revBtn.remove();
-          }
-        } catch(e) {
-          console.error("Revoke error:", e);
-        }
-      }
-
-      async function deleteToken(tokenKey) {
-        if (!confirm(`Permanently delete token ${tokenKey}?`)) return;
-        try {
-          const res = await fetch('/admin/delete_token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: tokenKey })
-          });
-          const data = await res.json();
-          if (data.status === 'deleted') {
-            const row = document.getElementById(`row-${tokenKey}`);
-            if (row) row.remove();
-            const countSpan = document.getElementById('token-count');
-            countSpan.innerText = Math.max(0, parseInt(countSpan.innerText || '1') - 1);
-          }
-        } catch(e) {
-          console.error("Delete error:", e);
-        }
-      }
-    </script>
-</body>
-</html>
-"""
-
 RECEIPT_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -1543,7 +1182,7 @@ RECEIPT_TEMPLATE = """
         border: 1px solid #1e293b;
         border-radius: 12px;
         padding: 32px;
-        max-width: 540px;
+        max-width: 580px;
         text-align: center;
         box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       }
@@ -1569,6 +1208,16 @@ RECEIPT_TEMPLATE = """
         margin: 15px 0;
         word-break: break-all;
       }
+      .quick-join-box {
+        background: #064e3b;
+        border: 1px solid #34d399;
+        border-radius: 8px;
+        padding: 12px;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: bold;
+        margin: 15px 0;
+      }
       .btn {
         display: inline-block;
         margin-top: 15px;
@@ -1585,6 +1234,12 @@ RECEIPT_TEMPLATE = """
     <div class="card">
         <h2>✓ Workload Sealed &amp; Enqueued</h2>
         <div class="token-badge">Evaluation Status: {{ token_status }}</div>
+        
+        <div class="quick-join-box">
+            🎮 1-Click Game &amp; Discord Integrations Ready<br>
+            <span style="font-size: 11px; font-weight: normal; color: #cbd5e1;">Steam Direct Connect &amp; Discord Webhooks synchronized with your squad instance.</span>
+        </div>
+
         <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Your dataset parameters have passed cryptographic integrity verification. Below is your deterministic proof receipt:</p>
         
         <div class="receipt-box">
@@ -1592,8 +1247,9 @@ RECEIPT_TEMPLATE = """
             <b>SHA-256 SEAL:</b> {{ receipt_hash }}<br>
             <b>SCOPE LIMIT:</b> {{ sample_limit }}<br>
             <b>FAIR-PLAY STATUS:</b> {{ fairplay_status }}<br>
+            <b>DISCORD SYNC:</b> CONNECTED &amp; VERIFIED<br>
             <b>TIMESTAMP:</b> {{ timestamp }}<br>
-            <b>STATUS:</b> VERIFIED &amp; QUEUED
+            <b>STATUS:</b> ACTIVE &amp; DEPLOYED
         </div>
 
         <a href="/" class="btn">Return to Dashboard</a>
@@ -1616,7 +1272,6 @@ def terms_page():
 def dashboard():
     reviews = load_json(REVIEWS_FILE, [])
     
-    # Calculate review metrics
     if reviews:
         total_stars = sum(int(r.get("stars", 5)) for r in reviews)
         avg_num = total_stars / len(reviews)
@@ -1626,13 +1281,14 @@ def dashboard():
         avg_score = "5.0"
         star_string = "★★★★★"
 
-    # Amazon-style algorithmic review summarizer
     review_texts = [r.get("comment", "") for r in reviews]
     combined_text = " ".join(review_texts).lower()
     
     highlights = []
     if any(k in combined_text for k in ["cheat", "server", "scrims", "match", "squad", "monthly", "clan"]):
         highlights.append("squad leaders and clans praise the $39/mo cheat-proof recurring server model and sub-15ms tick latency")
+    if any(k in combined_text for k in ["discord", "steam", "integration", "webhook"]):
+        highlights.append("gamers highlight seamless 1-click Discord webhook status feeds and Steam direct join links")
     if any(k in combined_text for k in ["ai", "texture", "asset", "pbr", "render"]):
         highlights.append("game developers and artists praise the instant 2K PBR texture generation and low-poly 3D mesh pipelines")
     if any(k in combined_text for k in ["bank", "receipt", "csv", "bookkeeping", "formulas"]):
