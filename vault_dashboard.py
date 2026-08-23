@@ -37,7 +37,7 @@ def init_tokens():
     tokens = load_json(TOKENS_FILE, {})
     if not tokens:
         tokens = {
-            "GGG-TRIAL-DEMO1": {"status": "ACTIVE", "tier": "Standard Trial", "max_rows": 500, "sample_limit": "500 rows sample cleaning & validation", "created": "2026-08-23 12:00:00 UTC"},
+            "GGG-TRIAL-DEMO1": {"status": "ACTIVE", "tier": "Standard Trial", "max_rows": 500, "sample_limit": "500 rows / 1 media asset", "created": "2026-08-23 12:00:00 UTC"},
             "GGG-ENTERPRISE-POC1": {"status": "ACTIVE", "tier": "Enterprise POC Slice", "max_rows": 50000, "sample_limit": "10-parameter sweep slice & cryptographic ledger audit", "created": "2026-08-23 12:00:00 UTC"}
         }
         save_json(TOKENS_FILE, tokens)
@@ -68,6 +68,7 @@ HTML_TEMPLATE = """
         --green: #34d399;
         --purple: #a855f7;
         --amber: #f59e0b;
+        --pink: #ec4899;
         --text: #e2e8f0;
         --muted: #94a3b8;
       }
@@ -133,6 +134,48 @@ HTML_TEMPLATE = """
       .metric-title { color: var(--muted); font-size: 14px; }
       .metric-value { font-weight: bold; color: #f8fafc; font-family: monospace; font-size: 14px; }
       
+      .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+        margin-top: 10px;
+      }
+      .tool-box {
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 16px;
+        cursor: pointer;
+        transition: transform 0.15s ease, border-color 0.15s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .tool-box:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+      }
+      .tool-header {
+        font-weight: bold;
+        color: var(--accent);
+        font-size: 14px;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .tool-desc {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .tool-tap {
+        font-size: 11px;
+        color: var(--green);
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
       .pricing-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -163,45 +206,6 @@ HTML_TEMPLATE = """
         font-size: 13px;
       }
       .checkout-btn:hover { background: #0369a1; }
-
-      .poc-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 12px;
-        margin-top: 10px;
-      }
-      .poc-box {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 6px;
-        padding: 14px;
-        cursor: pointer;
-        transition: transform 0.15s ease, border-color 0.15s ease;
-      }
-      .poc-box:hover {
-        border-color: var(--amber);
-        transform: translateY(-2px);
-      }
-      .poc-header {
-        font-weight: bold;
-        color: var(--amber);
-        font-size: 14px;
-        margin-bottom: 6px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .poc-desc {
-        font-size: 12px;
-        color: var(--muted);
-        line-height: 1.4;
-      }
-      .poc-tap-hint {
-        font-size: 11px;
-        color: var(--accent);
-        margin-top: 8px;
-        font-weight: bold;
-      }
 
       /* FAQ Accordion */
       .faq-item {
@@ -355,44 +359,85 @@ HTML_TEMPLATE = """
         <div class="header">
             <div>
                 <h1>GARZA GLOBAL GRAVITON</h1>
-                <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing & Cryptographic Zero-Trust Vaulting Pipeline</p>
+                <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, Everyday Data Engineering &amp; Sovereign Vaulting</p>
             </div>
             <span class="badge">SYSTEM ONLINE</span>
         </div>
 
-        <!-- Enterprise POC / Free Trial Slices (Clickable) -->
-        <div class="card" style="border-left-color: var(--amber);">
-            <div class="card-title">🔬 Enterprise Proof-of-Concept: Free Micro-Workload Slices</div>
-            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Click any evaluation slice below to configure your test run in the intake form:</p>
-            <div class="poc-grid">
-                <div class="poc-box" onclick="selectPocSlice('sweep')">
-                    <div class="poc-header">
-                        <span>⚡ Compute Sweep Slice (10-Param Run)</span>
-                        <span style="font-size: 11px;">&darr;</span>
+        <!-- Everyday, Creative & Enterprise Free Trial Tools -->
+        <div class="card" style="border-left-color: var(--pink);">
+            <div class="card-title">✨ Free Trial Workloads: Everyday Data &amp; Creative Tools</div>
+            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Click any common task below to automatically load the template into the trial intake form:</p>
+            <div class="tool-grid">
+                <div class="tool-box" onclick="selectTool('privacy')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--pink);">🛡️ Photo &amp; Video Privacy Strip</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Wipe hidden GPS location tags, camera serial numbers, and tracking metadata from photos or video clips.</div>
                     </div>
-                    <div class="poc-desc">Test run a 10-parameter iteration sweep on sample data with multi-threaded vectorization benchmarks.</div>
-                    <div class="poc-tap-hint">Select &amp; Pre-Fill Form &rarr;</div>
+                    <div class="tool-tap">Load Template &rarr;</div>
                 </div>
-                <div class="poc-box" onclick="selectPocSlice('etl')">
-                    <div class="poc-header">
-                        <span>🔄 High-Volume ETL Micro-Batch (10k Rows)</span>
-                        <span style="font-size: 11px;">&darr;</span>
+
+                <div class="tool-box" onclick="selectTool('copyright')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--purple);">🎨 Artist &amp; Music Proof Stamp</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Generate an immutable SHA-256 cryptographic birth certificate for original songs, digital art, writing, or 3D models.</div>
                     </div>
-                    <div class="poc-desc">Feed raw unformatted batch data (JSON/CSV) to evaluate cleaning accuracy, schema conformity, and throughput.</div>
-                    <div class="poc-tap-hint">Select &amp; Pre-Fill Form &rarr;</div>
+                    <div class="tool-tap">Load Template &rarr;</div>
                 </div>
-                <div class="poc-box" onclick="selectPocSlice('vault')">
-                    <div class="poc-header">
-                        <span>🛡️ Cryptographic Vault Receipt Audit</span>
-                        <span style="font-size: 11px;">&darr;</span>
+
+                <div class="tool-box" onclick="selectTool('gaming')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--accent);">🎮 Gamer Telemetry &amp; Asset Fix</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Parse match combat logs, frame-time drops, or batch-organize and compress raw gameplay clips and screenshots.</div>
                     </div>
-                    <div class="poc-desc">Process sample records through SHA-256 zero-trust evidence hashing and receive a tamper-proof verification receipt.</div>
-                    <div class="poc-tap-hint">Select &amp; Pre-Fill Form &rarr;</div>
+                    <div class="tool-tap">Load Template &rarr;</div>
+                </div>
+
+                <div class="tool-box" onclick="selectTool('spreadsheet')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--green);">📊 Broken Sheet / Expense Cleaner</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Fix messy bank CSVs, remove duplicate mailing leads, unify phone formats, and clean corrupted Excel numbers.</div>
+                    </div>
+                    <div class="tool-tap">Load Template &rarr;</div>
+                </div>
+
+                <div class="tool-box" onclick="selectTool('notary')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--amber);">📜 Timestamped Document Notary</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Seal draft contracts, rental condition photos, or patent concepts with a verifiable cryptographic ledger proof.</div>
+                    </div>
+                    <div class="tool-tap">Load Template &rarr;</div>
+                </div>
+
+                <div class="tool-box" onclick="selectTool('enterprise')">
+                    <div>
+                        <div class="tool-header">
+                            <span style="color: var(--accent);">⚡ Enterprise 10-Param Sweep</span>
+                            <span>&darr;</span>
+                        </div>
+                        <div class="tool-desc">Test run a high-density 10-parameter compute sweep slice with multi-threaded vectorization benchmarks.</div>
+                    </div>
+                    <div class="tool-tap">Load Template &rarr;</div>
                 </div>
             </div>
         </div>
 
-        <!-- À La Carte Pricing Matrix & Direct Checkout -->
+        <!-- À La Carte Production Services & Checkout -->
         <div class="card" style="border-left-color: var(--purple);">
             <div class="card-title">📦 À La Carte Production Services &amp; Instant Checkout</div>
             <div class="pricing-grid">
@@ -427,20 +472,20 @@ HTML_TEMPLATE = """
         <div class="card" style="border-left-color: var(--accent);">
             <div class="card-title">❓ Frequently Asked Questions &amp; Support</div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>How does billing and checkout work?</span> <span>+</span></div>
-                <div class="faq-answer">We accept all major credit cards, ACH transfers, and corporate invoicing via Stripe. For milestone jobs, you are billed upon project scope approval. Retainers are billed monthly with no lock-in contracts.</div>
+                <div class="faq-question"><span>What can I do with a free trial token?</span> <span>+</span></div>
+                <div class="faq-answer">Trial tokens allow you to process a complete sample dataset (up to 500 rows or 1 media file) or test-run a 10-parameter compute sweep slice with an immutable SHA-256 verification receipt at zero cost.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('active')">
+                <div class="faq-question"><span>How does billing and payment work?</span> <span>+</span></div>
+                <div class="faq-answer">We accept all major credit cards, Apple Pay, ACH transfers, and corporate invoicing via Stripe. For custom builds, milestones are approved prior to deployment.</div>
             </div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
                 <div class="faq-question"><span>What is the standard turnaround time?</span> <span>+</span></div>
-                <div class="faq-answer">Tier 1 script optimizations are delivered within 24 to 48 hours. Custom ETL pipelines and batch compute runs typically complete within 3 to 5 business days.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>How do I redeem a free trial or POC access token?</span> <span>+</span></div>
-                <div class="faq-answer">Enter your trial token into the project submission form below. The pipeline will execute a sample dataset run and return a verified SHA-256 receipt at zero cost.</div>
+                <div class="faq-answer">Tier 1 script fixes and trial outputs are processed in under 24 hours. Custom automated pipelines and batch sweeps complete within 3 to 5 business days.</div>
             </div>
             <div class="faq-item" onclick="this.classList.toggle('active')">
                 <div class="faq-question"><span>Need direct technical support?</span> <span>+</span></div>
-                <div class="faq-answer">Email us directly with your architecture questions or submit the intake form below for an engineer review within 4 hours.</div>
+                <div class="faq-answer">Submit your question via the form below or chat widget to connect with an engineer.</div>
             </div>
         </div>
 
@@ -467,7 +512,7 @@ HTML_TEMPLATE = """
 
         <!-- Token Redemption & Workload Intake Form -->
         <div class="card" id="intake-section" style="border-left-color: var(--green);">
-            <div class="card-title">🚀 Workload Intake &amp; Trial / Enterprise POC Redemption</div>
+            <div class="card-title">🚀 Workload Intake &amp; Token Redemption</div>
             <form action="/submit" method="POST">
                 <div class="form-group">
                     <label>Full Name or Company</label>
@@ -478,18 +523,18 @@ HTML_TEMPLATE = """
                     <input type="text" name="email" id="input-email" placeholder="contact@domain.com" required>
                 </div>
                 <div class="form-group">
-                    <label>Access / POC Token (Optional for Free Trial or Enterprise Slice)</label>
-                    <input type="text" name="token" id="input-token" placeholder="e.g. GGG-ENTERPRISE-POC1 or GGG-TRIAL-8F9A2" style="font-family: monospace; border-color: var(--accent);">
+                    <label>Access / Trial Token (Optional for Free Demo Execution)</label>
+                    <input type="text" name="token" id="input-token" placeholder="e.g. GGG-TRIAL-DEMO1" style="font-family: monospace; border-color: var(--accent);">
                 </div>
                 <div class="form-group">
-                    <label>Project Scope / Sample Data / POC Requirements</label>
-                    <textarea name="scope" id="input-scope" rows="3" placeholder="Describe the enterprise architecture, parameter sweep requirements, or paste sample schema/JSON..." required></textarea>
+                    <label>Project Scope / Paste Data or Media Specs</label>
+                    <textarea name="scope" id="input-scope" rows="4" placeholder="Describe what you want to clean, optimize, stamp, or process..." required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Select Service / Evaluation Tier</label>
                     <select name="tier" id="select-tier">
+                        <option value="Everyday / Creative Free Trial Run">Everyday / Creative Free Trial Run</option>
                         <option value="Enterprise POC Slice (Free Token Evaluation)">Enterprise POC Slice (Free Token Evaluation)</option>
-                        <option value="Standard Trial Run (500 rows free)">Standard Trial Run (500 rows free)</option>
                         <option value="Script Optimization / Bug Fix ($75)">Script Optimization / Bug Fix — $75</option>
                         <option value="Automated ETL & API Pipeline ($250)" selected>Automated ETL &amp; API Pipeline — $250</option>
                         <option value="Enterprise Compute & Backtesting ($600+)">Enterprise Compute &amp; Backtesting — $600+</option>
@@ -517,12 +562,12 @@ HTML_TEMPLATE = """
             <span style="cursor:pointer;" onclick="toggleChat()">✕</span>
         </div>
         <div class="chat-body" id="chat-stream">
-            <div class="chat-msg msg-bot">Hello! How can I assist you with your data pipeline, Enterprise POC, or pricing today?</div>
+            <div class="chat-msg msg-bot">Hello! How can I assist you with everyday data tools, media privacy, or pricing today?</div>
         </div>
         <div class="chat-options">
+            <span class="chat-chip" onclick="askBot('everyday')">🧹 Everyday Tools</span>
             <span class="chat-chip" onclick="askBot('pricing')">💰 Price List</span>
-            <span class="chat-chip" onclick="askBot('estimate')">📊 Estimate Project</span>
-            <span class="chat-chip" onclick="askBot('tokens')">🎟️ Trial & POC Tokens</span>
+            <span class="chat-chip" onclick="askBot('tokens')">🎟️ Trial Tokens</span>
             <span class="chat-chip" onclick="askBot('payment')">💳 Payment Methods</span>
         </div>
     </div>
@@ -533,20 +578,29 @@ HTML_TEMPLATE = """
         box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
       }
 
-      function selectPocSlice(type) {
+      function selectTool(type) {
         var tierSelect = document.getElementById('select-tier');
         var scopeBox = document.getElementById('input-scope');
-        var tokenBox = document.getElementById('input-token');
         var intakeCard = document.getElementById('intake-section');
 
-        tierSelect.value = "Enterprise POC Slice (Free Token Evaluation)";
-
-        if (type === 'sweep') {
-          scopeBox.value = "Enterprise POC Request: 10-Parameter Compute Sweep Benchmark on sample multi-dimensional dataset.";
-        } else if (type === 'etl') {
-          scopeBox.value = "Enterprise POC Request: High-Volume ETL Micro-Batch (10,000 rows unformatted JSON/CSV cleaning and schema normalization).";
-        } else if (type === 'vault') {
-          scopeBox.value = "Enterprise POC Request: Cryptographic Zero-Trust Vaulting & SHA-256 Ledger Receipt Verification Audit.";
+        if (type === 'privacy') {
+          tierSelect.value = "Everyday / Creative Free Trial Run";
+          scopeBox.value = "Task: Photo/Video Privacy Scrubber\\n- Remove GPS/EXIF metadata from mobile images/video.\\n- Sanitize filenames and optimize file payload.";
+        } else if (type === 'copyright') {
+          tierSelect.value = "Everyday / Creative Free Trial Run";
+          scopeBox.value = "Task: Creative Provenance Proof Stamp\\n- Asset Type: Audio master / Illustration / Writing draft.\\n- Request: Issue immutable SHA-256 timestamp seal proving prior creation.";
+        } else if (type === 'gaming') {
+          tierSelect.value = "Everyday / Creative Free Trial Run";
+          scopeBox.value = "Task: Gaming Telemetry & Asset Optimization\\n- Format gameplay logs, parse frame drops, or organize batch capture screenshots.";
+        } else if (type === 'spreadsheet') {
+          tierSelect.value = "Everyday / Creative Free Trial Run";
+          scopeBox.value = "Task: Broken Spreadsheet & Expense Cleaner\\n- Normalize dates, fix negative currency formats, clean vendor names, and deduplicate rows.";
+        } else if (type === 'notary') {
+          tierSelect.value = "Everyday / Creative Free Trial Run";
+          scopeBox.value = "Task: Timestamped Document Notary\\n- Hash contract notes or property condition photos to generate a tamper-evident audit receipt.";
+        } else if (type === 'enterprise') {
+          tierSelect.value = "Enterprise POC Slice (Free Token Evaluation)";
+          scopeBox.value = "Task: Enterprise 10-Parameter Compute Sweep Slice\\n- Run a multi-threaded parameter iteration benchmark on high-density sample records.";
         }
 
         intakeCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -561,15 +615,15 @@ HTML_TEMPLATE = """
         var botMsg = document.createElement('div');
         botMsg.className = 'chat-msg msg-bot';
 
-        if (topic === 'pricing') {
+        if (topic === 'everyday') {
+          userMsg.innerText = "What everyday tools can I run?";
+          botMsg.innerHTML = "You can run:<br>• <b>Privacy Scrub:</b> Strip GPS from photos/videos.<br>• <b>Art/Music Timestamp:</b> Proof of copyright.<br>• <b>Sheet Fixer:</b> Clean messy bank/expense CSVs.<br>• <b>Gaming Logs:</b> Parse match stats & telemetry.<br>Click any card above to try it free!";
+        } else if (topic === 'pricing') {
           userMsg.innerText = "What are the standard prices?";
-          botMsg.innerHTML = "Our à la carte pricing:<br>• <b>Script Fix:</b> $75<br>• <b>ETL Pipeline:</b> $250<br>• <b>Compute & Sweeps:</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
-        } else if (topic === 'estimate') {
-          userMsg.innerText = "How do you estimate projects?";
-          botMsg.innerHTML = "Estimates depend on data volume and API complexity:<br>• Under 10k rows / 1 API: ~$75-$150<br>• Automated recurring ETL: ~$250<br>• High-volume backtesting: ~$600+.<br>Submit the form above for an exact fixed quote!";
+          botMsg.innerHTML = "Our à la carte pricing:<br>• <b>Script Fix / Tool:</b> $75<br>• <b>ETL Pipeline:</b> $250<br>• <b>Compute & Sweeps:</b> $600+<br>• <b>Retainers:</b> Custom monthly SLA.";
         } else if (topic === 'tokens') {
-          userMsg.innerText = "How do trial & POC tokens work?";
-          botMsg.innerHTML = "Trial & POC tokens allow free test runs of our data cleaning or parameter sweep engine. Click any POC box above to auto-configure!";
+          userMsg.innerText = "How do trial tokens work?";
+          botMsg.innerHTML = "Trial tokens allow 1 free test run of our data cleaning, media privacy, or cryptographic proof engine. Enter your token in the submission form to execute!";
         } else if (topic === 'payment') {
           userMsg.innerText = "How do I pay?";
           botMsg.innerHTML = "We send secure Stripe checkout links for Credit Card, Apple Pay, and ACH transfers upon scope confirmation.";
@@ -600,6 +654,7 @@ ADMIN_TEMPLATE = """
         --green: #34d399;
         --purple: #a855f7;
         --amber: #f59e0b;
+        --pink: #ec4899;
         --red: #f43f5e;
         --orange: #fb923c;
         --text: #e2e8f0;
@@ -709,9 +764,9 @@ ADMIN_TEMPLATE = """
 
         <div class="card" style="border-left: 4px solid var(--purple);">
             <div style="display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <span style="font-weight: bold; color: white;">🎟️ Mint Standard &amp; Enterprise POC Tokens</span>
+                <span style="font-weight: bold; color: white;">🎟️ Mint Standard, Creative &amp; Enterprise Tokens</span>
                 <div class="mint-controls">
-                    <button type="button" class="mint-btn" onclick="generateToken('standard')">+ Mint Standard Trial (500 Rows)</button>
+                    <button type="button" class="mint-btn" onclick="generateToken('standard')">+ Mint Everyday/Trial Token</button>
                     <button type="button" class="mint-btn-enterprise" onclick="generateToken('enterprise')">+ Mint Enterprise POC Slice</button>
                 </div>
             </div>
@@ -973,9 +1028,9 @@ def mint_token():
         sample_limit = "10-parameter sweep slice & cryptographic ledger audit"
     else:
         new_token = f"GGG-TRIAL-{secrets.token_hex(3).upper()}"
-        tier = "Standard Trial Run"
+        tier = "Standard / Creative Trial"
         max_rows = 500
-        sample_limit = "500 rows sample cleaning & validation"
+        sample_limit = "500 rows cleaning / 1 media privacy scrub / 1 copyright stamp"
 
     tokens[new_token] = {
         "status": "ACTIVE",
