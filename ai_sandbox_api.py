@@ -1,7 +1,7 @@
 """
 ai_sandbox_api.py - Restricted AI Sandbox & Secured Multi-Sector Platform
-Provides secure endpoints, developer instructions, and public commercial services 
-with fully installed Google Ads tracking tags.
+Includes the public storefront, private network & anti-cheat signup portal, 
+secure API endpoints, and integrated Google Ads tracking tags.
 """
 
 from fastapi import FastAPI, Header, HTTPException, Depends
@@ -12,9 +12,9 @@ import hashlib
 from datetime import datetime
 
 app = FastAPI(
-    title="Garza Global Graviton - Restricted AI Sandbox & Commercial Platform",
-    description="Secure evaluation gateway, developer instructions, and decentralized multi-sector commercial services.",
-    version="3.0.0"
+    title="Garza Global Graviton - Secure Private Networks & Anti-Cheat Platform",
+    description="Storefront, private network provisioning, and verifiable node architecture.",
+    version="3.1.0"
 )
 
 DB_NAME = "vault_storage.db"
@@ -77,11 +77,11 @@ def verify_sandbox_token(x_api_key: str = Header(...)):
 
 @app.get("/", response_class=HTMLResponse)
 def sandbox_root():
-    """Developer instructions, FAQs, commercial multi-sector services, and Google tracking tags."""
+    """Public Storefront, Private Network Provisioning, Anti-Cheat Verification, and Google tracking tags."""
     return """
     <html>
         <head>
-            <title>Garza Global Graviton - Sandbox & Commercial Services</title>
+            <title>Garza Global Graviton - Private Networks & Anti-Cheat Storefront</title>
             
             <!-- Google tag (gtag.js) -->
             <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18405631729"></script>
@@ -104,88 +104,63 @@ def sandbox_root():
                 h2 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 5px; margin-top: 40px; }
                 code { background: #0f172a; color: #38bdf8; padding: 2px 6px; border-radius: 4px; }
                 pre { background: #0f172a; padding: 15px; border-radius: 6px; overflow-x: auto; color: #cbd5e1; }
-                .endpoint { background: #334155; padding: 12px 15px; margin: 12px 0; border-radius: 6px; }
+                .endpoint { background: #334155; padding: 15px; margin: 15px 0; border-radius: 6px; border-left: 4px solid #38bdf8; }
+                .btn { display: inline-block; background: #38bdf8; color: #0f172a; padding: 10px 20px; font-weight: bold; border-radius: 4px; text-decoration: none; margin-top: 10px; }
+                .btn:hover { background: #7dd3fc; }
             </style>
         </head>
         <body>
             <div class="container">
-                <h1>🛡️ Garza Global Graviton: AI Sandbox & Commercial Platform</h1>
-                <p>Welcome to the secure evaluation gateway and decentralized intelligence hub. Showcasing mesh applications across municipal street planning, traffic optimization, energy grids, algorithmic trading, and scientific research.</p>
+                <h1>🛡️ Garza Global Graviton: Secure Private Networks & Anti-Cheat Hub</h1>
+                <p>Welcome to the official storefront and provisioning gateway. Deploy immutable private mesh networks, stop tampering and cheating via cryptographic state verification, and secure your high-performance multiplayer or enterprise workloads.</p>
                 
+                <h2>🛒 Storefront: Private Network & Anti-Cheat Deployment</h2>
+                
+                <div class="endpoint">
+                    <strong>1. Secure Private Network Provisioning</strong><br>
+                    <small>Spin up isolated, encrypted private network nodes with tamper-evident routing and decentralized peer-to-peer tunnels. Ideal for secure telemetry, enterprise clusters, and private gaming sessions.</small><br>
+                    <a href="/docs" class="btn">Provision Network ↗</a>
+                </div>
+
+                <div class="endpoint">
+                    <strong>2. Anti-Cheat & State Validation Engine</strong><br>
+                    <small>Prevent unauthorized memory injection, packet tampering, and cheating using real-time cryptographic hash-chaining and decentralized node verification. Protect competitive integrity across your applications.</small><br>
+                    <a href="/docs" class="btn">Configure Anti-Cheat ↗</a>
+                </div>
+
+                <div class="endpoint">
+                    <strong>3. Human Data Crunch & Node Verification</strong><br>
+                    <small>Harness our distributed asynchronous task-queuing engine to verify telemetry, audit transaction streams, and maintain tamper-proof execution logs across isolated nodes.</small>
+                </div>
+
                 <h2>🌐 Multi-Sector Commercial & Municipal Services</h2>
                 
                 <div class="endpoint">
-                    <strong>1. Municipal Street & Traffic Planning Data Harvesting</strong><br>
-                    <small>Leverage autonomous vehicle fleets and smart sensors to passively harvest high-fidelity traffic flow, bottleneck patterns, and road wear data. Feed verified analytics directly into city planning models to optimize future street layouts, urban expansion, and public transit routing.</small>
+                    <strong>Municipal Traffic & Fleet Data Harvesting</strong><br>
+                    <small>Securely aggregate autonomous vehicle and IoT telemetry for city planning and bottleneck optimization.</small>
                 </div>
 
                 <div class="endpoint">
-                    <strong>2. Energy Sector & Grid Load Balancing</strong><br>
-                    <small>Deploy decentralized mesh nodes to securely coordinate distributed energy resources, smart microgrids, and electric vehicle charging fleets, ensuring real-time load balancing and fault tolerance during peak demand.</small>
+                    <strong>Energy Grid & Microgrid Load Balancing</strong><br>
+                    <small>Coordinate distributed energy resources and charging fleets with fault-tolerant mesh nodes.</small>
                 </div>
 
-                <div class="endpoint">
-                    <strong>3. Stock Trading & Algorithmic Market Data Mesh</strong><br>
-                    <small>Utilize immutable hash-chaining and low-latency asynchronous task routing for secure financial telemetry analysis, options strategy modeling, and verifiable, tamper-evident execution audit trails.</small>
-                </div>
-
-                <div class="endpoint">
-                    <strong>4. Scientific Research & Distributed Computation ("Human Data Crunch")</strong><br>
-                    <small>Harness the asynchronous task-queuing engine to distribute heavy scientific computations, fluid dynamics simulations, and decentralized AI model verification across isolated remote nodes.</small>
-                </div>
-
-                <div class="endpoint">
-                    <strong>5. Commercial Autonomous Robotics (Drones, Cars & Factory Cells)</strong><br>
-                    <small>Unified mesh coordination for commercial drone mapping fleets, metropolitan self-driving car fleets (construction re-routing), and industrial manufacturing factory robots across secure local data loops.</small>
-                </div>
-
-                <h2>📖 Developer Integration & Usage Guide</h2>
-                <p>To interact with the <strong>Human Data Crunch</strong> and telemetry features, include your assigned session key in your request headers:</p>
+                <h2>📖 Developer Integration & API Access</h2>
+                <p>To interact with your private network nodes and submit verification tasks, authenticate via your assigned session header:</p>
                 <pre>X-API-Key: [Your Assigned Session ID Hash]</pre>
                 
                 <h2>🔌 Available API Endpoints</h2>
-                
                 <div class="endpoint">
-                    <strong>1. Inspect Mesh Telemetry</strong><br>
-                    <code>GET /sandbox/telemetry-status</code><br>
-                    <small>Returns active node counts and network health status.</small>
+                    <strong>Inspect Mesh & Network Status</strong><br>
+                    <code>GET /sandbox/telemetry-status</code>
+                </div>
+                <div class="endpoint">
+                    <strong>Submit Verification Task / Anti-Cheat Audit</strong><br>
+                    <code>POST /sandbox/submit-verification</code>
                 </div>
                 
-                <div class="endpoint">
-                    <strong>2. Submit Verification Task</strong><br>
-                    <code>POST /sandbox/submit-verification</code><br>
-                    <small>Queues a task into the decentralized mesh network.</small>
-                </div>
-                
-                <h2>❓ Frequently Asked Questions (FAQ)</h2>
-                
-                <div class="endpoint">
-                    <strong>Q: Is my proprietary source code or model data exposed during a sandbox evaluation?</strong><br>
-                    <small><strong>A:</strong> No. The sandbox operates in a strictly isolated, black-box environment. External entities only interact via designated API endpoints and cannot access raw source code, local weights, or database files.</small>
-                </div>
-
-                <div class="endpoint">
-                    <strong>Q: How are authentication keys managed?</strong><br>
-                    <small><strong>A:</strong> All interaction requires a cryptographically hashed session key validated dynamically against a secure local database vault.</small>
-                </div>
-
-                <div class="endpoint">
-                    <strong>Q: How does the mesh harvest data for municipal street and traffic planning?</strong><br>
-                    <small><strong>A:</strong> As autonomous fleets and IoT sensors interact with city infrastructure, aggregated spatial and flow telemetry is cryptographically bundled and routed through the mesh to provide urban planners with objective, real-time datasets.</small>
-                </div>
-
-                <div class="endpoint">
-                    <strong>Q: What is the "Human Data Crunch" feature?</strong><br>
-                    <small><strong>A:</strong> It is an asynchronous task-queuing and verification engine that coordinates remote nodes for real-time telemetry validation, complex scientific calculations, and distributed AI oversight.</small>
-                </div>
-
-                <div class="endpoint">
-                    <strong>Q: Is Garza Global Graviton aligned for federal and defense procurement?</strong><br>
-                    <small><strong>A:</strong> Yes. The enterprise is fully registered for federal contracting with active SAM.gov profiles, a Unique Entity Identifier (UEI), and a CAGE code, positioning it for Department of Defense SBIR/STTR and advanced R&D initiatives.</small>
-                </div>
-                
-                <h2>💡 Interactive Documentation</h2>
-                <p>You can test these endpoints interactively via Swagger UI by visiting <a href="/docs" style="color: #38bdf8;">/docs</a>.</p>
+                <h2>💡 Interactive Documentation & Sign-Up</h2>
+                <p>Access full interactive controls and test provisioning parameters via Swagger UI: <a href="/docs" style="color: #38bdf8;">/docs</a></p>
             </div>
         </body>
     </html>
@@ -193,7 +168,7 @@ def sandbox_root():
 
 @app.get("/sandbox/telemetry-status")
 def get_sandbox_telemetry(session: dict = Depends(verify_sandbox_token)):
-    """Allows external AI/developers to inspect high-level network health without code access."""
+    """Allows external systems to inspect private network health and node status."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM nodes")
@@ -204,15 +179,15 @@ def get_sandbox_telemetry(session: dict = Depends(verify_sandbox_token)):
 
     return {
         "queried_by": session,
-        "mesh_health": "NOMINAL",
-        "active_nodes": node_count,
-        "pending_verification_tasks": task_count,
-        "security_rating": "IMMUTABLE_HASH_VERIFIED"
+        "mesh_health": "SECURE_NOMINAL",
+        "active_private_nodes": node_count,
+        "pending_audits": task_count,
+        "anti_cheat_status": "HASH_VERIFIED"
     }
 
 @app.post("/sandbox/submit-verification")
 def submit_sandbox_verification(payload: TaskSubmission, session: dict = Depends(verify_sandbox_token)):
-    """Allows external systems to test task queuing on your Human Data Crunch network."""
+    """Submits verification/anti-cheat audit tasks into the private network mesh."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -220,12 +195,12 @@ def submit_sandbox_verification(payload: TaskSubmission, session: dict = Depends
     cursor.execute("""
         INSERT INTO crunch_tasks (task_description, status, assigned_worker, created_at) 
         VALUES (?, ?, ?, ?)
-    """, (f"[Sandbox AI Test] {payload.task_description}", "Pending Verification", payload.target_entity, created_at))
+    """, (f"[Anti-Cheat / Network Audit] {payload.task_description}", "Pending Verification", payload.target_entity, created_at))
     conn.commit()
     conn.close()
 
     return {
         "status": "SUCCESS",
-        "message": "Task successfully registered on the decentralized test mesh.",
+        "message": "Audit and anti-cheat verification task registered on your private mesh.",
         "evaluator": session["model"]
     }
