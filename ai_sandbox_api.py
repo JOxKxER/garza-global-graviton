@@ -1,6 +1,6 @@
 """
 ai_sandbox_api.py - Restricted AI Sandbox & Secured Multi-Sector Platform
-Provides secure endpoints, navigation buttons, and public commercial services 
+Provides secure endpoints, developer instructions, and public commercial services 
 with fully installed Google Ads tracking tags.
 """
 
@@ -14,7 +14,7 @@ from datetime import datetime
 app = FastAPI(
     title="Garza Global Graviton - Restricted AI Sandbox & Commercial Platform",
     description="Secure evaluation gateway, developer instructions, and decentralized multi-sector commercial services.",
-    version="2.9.0"
+    version="3.0.0"
 )
 
 DB_NAME = "vault_storage.db"
@@ -77,7 +77,7 @@ def verify_sandbox_token(x_api_key: str = Header(...)):
 
 @app.get("/", response_class=HTMLResponse)
 def sandbox_root():
-    """Integrated navigation bar, developer instructions, FAQs, commercial multi-sector services, and Google tracking tags."""
+    """Developer instructions, FAQs, commercial multi-sector services, and Google tracking tags."""
     return """
     <html>
         <head>
@@ -98,40 +98,8 @@ def sandbox_root():
             </script>
 
             <style>
-                body { font-family: Arial, sans-serif; background-color: #0f172a; color: #e2e8f0; padding: 20px; margin: 0; }
+                body { font-family: Arial, sans-serif; background-color: #0f172a; color: #e2e8f0; padding: 40px; margin: 0; }
                 .container { max-width: 950px; margin: auto; background: #1e293b; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-                
-                /* Sticky Navigation Bar Styling */
-                .nav-bar { 
-                    position: sticky; 
-                    top: 0; 
-                    background: #0f172a; 
-                    padding: 12px 15px; 
-                    margin: -30px -30px 25px -30px; 
-                    display: flex; 
-                    gap: 10px; 
-                    flex-wrap: wrap;
-                    border-bottom: 2px solid #334155; 
-                    border-top-left-radius: 8px;
-                    border-top-right-radius: 8px;
-                    z-index: 1000; 
-                }
-                .nav-bar a { 
-                    color: #38bdf8; 
-                    text-decoration: none; 
-                    font-weight: bold; 
-                    font-size: 13px; 
-                    background: #1e293b; 
-                    padding: 8px 14px; 
-                    border-radius: 4px; 
-                    border: 1px solid #334155;
-                    transition: all 0.2s ease; 
-                }
-                .nav-bar a:hover { 
-                    background: #334155; 
-                    color: #ffffff;
-                }
-
                 h1 { color: #38bdf8; margin-top: 10px; }
                 h2 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 5px; margin-top: 40px; }
                 code { background: #0f172a; color: #38bdf8; padding: 2px 6px; border-radius: 4px; }
@@ -141,19 +109,10 @@ def sandbox_root():
         </head>
         <body>
             <div class="container">
-                <!-- Navigation Buttons -->
-                <div class="nav-bar">
-                    <a href="#services">🌐 Services</a>
-                    <a href="#developer-guide">📖 Developer Guide</a>
-                    <a href="#endpoints">🔌 API Endpoints</a>
-                    <a href="#faq">❓ FAQ</a>
-                    <a href="/docs" target="_blank">🚀 Swagger Docs ↗</a>
-                </div>
-
                 <h1>🛡️ Garza Global Graviton: AI Sandbox & Commercial Platform</h1>
                 <p>Welcome to the secure evaluation gateway and decentralized intelligence hub. Showcasing mesh applications across municipal street planning, traffic optimization, energy grids, algorithmic trading, and scientific research.</p>
                 
-                <h2 id="services">🌐 Multi-Sector Commercial & Municipal Services</h2>
+                <h2>🌐 Multi-Sector Commercial & Municipal Services</h2>
                 
                 <div class="endpoint">
                     <strong>1. Municipal Street & Traffic Planning Data Harvesting</strong><br>
@@ -180,11 +139,11 @@ def sandbox_root():
                     <small>Unified mesh coordination for commercial drone mapping fleets, metropolitan self-driving car fleets (construction re-routing), and industrial manufacturing factory robots across secure local data loops.</small>
                 </div>
 
-                <h2 id="developer-guide">📖 Developer Integration & Usage Guide</h2>
+                <h2>📖 Developer Integration & Usage Guide</h2>
                 <p>To interact with the <strong>Human Data Crunch</strong> and telemetry features, include your assigned session key in your request headers:</p>
                 <pre>X-API-Key: [Your Assigned Session ID Hash]</pre>
                 
-                <h2 id="endpoints">🔌 Available API Endpoints</h2>
+                <h2>🔌 Available API Endpoints</h2>
                 
                 <div class="endpoint">
                     <strong>1. Inspect Mesh Telemetry</strong><br>
@@ -198,7 +157,7 @@ def sandbox_root():
                     <small>Queues a task into the decentralized mesh network.</small>
                 </div>
                 
-                <h2 id="faq">❓ Frequently Asked Questions (FAQ)</h2>
+                <h2>❓ Frequently Asked Questions (FAQ)</h2>
                 
                 <div class="endpoint">
                     <strong>Q: Is my proprietary source code or model data exposed during a sandbox evaluation?</strong><br>
@@ -224,6 +183,9 @@ def sandbox_root():
                     <strong>Q: Is Garza Global Graviton aligned for federal and defense procurement?</strong><br>
                     <small><strong>A:</strong> Yes. The enterprise is fully registered for federal contracting with active SAM.gov profiles, a Unique Entity Identifier (UEI), and a CAGE code, positioning it for Department of Defense SBIR/STTR and advanced R&D initiatives.</small>
                 </div>
+                
+                <h2>💡 Interactive Documentation</h2>
+                <p>You can test these endpoints interactively via Swagger UI by visiting <a href="/docs" style="color: #38bdf8;">/docs</a>.</p>
             </div>
         </body>
     </html>
