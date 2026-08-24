@@ -1,0 +1,802 @@
+[
+  {
+    "timestamp": "2026-08-23 15:33:24",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.71\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:33:18",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (106.0\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:33:16",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.86\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:33:08",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (88.4\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:33:00",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.68\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:32:46",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.55\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:32:08",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "97.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:31:48",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.53\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:31:40",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (96.7\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:31:26",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:31:18",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (89.0\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.1%"
+  },
+  {
+    "timestamp": "2026-08-23 15:31:16",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (104.2\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:30:54",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.8\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:30:52",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.69\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:30:50",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:30:06",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.25\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.3%"
+  },
+  {
+    "timestamp": "2026-08-23 15:30:02",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (75.1\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "97.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:50",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "99.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:48",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.52\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:46",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "99.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:30",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (98.3\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:24",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "99.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:20",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (88.7\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:04",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.38\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:29:02",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.41\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:28:42",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:28:36",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (79.3\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:28:02",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.21\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:27:54",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.47\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:27:38",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (98.3\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:27:16",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.34\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:27:12",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.91\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:26:40",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.05\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:26:20",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (76.7\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:26:02",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (100.8\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:25:56",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.66\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:25:50",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.45\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:25:38",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.55\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:25:16",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.41\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:24:46",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.88\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:24:40",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:23:46",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (76.9\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.1%"
+  },
+  {
+    "timestamp": "2026-08-23 15:23:44",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.65\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:23:40",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.66\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:23:26",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.72\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:23:20",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "99.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:23:18",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.89\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:23:04",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.0\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:22:50",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.98\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:22:36",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.71\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:22:16",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.29\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:22:04",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.59\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:21:58",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (91.9\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.3%"
+  },
+  {
+    "timestamp": "2026-08-23 15:21:31",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:21:25",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (96.9\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "97.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:21:21",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (96.2\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:21:13",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (107.8\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:20:43",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (105.2\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.1%"
+  },
+  {
+    "timestamp": "2026-08-23 15:20:19",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (78.8\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:19:53",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "97.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:19:41",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.12\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:19:33",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.52\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:19:29",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (82.4\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:19:15",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:19:05",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.94\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:18:57",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (103.5\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "97.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:18:43",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.7\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.1%"
+  },
+  {
+    "timestamp": "2026-08-23 15:18:29",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:18:15",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.32\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:17:57",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.23\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:17:45",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.8\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.9%"
+  },
+  {
+    "timestamp": "2026-08-23 15:17:25",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.05\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:17:23",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (93.7\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:17:17",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.36\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:17:11",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.95\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:17:05",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "97.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:16:47",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (77.5\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:16:43",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:16:21",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.2\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:16:15",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (105.5\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:15:47",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (86.6\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:15:35",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.24\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:15:17",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "99.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:15:15",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.9\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:15:09",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (108.3\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.2%"
+  },
+  {
+    "timestamp": "2026-08-23 15:15:07",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.87\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:14:43",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.76\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "97.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:14:15",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (95.6\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.6%"
+  },
+  {
+    "timestamp": "2026-08-23 15:14:13",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:14:07",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "99.4%"
+  },
+  {
+    "timestamp": "2026-08-23 15:13:55",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (105.7\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:13:09",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (77.1\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "98.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:12:49",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.7\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:12:45",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Direct Memory Injection Hook Detected",
+    "action_taken": "Client Connection Terminated (Hard Kick)",
+    "confidence": "98.0%"
+  },
+  {
+    "timestamp": "2026-08-23 15:12:43",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (86.3\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:12:15",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.81\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.5%"
+  },
+  {
+    "timestamp": "2026-08-23 15:12:13",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (2.84\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.7%"
+  },
+  {
+    "timestamp": "2026-08-23 15:12:09",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.71\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "99.8%"
+  },
+  {
+    "timestamp": "2026-08-23 15:11:51",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Velocity Delta Anomaly (3.71\u03c3 > 2.2\u03c3 limit)",
+    "action_taken": "Position Re-synced (Anti-Speedhack)",
+    "confidence": "98.1%"
+  },
+  {
+    "timestamp": "2026-08-23 15:11:49",
+    "node_id": "node-us-01",
+    "node_name": "Alpha Competitive #1",
+    "vector": "Aim Snapping Vector (106.3\u00b0/ms > 65.0\u00b0/ms)",
+    "action_taken": "Silent Flag (Aimbot Path Snapping)",
+    "confidence": "99.7%"
+  }
+]

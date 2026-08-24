@@ -1,0 +1,11 @@
+{
+    "entity": "Garza Global Graviton (Illinois LLC)",
+    "target_solicitation": "DoW / Navy FY-26 Release 5 SBIR/STTR/CSO",
+    "submission_deadline": "2026-09-23",
+    "system_metrics": {
+        "nodes_active": 0,
+        "tickrate": 128.0,
+        "hash_verification": "SHA-256 SQLite Snapshot Ledger"
+    },
+    "compliance_status": "Ready for DSIP Upload"
+}

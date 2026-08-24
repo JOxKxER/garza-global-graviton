@@ -1,0 +1,52 @@
+{
+  "integrity_policies": {
+    "server_authoritative_position": true,
+    "sub_tick_packet_scan": true,
+    "auto_kick_memory_hook": true,
+    "velocity_deviation_sigma": 2.2,
+    "aim_vector_threshold_deg_per_ms": 65.0
+  },
+  "active_nodes": [
+    {
+      "id": "node-us-01",
+      "name": "Alpha Competitive #1",
+      "region": "US East (N. Virginia)",
+      "plan": "Clan Competitive",
+      "admin_email": "player@domain.com",
+      "tickrate": 128,
+      "status": "Online",
+      "created_at": "2026-08-23 14:00:00"
+    }
+  ],
+  "users": [
+    {
+      "username": "VortexAdmin",
+      "gamer_tag": "Vortex#0001",
+      "email": "player@domain.com",
+      "role": "Squad Leader",
+      "age_verified": true,
+      "parent_guardian_name": "N/A (Adult Account)",
+      "saved_card": {
+        "brand": "Visa",
+        "last4": "4242",
+        "exp": "08/29"
+      },
+      "linked_accounts": {
+        "discord_tag": "Vortex#1337",
+        "discord_webhook": "",
+        "twitch_channel": "vortex_fps",
+        "steam_id": "76561198000000000"
+      },
+      "matches_played": 14,
+      "clean_reputation_score": 100,
+      "token_balance": 150,
+      "referral_code": "VORT-4030",
+      "referred_users": [],
+      "active_addons": []
+    }
+  ],
+  "tournament_records": [],
+  "public_lobbies": [],
+  "device_mesh": [],
+  "stored_replays": []
+}

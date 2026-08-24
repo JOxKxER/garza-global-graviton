@@ -1,0 +1,15 @@
+{
+    "entity": "Garza Global Graviton (Illinois LLC)",
+    "target": "DoD FY-26 Release 5",
+    "nodes": 0,
+    "policies": {
+        "id": 1,
+        "server_authoritative_position": 1,
+        "sub_tick_packet_scan": 1,
+        "auto_kick_memory_hook": 1,
+        "velocity_deviation_sigma": 2.2,
+        "aim_vector_threshold_deg_per_ms": 65.0,
+        "discord_webhook_url": "",
+        "updated_at": "2026-08-23 22:30:07"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "entity": "Garza Global Graviton (Illinois LLC)",
+    "target_framework": "Defense SBIR / STTR Innovation Portal (DSIP)",
+    "active_nodes_verified": 0,
+    "telemetry_vectors_logged": 3,
+    "core_tickrate_hz": 128,
+    "security_compliance": "SHA-256 Hashed SQLite Snapshot Engine Active",
+    "timestamp": "2026-08-24T00:09:02.741300"
+}

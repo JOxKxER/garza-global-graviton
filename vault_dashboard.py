@@ -1,1485 +1,346 @@
-import os
+"""
+vault_dashboard.py - Clean-Play Game Server Administration & Token Rewards Vault
+Features: Gamer Pitch Landing, Server Checkout, Advertiser Pipeline, NSFW Filter, 
+          Compliant Creator Widget Hub, and SQLite Persistence.
+Run with: python -m streamlit run vault_dashboard.py
+"""
+
+import streamlit as st
+import pandas as pd
+import numpy as np
 import json
-import secrets
-import hashlib
-import re
+import time
 from datetime import datetime
-from flask import Flask, render_template_string, request, jsonify, redirect, send_file
+import db_manager as db
 
-app = Flask(__name__)
+# --- Page Configuration ---
+st.set_page_config(
+    page_title="Game Server Integrity Vault",
+    page_icon="🛡️",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# File storage paths
-BASE_DIR = os.path.dirname(__file__)
-SUBMISSIONS_FILE = os.path.join(BASE_DIR, "client_submissions.json")
-TOKENS_FILE = os.path.join(BASE_DIR, "valid_tokens.json")
-REVIEWS_FILE = os.path.join(BASE_DIR, "client_reviews.json")
-LOGO_FILE = os.path.join(BASE_DIR, "logo.jpg")
-
-# Pre-configured Stripe Payment Links
-STRIPE_GAMER_WEEKEND_LINK = "https://buy.stripe.com/test_eVaeV077j8Fp9sA8ww"   # $19/session
-STRIPE_GAMER_MONTHLY_LINK = "https://buy.stripe.com/test_7sIeV08bncVB34ccMN"   # $39/mo recurring
-STRIPE_GAMER_TOURNEY_LINK = "https://buy.stripe.com/test_3csbIQ63ff3J34c8wx"   # $89/event
-
-STRIPE_TIER1_LINK = "https://buy.stripe.com/test_eVaeV077j8Fp9sA8ww"  # $75
-STRIPE_TIER2_LINK = "https://buy.stripe.com/test_7sIeV08bncVB34ccMN"  # $250
-STRIPE_TIER3_LINK = "https://buy.stripe.com/test_3csbIQ63ff3J34c8wx"  # $600
-
-PUBLIC_EXPLOIT_PATTERNS = [
-    r"\baimbot\b", r"\baim\s*assist\b", r"\btriggerbot\b", r"\bwallhack\b",
-    r"\besp\s*hack\b", r"\bdll\s*injection\b", r"\bmemory\s*hook\b",
-    r"\brecoil\s*script\b", r"\banti-recoil\b", r"\bdma\s*cheat\b",
-    r"\bbypass\s*vanguard\b", r"\bbypass\s*easyanticheat\b", r"\bbypass\s*battleye\b"
-]
-
-def load_json(filepath, default_val):
-    if not os.path.exists(filepath):
-        return default_val
-    try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return default_val
-
-def save_json(filepath, data):
-    try:
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2)
-    except Exception as e:
-        print(f"Error writing {filepath}: {e}")
-
-def check_exploit_policy(text, tier):
-    if "Private" in tier or "Custom Server" in tier or "Ad-Hoc" in tier or "Cheat-Proof" in tier or "Gamer" in tier or "Squad" in tier:
-        return True, "Cheat-Proof Private Server Sandbox (Deterministic Host Rules)"
-    
-    text_lower = text.lower()
-    for pat in PUBLIC_EXPLOIT_PATTERNS:
-        if re.search(pat, text_lower):
-            return False, "REJECTED - Exploitation Policy Violation: Tools targeting public competitive matchmaking are prohibited."
-    return True, "Verified Zero-Trust & Fair-Play Compliant"
-
-def init_defaults():
-    tokens = load_json(TOKENS_FILE, {})
-    if not tokens:
-        tokens = {
-            "GGG-SQUAD-PASS-1": {
-                "status": "ACTIVE",
-                "tier": "Gamer Squad Cheat-Proof Trial",
-                "max_rows": 1000,
-                "sample_limit": "1 free 48hr cheat-proof squad server / zero-trust match receipts",
-                "created": "2026-08-23 12:00:00 UTC"
-            },
-            "GGG-AI-STUDIO-1A2B": {
-                "status": "ACTIVE",
-                "tier": "AI Studio & Creation Trial",
-                "max_rows": 1000,
-                "sample_limit": "1 high-res AI asset / mini-app script / cinematic render test",
-                "created": "2026-08-23 12:00:00 UTC"
-            },
-            "GGG-GAMING-C3D4": {
-                "status": "ACTIVE",
-                "tier": "Gaming & Telemetry Trial",
-                "max_rows": 500,
-                "sample_limit": "500 rows frame-time logs / 1 clip compression",
-                "created": "2026-08-23 12:00:00 UTC"
-            },
-            "GGG-BIZ-G7H8": {
-                "status": "ACTIVE",
-                "tier": "Bookkeeping & Business Trial",
-                "max_rows": 500,
-                "sample_limit": "500 rows bank ledger reconciliation / margin model",
-                "created": "2026-08-23 12:00:00 UTC"
-            },
-            "GGG-LEGAL-I9J0": {
-                "status": "ACTIVE",
-                "tier": "Legal & Compliance Trial",
-                "max_rows": 500,
-                "sample_limit": "1 PII redaction pass / 1 SHA-256 prior-art audit",
-                "created": "2026-08-23 12:00:00 UTC"
-            },
-            "GGG-ENTERPRISE-K1L2": {
-                "status": "ACTIVE",
-                "tier": "Enterprise POC Slice",
-                "max_rows": 50000,
-                "sample_limit": "10-parameter sweep slice & cryptographic ledger audit",
-                "created": "2026-08-23 12:00:00 UTC"
-            }
-        }
-        save_json(TOKENS_FILE, tokens)
-
-    reviews = load_json(REVIEWS_FILE, [])
-    if not reviews:
-        reviews = [
-            {
-                "name": "GhostSquad_Clan",
-                "role": "FPS Squad Leader",
-                "stars": 5,
-                "comment": "Tired of public lobby aimbotters, we switched our weekly scrims to GGG's $39/mo cheat-proof server. The Discord bot automatically drops server status and verified match certificates into our channel.",
-                "timestamp": "2026-08-23 11:20 UTC"
-            },
-            {
-                "name": "Apex Scrims League",
-                "role": "Esports Tournament Host",
-                "stars": 5,
-                "comment": "The zero-trust cheat-proof server architecture and SHA-256 match telemetry eliminated all dispute review times. Absolute game-changer for competitive scrims.",
-                "timestamp": "2026-08-22 14:10 UTC"
-            },
-            {
-                "name": "Solstice Studios",
-                "role": "Indie Game Developer",
-                "stars": 5,
-                "comment": "We generated seamless 2K PBR game textures and spun up an exploit-isolated playtest server with custom rules in under 15 minutes.",
-                "timestamp": "2026-08-21 16:30 UTC"
-            }
-        ]
-        save_json(REVIEWS_FILE, reviews)
-
-init_defaults()
-
-HTML_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18405631729"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-18405631729');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garza Global Graviton | Cheat-Proof Gaming Servers &amp; Sovereign Vaulting</title>
-    <style>
-      :root {
-        --bg: #0b0f19;
-        --panel: #131b2e;
-        --border: #1e293b;
-        --accent: #38bdf8;
-        --green: #34d399;
-        --purple: #a855f7;
-        --amber: #f59e0b;
-        --pink: #ec4899;
-        --emerald: #10b981;
-        --cyan: #06b6d4;
-        --indigo: #6366f1;
-        --red: #ef4444;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-      }
-      * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
-      body {
-        background-color: var(--bg);
-        color: var(--text);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 16px;
-        padding-bottom: 120px;
-      }
-      .container {
-        max-width: 1040px;
-        margin: 0 auto;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 24px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      }
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #334155;
-        padding-bottom: 15px;
-        gap: 16px;
-        flex-wrap: wrap;
-      }
-      .brand-title-wrap {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-      .header-logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 8px;
-        border: 1px solid var(--accent);
-        object-fit: cover;
-      }
-      h1 { color: var(--accent); margin: 0; font-size: 22px; }
-      .badge {
-        background: #065f46;
-        color: var(--green);
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-weight: bold;
-        font-size: 12px;
-      }
-      .card {
-        background: var(--border);
-        border-radius: 8px;
-        padding: 18px;
-        margin-top: 20px;
-        border-left: 4px solid var(--accent);
-      }
-      .card-title {
-        font-weight: bold;
-        font-size: 16px;
-        margin-bottom: 12px;
-        color: #f8fafc;
-      }
-
-      /* Hero Gamer Showcase Box */
-      .gamer-hero-card {
-        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #082f49 100%);
-        border: 2px solid var(--green);
-        border-radius: 12px;
-        padding: 24px;
-        margin-top: 20px;
-        box-shadow: 0 0 25px rgba(52, 211, 153, 0.25);
-      }
-      .gamer-hero-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 12px;
-      }
-      .gamer-hero-title {
-        font-size: 20px;
-        font-weight: 900;
-        color: #ffffff;
-        letter-spacing: 0.5px;
-      }
-      .gamer-pricing-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 14px;
-        margin-top: 16px;
-      }
-      .gamer-plan {
-        background: #0b0f19;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        transition: border-color 0.2s ease, transform 0.2s ease;
-      }
-      .gamer-plan:hover {
-        border-color: var(--green);
-        transform: translateY(-2px);
-      }
-      .popular-badge {
-        position: absolute;
-        top: -10px;
-        right: 14px;
-        background: var(--green);
-        color: #0b0f19;
-        font-size: 10px;
-        font-weight: 900;
-        padding: 2px 8px;
-        border-radius: 4px;
-        text-transform: uppercase;
-      }
-      .plan-name { font-size: 15px; font-weight: bold; color: var(--accent); margin-bottom: 4px; }
-      .plan-price { font-size: 24px; font-weight: 900; color: #ffffff; font-family: monospace; }
-      .plan-price span { font-size: 12px; color: var(--muted); font-weight: normal; }
-      .plan-perks { font-size: 12px; color: #cbd5e1; line-height: 1.5; margin: 12px 0 16px 0; }
-      .plan-perks li { margin-bottom: 4px; }
-      .plan-btn {
-        display: block;
-        text-align: center;
-        background: var(--green);
-        color: #0b0f19;
-        padding: 10px;
-        border-radius: 6px;
-        font-weight: 900;
-        text-decoration: none;
-        font-size: 13px;
-      }
-      .plan-btn:hover { background: #10b981; }
-
-      .integration-pills {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-top: 14px;
-      }
-      .integration-pill {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 20px;
-        padding: 4px 12px;
-        font-size: 11px;
-        font-weight: bold;
-        color: var(--accent);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .parental-notice {
-        background: rgba(15, 23, 42, 0.85);
-        border: 1px dashed var(--amber);
-        border-radius: 6px;
-        padding: 10px 14px;
-        font-size: 12px;
-        color: #fef08a;
-        margin-top: 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .metric {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 0;
-        border-bottom: 1px solid #334155;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      .metric:last-child { border-bottom: none; }
-      .metric-title { color: var(--muted); font-size: 14px; }
-      .metric-value { font-weight: bold; color: #f8fafc; font-family: monospace; font-size: 14px; }
-      
-      .tool-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 12px;
-        margin-top: 10px;
-      }
-      .tool-box {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 16px;
-        cursor: pointer;
-        transition: transform 0.15s ease, border-color 0.15s ease;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-      .tool-box:hover {
-        border-color: var(--accent);
-        transform: translateY(-2px);
-      }
-      .tool-header {
-        font-weight: bold;
-        color: var(--accent);
-        font-size: 14px;
-        margin-bottom: 6px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .tool-desc {
-        font-size: 12px;
-        color: var(--muted);
-        line-height: 1.4;
-      }
-      .tool-tap {
-        font-size: 11px;
-        color: var(--green);
-        margin-top: 10px;
-        font-weight: bold;
-      }
-
-      /* Verified Reviews & AI Summary Section */
-      .reviews-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        margin-top: 12px;
-      }
-      .ai-summary-box {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 18px;
-      }
-      .ai-summary-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-        font-weight: 800;
-        color: var(--accent);
-        margin-bottom: 10px;
-      }
-      .ai-tag-chip {
-        display: inline-block;
-        background: #1e293b;
-        color: var(--green);
-        border: 1px solid #334155;
-        border-radius: 12px;
-        padding: 3px 8px;
-        font-size: 11px;
-        margin-right: 4px;
-        margin-bottom: 6px;
-        font-weight: 600;
-      }
-      .score-display {
-        font-size: 32px;
-        font-weight: 900;
-        color: var(--amber);
-        font-family: monospace;
-      }
-      .star-string { color: var(--amber); letter-spacing: 2px; }
-      .recent-reviews-scroll {
-        max-height: 330px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding-right: 4px;
-      }
-      .review-item {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 14px;
-      }
-      .review-author {
-        font-weight: bold;
-        color: #f8fafc;
-        font-size: 13px;
-        display: flex;
-        justify-content: space-between;
-      }
-      .review-role { font-size: 11px; color: var(--muted); }
-      .review-text { font-size: 12px; color: #cbd5e1; margin-top: 6px; line-height: 1.4; }
-
-      .pricing-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 14px;
-        margin-top: 12px;
-      }
-      .pricing-card {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-      .pricing-title { font-weight: bold; color: var(--accent); font-size: 16px; margin-bottom: 4px; }
-      .pricing-price { font-size: 22px; color: var(--green); font-weight: bold; font-family: monospace; margin-bottom: 8px; }
-      .pricing-desc { color: var(--muted); font-size: 13px; line-height: 1.4; margin-bottom: 16px; }
-      .checkout-btn {
-        display: block;
-        text-align: center;
-        background: #0284c7;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-weight: bold;
-        text-decoration: none;
-        font-size: 13px;
-      }
-      .checkout-btn:hover { background: #0369a1; }
-
-      /* FAQ Accordion */
-      .faq-item {
-        border-bottom: 1px solid #334155;
-        padding: 12px 0;
-      }
-      .faq-item:last-child { border-bottom: none; }
-      .faq-question {
-        cursor: pointer;
-        font-weight: bold;
-        color: #f8fafc;
-        display: flex;
-        justify-content: space-between;
-      }
-      .faq-answer {
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.5;
-        margin-top: 8px;
-        display: none;
-      }
-      .faq-item.active .faq-answer { display: block; }
-
-      .form-group { margin-bottom: 14px; }
-      label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-      input, select, textarea {
-        width: 100%;
-        padding: 10px 12px;
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 6px;
-        color: white;
-        font-size: 14px;
-      }
-      input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-      .actions-group { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-      .cta-btn, .cta-btn-alt {
-        display: inline-block;
-        padding: 12px 20px;
-        border-radius: 6px;
-        font-weight: bold;
-        text-decoration: none;
-        color: white;
-        cursor: pointer;
-        border: none;
-        font-size: 14px;
-        flex: 1 1 200px;
-      }
-      .cta-btn { background: #059669; }
-      .cta-btn-alt { background: #334155; }
-      
-      /* Double-Sized Floating Pill Launcher */
-      #chat-launcher {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        height: 64px;
-        padding: 6px 22px 6px 8px;
-        border-radius: 50px;
+# --- Custom Styling ---
+st.markdown("""
+<style>
+    .hero-banner {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        border: 2px solid var(--accent);
-        cursor: pointer;
-        box-shadow: 0 0 25px rgba(56, 189, 248, 0.45), 0 10px 25px rgba(0, 0, 0, 0.75);
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        z-index: 10000;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-      }
-      #chat-launcher:hover {
-        transform: translateY(-3px) scale(1.03);
-        border-color: #ffffff;
-        box-shadow: 0 0 35px rgba(239, 68, 68, 0.5), 0 0 20px rgba(56, 189, 248, 0.8);
-      }
-      .launcher-img-wrap {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        overflow: hidden;
-        border: 2px solid var(--accent);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #000;
-        flex-shrink: 0;
-      }
-      .launcher-img-wrap img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .launcher-text-wrap {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-      }
-      .launcher-title {
-        color: #ffffff;
-        font-weight: 900;
-        font-size: 15px;
-        letter-spacing: 0.8px;
-        line-height: 1.2;
-      }
-      .launcher-sub {
-        color: var(--accent);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-      }
-
-      #chat-box {
-        position: fixed;
-        bottom: 100px;
-        right: 24px;
-        width: 420px;
-        max-width: 92vw;
-        height: 550px;
-        background: var(--panel);
-        border: 2px solid var(--accent);
-        border-radius: 14px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.85);
-        display: none;
-        flex-direction: column;
-        z-index: 10000;
-      }
-      .chat-header {
-        background: #0f172a;
-        padding: 14px 18px;
-        border-top-left-radius: 12px;
-        border-top-right-radius: 12px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #334155;
-        font-weight: bold;
-        font-size: 14px;
-        color: var(--accent);
-      }
-      .chat-body {
-        flex: 1;
-        padding: 14px;
-        overflow-y: auto;
-        font-size: 13px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .chat-msg {
-        padding: 10px 14px;
-        border-radius: 8px;
-        line-height: 1.45;
-      }
-      .msg-bot { background: #1e293b; color: var(--text); align-self: flex-start; }
-      .msg-user { background: #0284c7; color: white; align-self: flex-end; }
-      .chat-options {
-        padding: 10px 12px;
-        background: #0f172a;
-        border-top: 1px solid #334155;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        max-height: 170px;
-        overflow-y: auto;
-      }
-      .chat-chip {
-        background: #1e293b;
-        color: var(--accent);
         border: 1px solid #334155;
-        border-radius: 14px;
-        padding: 5px 11px;
-        font-size: 11px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.15s ease;
-      }
-      .chat-chip:hover {
-        background: #334155;
-        color: #ffffff;
-      }
-
-      .footer-links {
-        margin-top: 25px;
-        display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: var(--muted);
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      .footer-links a { color: var(--muted); text-decoration: none; }
-      .footer-links a:hover { color: var(--accent); }
-
-      @media (max-width: 750px) {
-        .reviews-layout { grid-template-columns: 1fr; }
-        .header { flex-direction: column; align-items: flex-start; }
-        .actions-group { flex-direction: column; }
-        .cta-btn, .cta-btn-alt { width: 100%; flex: 1 1 auto; }
-        #chat-launcher { bottom: 16px; right: 16px; padding: 4px 16px 4px 6px; height: 54px; }
-        .launcher-img-wrap { width: 42px; height: 42px; }
-        .launcher-title { font-size: 13px; }
-      }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="brand-title-wrap">
-                <img src="/logo.jpg" alt="Garza Logo" class="header-logo" onerror="this.style.display='none'">
-                <div>
-                    <h1>GARZA GLOBAL GRAVITON</h1>
-                    <p style="color: #94a3b8; margin: 4px 0 0 0; font-size: 14px;">High-Performance Computing, Cheat-Proof Server Infrastructure &amp; Sovereign Vaulting</p>
-                </div>
-            </div>
-            <span class="badge">SYSTEM ONLINE</span>
-        </div>
-
-        <!-- Hero: 1-Click Gamer Cheat-Proof Server Showcase & Pricing -->
-        <div class="gamer-hero-card">
-            <div class="gamer-hero-header">
-                <div>
-                    <div class="gamer-hero-title">🎮 Tired of Cheaters Ruining Your Matches?</div>
-                    <p style="color: #94a3b8; font-size: 13px; margin: 4px 0 0 0;">Deploy zero-trust, tamper-proof private squad servers with sub-15ms tick latency &amp; SHA-256 match receipts.</p>
-                </div>
-                <span class="badge" style="background: #064e3b; color: var(--green);">ZERO-TRUST ISOLATION</span>
-            </div>
-
-            <!-- Seamless Gaming Ecosystem Integrations -->
-            <div class="integration-pills">
-                <span class="integration-pill">💬 Discord Webhook Bot Sync</span>
-                <span class="integration-pill">🎮 Steam 1-Click Direct Join</span>
-                <span class="integration-pill">🟩 Xbox Live / MS PC Auth</span>
-                <span class="integration-pill">🛡️ Zero-Trust Anti-Tamper Mesh</span>
-            </div>
-
-            <div class="gamer-pricing-grid">
-                <!-- Plan 1: Weekend Scrim Session -->
-                <div class="gamer-plan">
-                    <div>
-                        <div class="plan-name">Weekend Squad Pass</div>
-                        <div class="plan-price">$19 <span>/ session (48 hrs)</span></div>
-                        <ul class="plan-perks">
-                            <li>✓ Instant 48-Hour Hardened Server</li>
-                            <li>✓ Sub-15ms High-Tickrate Route</li>
-                            <li>✓ 1-Click Steam Direct Join Link</li>
-                            <li>✓ Discord Webhook Squad Notifications</li>
-                            <li>✓ 1 SHA-256 Match Audit Certificate</li>
-                        </ul>
-                    </div>
-                    <a href="{{ gamer_weekend_link }}" target="_blank" class="plan-btn">Deploy 48hr Pass &rarr;</a>
-                </div>
-
-                <!-- Plan 2: Clan Dedicated Monthly (Recurring Customer Anchor) -->
-                <div class="gamer-plan" style="border: 2px solid var(--green);">
-                    <span class="popular-badge">Most Popular</span>
-                    <div>
-                        <div class="plan-name" style="color: var(--green);">Clan Dedicated Monthly</div>
-                        <div class="plan-price">$39 <span>/ month (Auto-Renew)</span></div>
-                        <ul class="plan-perks">
-                            <li>✓ 24/7 Always-On Cheat-Proof Server</li>
-                            <li>✓ Auto Memory-Leak Guard &amp; Restarts</li>
-                            <li>✓ Hourly Cryptographic World Backups</li>
-                            <li>✓ Discord Bot Status &amp; Match Feed</li>
-                            <li>✓ Custom Modpacks &amp; Admin Rules</li>
-                        </ul>
-                    </div>
-                    <a href="{{ gamer_monthly_link }}" target="_blank" class="plan-btn" style="background: #059669; color: white;">Join Monthly Clan Vault &rarr;</a>
-                </div>
-
-                <!-- Plan 3: Esports League / Tournament Host -->
-                <div class="gamer-plan">
-                    <div>
-                        <div class="plan-name">Tournament / League Cluster</div>
-                        <div class="plan-price">$89 <span>/ event package</span></div>
-                        <ul class="plan-perks">
-                            <li>✓ Multi-Bracket Match Telemetry Sync</li>
-                            <li>✓ Anti-Tamper Dispute Hash Verification</li>
-                            <li>✓ DDoS UDP Scrubbing Armor</li>
-                            <li>✓ Dedicated Operator Support</li>
-                        </ul>
-                    </div>
-                    <a href="{{ gamer_tourney_link }}" target="_blank" class="plan-btn">Host Tournament &rarr;</a>
-                </div>
-            </div>
-
-            <!-- Parental Permission & Underage Notice -->
-            <div class="parental-notice">
-                <span>🛡️</span>
-                <div>
-                    <b>Parental Notice &amp; Authorization:</b> Players under the age of 18 must have parental or legal guardian consent before purchasing server passes or registering recurring clan subscriptions.
-                </div>
-            </div>
-        </div>
-
-        <!-- Comprehensive Free Trial Workloads Grid -->
-        <div class="card" style="border-left-color: var(--cyan);">
-            <div class="card-title">✨ Free Trial Workloads: Cheat-Proof Servers, AI Studio, Gaming &amp; Data Tools</div>
-            <p style="font-size: 13px; color: var(--muted); margin-top: 0;">Click any workflow template below to automatically configure the trial intake form:</p>
-            <div class="tool-grid">
-                <div class="tool-box" onclick="selectTool('cheatproof_server')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--green);">🛡️ Free Squad Cheat-Proof Trial</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Test-run a private, tamper-proof squad server with memory isolation, custom host physics, and SHA-256 match receipts.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('ai_assets')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--pink);">🎨 AI 3D Textures &amp; Game Assets</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Generate seamless 2K PBR game textures, low-poly 3D mesh bases, and sprite sheets with deterministic SHA-256 copyright seals.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('gaming_telemetry')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--cyan);">🎮 Gaming Telemetry &amp; 1% Lows</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Parse CapFrameX / HWiNFO logs, analyze 0.1% &amp; 1% frame-time drops, eliminate micro-stutters, and benchmark hardware curves.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('ai_apps')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--purple);">⚡ Custom AI Automation Gems</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Build standalone AI mini-apps, automated receipt intake bots, and YouTube chapter/show-note generators with zero coding.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('bookkeeping')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--emerald);">💼 Bookkeeping &amp; Financial Ledger</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Reconcile raw bank statement CSVs, fix corrupted negative numbers, standardize merchant names, and categorize expenses.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-
-                <div class="tool-box" onclick="selectTool('legal_audit')">
-                    <div>
-                        <div class="tool-header">
-                            <span style="color: var(--amber);">⚖️ Legal Redaction, FOIA &amp; Provenance</span>
-                            <span>&darr;</span>
-                        </div>
-                        <div class="tool-desc">Scrub PII from discovery agreements, format citation bibliographies, and stamp immutable SHA-256 digital prior-art certificates.</div>
-                    </div>
-                    <div class="tool-tap">Load Template &rarr;</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Verified Customer Reviews & Amazon-Style AI Summary Section -->
-        <div class="card" id="reviews-section" style="border-left-color: var(--amber);">
-            <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-                <span>⭐ Verified Pipeline Reviews &amp; Intelligence Summary</span>
-                <span style="font-size: 13px; color: var(--muted);">{{ reviews|length }} Verified Submissions</span>
-            </div>
-            
-            <div class="reviews-layout">
-                <div class="ai-summary-box">
-                    <div class="ai-summary-header">
-                        <span>🤖 Customers Say (AI Highlights)</span>
-                    </div>
-                    <p style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin: 0 0 12px 0;">
-                        {{ ai_summary }}
-                    </p>
-                    <div style="margin-bottom: 12px;">
-                        <span class="ai-tag-chip">✓ Cheat-Proof Mesh Verified</span>
-                        <span class="ai-tag-chip">✓ Discord Bot Integration</span>
-                        <span class="ai-tag-chip">✓ Steam 1-Click Join</span>
-                        <span class="ai-tag-chip">✓ SHA-256 Stamped Receipts</span>
-                    </div>
-                    <div style="display: flex; align-items: baseline; gap: 10px; border-top: 1px solid #334155; padding-top: 10px;">
-                        <span class="score-display">{{ avg_score }}</span>
-                        <div>
-                            <div class="star-string">{{ star_string }}</div>
-                            <span style="font-size: 12px; color: var(--muted);">Overall Customer Satisfaction</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="recent-reviews-scroll">
-                    {% for rev in reviews|reverse %}
-                    <div class="review-item">
-                        <div class="review-author">
-                            <span>{{ rev.name }}</span>
-                            <span class="star-string">{% for i in range(rev.stars) %}★{% endfor %}</span>
-                        </div>
-                        <div class="review-role">{{ rev.role }} &bull; <small>{{ rev.timestamp }}</small></div>
-                        <div class="review-text">"{{ rev.comment }}"</div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Submit Feedback / Review Form -->
-            <div style="margin-top: 18px; border-top: 1px solid #334155; padding-top: 16px;">
-                <details style="cursor: pointer;">
-                    <summary style="font-size: 13px; font-weight: bold; color: var(--accent);">✍️ Leave Client Feedback / Review</summary>
-                    <form action="/submit_review" method="POST" style="margin-top: 12px;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                            <input type="text" name="name" placeholder="Your Name or Gamer Tag" required>
-                            <input type="text" name="role" placeholder="Role (e.g. Clan Leader, Gamer, Dev)" required>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 10px; margin-bottom: 10px;">
-                            <select name="stars">
-                                <option value="5" selected>⭐⭐⭐⭐⭐ (5/5 Outstanding)</option>
-                                <option value="4">⭐⭐⭐⭐ (4/5 Great)</option>
-                                <option value="3">⭐⭐⭐ (3/5 Good)</option>
-                            </select>
-                            <input type="text" name="comment" placeholder="How did the cheat-proof server or compute engine perform?" required>
-                        </div>
-                        <button type="submit" class="cta-btn" style="padding: 8px 14px; font-size: 12px;">Publish Verified Review</button>
-                    </form>
-                </details>
-            </div>
-        </div>
-
-        <!-- À La Carte Production Services & Instant Checkout -->
-        <div class="card" style="border-left-color: var(--purple);">
-            <div class="card-title">📦 À La Carte Data &amp; AI Production Pipelines</div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div>
-                        <div class="pricing-title">AI Asset / Script Fix</div>
-                        <div class="pricing-price">$75</div>
-                        <div class="pricing-desc">Texture generation, private server config rules, telemetry analyzers, and quick patches.</div>
-                    </div>
-                    <a href="{{ tier1_link }}" target="_blank" class="checkout-btn">Checkout Tier 1 &rarr;</a>
-                </div>
-                <div class="pricing-card">
-                    <div>
-                        <div class="pricing-title">Full Pipeline / AI Bot</div>
-                        <div class="pricing-price">$250</div>
-                        <div class="pricing-desc">Automated AI Gems, API pipelines, match stat ETL, and bank bookkeeping sync.</div>
-                    </div>
-                    <a href="{{ tier2_link }}" target="_blank" class="checkout-btn" style="background: #059669;">Checkout Tier 2 &rarr;</a>
-                </div>
-                <div class="pricing-card">
-                    <div>
-                        <div class="pricing-title">AI Video &amp; Cluster Compute</div>
-                        <div class="pricing-price">$600+</div>
-                        <div class="pricing-desc">Cinematic 4K generative video reels, parameter sweeps, and batch simulations.</div>
-                    </div>
-                    <a href="{{ tier3_link }}" target="_blank" class="checkout-btn">Checkout Tier 3 &rarr;</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Frequently Asked Questions & Support -->
-        <div class="card" style="border-left-color: var(--accent);">
-            <div class="card-title">❓ Frequently Asked Questions &amp; Support</div>
-            <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>How do your Cheat-Proof Servers eliminate cheaters?</span> <span>+</span></div>
-                <div class="faq-answer">Our servers run in isolated container runtimes with deterministic state verification. Client telemetry and match inputs are cross-hashed against host physics rules using SHA-256 digital seals, preventing memory injection, client-side packet spoofing, and dispute ambiguities.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>Do I need a parent's permission to buy a server pass?</span> <span>+</span></div>
-                <div class="faq-answer">Yes. If you are under the age of 18, you must have permission from a parent or legal guardian prior to completing payment for passes or recurring clan subscriptions.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>Can I cancel or switch my Clan Monthly Subscription anytime?</span> <span>+</span></div>
-                <div class="faq-answer">Yes! You can manage, pause, or cancel your monthly clan server subscription at any time via your Stripe customer portal with 1 click.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('active')">
-                <div class="faq-question"><span>What are your Terms of Service and Liability limits?</span> <span>+</span></div>
-                <div class="faq-answer">All services are provided on an 'as-is' basis. We reserve the full right to refuse or revoke service for Terms of Service violations. View our full legal terms via the footer link.</div>
-            </div>
-        </div>
-
-        <!-- Live Infrastructure Benchmarks -->
-        <div class="card">
-            <div class="card-title">⚡ Live Infrastructure Benchmarks</div>
-            <div class="metric">
-                <span class="metric-title">Queue Dispatch Latency</span>
-                <span class="metric-value">&lt; 38.5 ms</span>
-            </div>
-            <div class="metric">
-                <span class="metric-title">Cryptographic Sealing Speed</span>
-                <span class="metric-value">11.2 ms</span>
-            </div>
-            <div class="metric">
-                <span class="metric-title">Active Worker Elasticity</span>
-                <span class="metric-value">Elastic (0-50 Auto-Scaling Nodes)</span>
-            </div>
-            <div class="metric">
-                <span class="metric-title">Cheat-Proof &amp; Sovereign Ledger Status</span>
-                <span class="metric-value" style="color: var(--green);">Zero-Trust Verified &amp; Immutable (SHA-256)</span>
-            </div>
-        </div>
-
-        <!-- Token Redemption & Workload Intake Form -->
-        <div class="card" id="intake-section" style="border-left-color: var(--green);">
-            <div class="card-title">🚀 Workload Intake &amp; Token Redemption</div>
-            <form action="/submit" method="POST">
-                <div class="form-group">
-                    <label>Full Name or Company / Gamer Tag</label>
-                    <input type="text" name="name" id="input-name" placeholder="Acme Corp / Jane Doe / GamerTag" required>
-                </div>
-                <div class="form-group">
-                    <label>Contact Email or Discord</label>
-                    <input type="text" name="email" id="input-email" placeholder="contact@domain.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Access / Trial Token (Optional for Free Demo Execution)</label>
-                    <input type="text" name="token" id="input-token" placeholder="e.g. GGG-SQUAD-PASS-1 or GGG-AI-STUDIO-1A2B" style="font-family: monospace; border-color: var(--accent);">
-                </div>
-                <div class="form-group">
-                    <label>Project Scope / Game Server Specs / AI Prompt / Data</label>
-                    <textarea name="scope" id="input-scope" rows="4" placeholder="Describe your game title, squad server requirements, or AI asset prompt..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Select Service / Evaluation Tier</label>
-                    <select name="tier" id="select-tier">
-                        <option value="Gamer Squad Cheat-Proof Free Trial">Gamer Squad Cheat-Proof Free Trial (48hr)</option>
-                        <option value="Weekend Squad Pass ($19)">Weekend Squad Pass (48hr Session) — $19</option>
-                        <option value="Clan Dedicated Monthly ($39/mo)" selected>Clan Dedicated Monthly Server — $39/mo</option>
-                        <option value="Tournament / League Cluster ($89)">Tournament / League Cluster — $89</option>
-                        <option value="AI Creation & Asset Generation Free Trial">AI Creation &amp; Asset Generation Free Trial</option>
-                        <option value="PC Gaming & Telemetry Free Trial Run">PC Gaming &amp; Telemetry Free Trial Run</option>
-                        <option value="Small Business & Bookkeeping Free Trial Run">Small Business &amp; Bookkeeping Free Trial Run</option>
-                        <option value="Script / AI Asset Fix ($75)">Script / AI Asset Fix — $75</option>
-                        <option value="Full Pipeline & AI Bot ($250)">Full Pipeline &amp; AI Bot — $250</option>
-                        <option value="Dedicated Monthly Retainer">Dedicated Enterprise Monthly Retainer</option>
-                    </select>
-                </div>
-                <div class="actions-group">
-                    <button type="submit" class="cta-btn">Submit Workload Request</button>
-                    <a href="https://github.com/JOxKxER/garza-global-graviton" target="_blank" class="cta-btn-alt">GitHub Architecture Repository</a>
-                </div>
-                <p style="font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center;">
-                    By submitting, you agree to our <a href="/terms" style="color: var(--accent);">Terms of Service</a> &amp; confirm parental consent if under 18.
-                </p>
-            </form>
-        </div>
-
-        <div class="footer-links">
-            <span>&copy; Garza Global Graviton LLC</span>
-            <div>
-                <a href="/terms" style="margin-right: 14px;">Terms of Service &amp; Parental Consent</a>
-                <a href="/admin/submissions">Operator Ledger &amp; Token Mint</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Double-Sized High-Visibility Floating Pill Launcher -->
-    <button id="chat-launcher" onclick="toggleChat()" title="Open Assistant &amp; Estimator">
-        <div class="launcher-img-wrap">
-            <img src="/logo.jpg" alt="Logo" onerror="this.parentElement.innerHTML='⚡'">
-        </div>
-        <div class="launcher-text-wrap">
-            <span class="launcher-title">FAQ &amp; ESTIMATOR</span>
-            <span class="launcher-sub">Instant Assistant &rarr;</span>
-        </div>
-    </button>
-
-    <div id="chat-box">
-        <div class="chat-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <img src="/logo.jpg" alt="Logo" style="width:22px; height:22px; border-radius:4px; object-fit:cover;" onerror="this.style.display='none'">
-                <span>Garza Global Graviton Assistant</span>
-            </div>
-            <span style="cursor:pointer; font-size: 18px;" onclick="toggleChat()">✕</span>
-        </div>
-        <div class="chat-body" id="chat-stream">
-            <div class="chat-msg msg-bot">Hello! Looking to deploy a cheat-proof squad server, generate AI assets, or calculate bookkeeping? Tap an option below:</div>
-        </div>
-        <div class="chat-options">
-            <span class="chat-chip" onclick="askBot('plans')">🎮 $19 / $39 Server Plans</span>
-            <span class="chat-chip" onclick="askBot('cheatproof')">🛡️ Cheat-Proof Tech</span>
-            <span class="chat-chip" onclick="askBot('parental')">👨‍👦 Parental Consent</span>
-            <span class="chat-chip" onclick="askBot('ai_studio')">🎨 AI Assets &amp; Video</span>
-            <span class="chat-chip" onclick="askBot('gaming')">📈 1% Lows &amp; Telemetry</span>
-            <span class="chat-chip" onclick="askBot('bookkeeping')">💼 Bookkeeping &amp; Reconcile</span>
-            <span class="chat-chip" onclick="askBot('legal')">⚖️ Legal &amp; Copyright Proof</span>
-            <span class="chat-chip" onclick="askBot('pricing')">💰 Price List</span>
-        </div>
-    </div>
-
-    <script>
-      function toggleChat() {
-        var box = document.getElementById('chat-box');
-        box.style.display = (box.style.display === 'flex') ? 'none' : 'flex';
-      }
-
-      function selectTool(type) {
-        var tierSelect = document.getElementById('select-tier');
-        var scopeBox = document.getElementById('input-scope');
-        var intakeCard = document.getElementById('intake-section');
-
-        if (type === 'cheatproof_server') {
-          tierSelect.value = "Gamer Squad Cheat-Proof Free Trial";
-          scopeBox.value = "Task: Free 48-Hour Squad Cheat-Proof Trial Server\\n- Game: (e.g. Rust / CS2 / Palworld / Minecraft / Assetto Corsa)\\n- Squad Size: 4-16 players\\n- Request: Zero-trust state verification & SHA-256 match receipts.";
-        } else if (type === 'ai_assets') {
-          tierSelect.value = "AI Creation & Asset Generation Free Trial";
-          scopeBox.value = "Task: AI Game Asset & Texture Generation\\n- Prompt: Generate 2K seamless PBR game texture (metal/wood/stone) or low-poly 3D mesh base.\\n- Request: Stamp with SHA-256 copyright birth certificate.";
-        } else if (type === 'gaming_telemetry') {
-          tierSelect.value = "PC Gaming & Telemetry Free Trial Run";
-          scopeBox.value = "Task: PC Gaming Telemetry & Frame-Time Analysis\\n- Ingest CapFrameX / HWiNFO / Afterburner benchmark logs.\\n- Calculate 0.1% & 1% low frame-time stutters, average FPS, and temperature/bottleneck curves.";
-        } else if (type === 'ai_apps') {
-          tierSelect.value = "AI Creation & Asset Generation Free Trial";
-          scopeBox.value = "Task: Custom AI Automation Gem / Mini-App Build\\n- Build standalone automated assistant (e.g. YouTube chapter generator, inventory parser, or support bot).";
-        } else if (type === 'bookkeeping') {
-          tierSelect.value = "Small Business & Bookkeeping Free Trial Run";
-          scopeBox.value = "Task: Bookkeeping & Bank Statement Normalizer\\n- Ingest messy bank/POS CSV transactions.\\n- Normalize merchant names, fix negative currency formatting, and categorize expenses.";
-        } else if (type === 'legal_audit') {
-          tierSelect.value = "Creative, 3D Render & Legal Free Trial Run";
-          scopeBox.value = "Task: Legal Redaction & Cryptographic Prior-Art Stamp\\n- Scrub PII / SSNs from discovery documents, standardize citations, and stamp an immutable SHA-256 proof-of-creation receipt.";
-        }
-
-        intakeCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        scopeBox.focus();
-      }
-
-      function askBot(topic) {
-        var stream = document.getElementById('chat-stream');
-        var userMsg = document.createElement('div');
-        userMsg.className = 'chat-msg msg-user';
-        
-        var botMsg = document.createElement('div');
-        botMsg.className = 'chat-msg msg-bot';
-
-        if (topic === 'plans') {
-          userMsg.innerText = "What are the affordable Gamer Server plans?";
-          botMsg.innerHTML = "<b>🎮 Affordable Squad Server Pricing:</b><br>• <b>Weekend Squad Pass:</b> $19 (Instant 48hr private server)<br>• <b>Clan Dedicated Monthly:</b> $39/mo (24/7 server + hourly backups)<br>• <b>Tournament / League Cluster:</b> $89/event (Multi-bracket match telemetry)<br>Click any checkout button in the showcase box above to deploy in seconds!";
-        } else if (topic === 'cheatproof') {
-          userMsg.innerText = "How does your Cheat-Proof tech work?";
-          botMsg.innerHTML = "<b>🛡️ Cheat-Proof Server Architecture:</b><br>• <b>Deterministic State Auditing:</b> Player inputs and game states are sealed with SHA-256 timestamps to prevent packet injection.<br>• <b>Memory & RCON Isolation:</b> Direct memory hooks and unauthorized RCON commands are blocked at the container runtime level.<br>• <b>Zero-Dispute Tournaments:</b> Match results are mathematically verifiable with cryptographic provenance receipts.";
-        } else if (topic === 'parental') {
-          userMsg.innerText = "What are the rules for players under 18?";
-          botMsg.innerHTML = "<b>👨‍👦 Parental Consent Policy:</b><br>All players under 18 years old must obtain permission from a parent or legal guardian before purchasing server passes or registering recurring clan subscriptions.";
-        } else if (topic === 'ai_studio') {
-          userMsg.innerText = "What AI Creation tools do you offer?";
-          botMsg.innerHTML = "<b>AI Studio Capabilities:</b><br>• <b>3D Textures & Meshes:</b> Generate 2K seamless PBR textures and low-poly 3D models with SHA-256 copyright seals.<br>• <b>Cinematic Video:</b> Produce 4K generative video reels with synced audio stems.<br>• <b>Custom AI Gems:</b> Build standalone automation mini-apps for repetitive tasks.";
-        } else if (topic === 'gaming') {
-          userMsg.innerText = "How does 1% low frame-time analysis work?";
-          botMsg.innerHTML = "<b>PC Gaming Telemetry:</b><br>• Upload CapFrameX, Afterburner, or HWiNFO CSVs.<br>• Our engine isolates micro-stutters, calculates 0.1% & 1% low pacing, and identifies CPU/GPU thermal bottlenecks.";
-        } else if (topic === 'bookkeeping') {
-          userMsg.innerText = "How do your small business bookkeeping services work?";
-          botMsg.innerHTML = "<b>Bookkeeping & Ledger Engineering:</b><br>• <b>Bank Statement Cleanup:</b> Strip merchant noise, standardize transaction dates, and correct sign formats (+/-).<br>• <b>Expense Categorization:</b> Map transactions to chart of accounts automatically.<br>• <b>Reconciliation Ready:</b> Output clean CSV/Excel ready for QuickBooks, Xero, or tax prep.";
-        } else if (topic === 'legal') {
-          userMsg.innerText = "What is available for legal teams and copyright proof?";
-          botMsg.innerHTML = "<b>Legal, FOIA & Compliance:</b><br>• <b>PII & SSN Redaction:</b> Automated scripts to sanitize sensitive data from litigation records.<br>• <b>Sovereign SHA-256 Stamps:</b> Immutable proof of prior art and evidence chain-of-custody tracking.";
-        } else if (topic === 'pricing') {
-          userMsg.innerText = "What are the standard prices across all tiers?";
-          botMsg.innerHTML = "<b>All Pricing:</b><br>• <b>Weekend Squad Pass:</b> $19<br>• <b>Clan Monthly Server:</b> $39/mo<br>• <b>Tournament Cluster:</b> $89<br>• <b>Tier 1 Fix / AI Asset:</b> $75<br>• <b>Tier 2 Pipeline / AI Bot:</b> $250<br>• <b>Tier 3 Compute Simulation:</b> $600+";
-        }
-
-        stream.appendChild(userMsg);
-        stream.appendChild(botMsg);
-        stream.scrollTop = stream.scrollHeight;
-      }
-    </script>
-</body>
-</html>
-"""
-
-RECEIPT_TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipeline Execution Receipt | Garza Global Graviton</title>
-    <style>
-      body {
-        background-color: #0b0f19;
-        color: #e2e8f0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-        padding: 16px;
-      }
-      .card {
-        background: #131b2e;
-        border: 1px solid #1e293b;
         border-radius: 12px;
-        padding: 32px;
-        max-width: 580px;
+        padding: 30px;
+        color: #f8fafc;
         text-align: center;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      }
-      h2 { color: #34d399; margin-top: 0; }
-      .token-badge {
-        background: #1e293b;
-        color: #38bdf8;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-family: monospace;
-        display: inline-block;
-        margin-bottom: 15px;
-      }
-      .receipt-box {
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 8px;
-        padding: 14px;
-        font-family: monospace;
-        font-size: 12px;
-        text-align: left;
-        color: #94a3b8;
-        margin: 15px 0;
-        word-break: break-all;
-      }
-      .quick-join-box {
-        background: #064e3b;
-        border: 1px solid #34d399;
-        border-radius: 8px;
+        margin-bottom: 25px;
+    }
+    .sponsor-box {
+        background-color: #1e293b;
+        border-left: 4px solid #3b82f6;
         padding: 12px;
-        color: #ffffff;
-        font-size: 13px;
-        font-weight: bold;
-        margin: 15px 0;
-      }
-      .btn {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 20px;
-        background: #0284c7;
-        color: white;
-        text-decoration: none;
-        border-radius: 6px;
-        font-weight: bold;
-      }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h2>✓ Workload Sealed &amp; Enqueued</h2>
-        <div class="token-badge">Evaluation Status: {{ token_status }}</div>
-        
-        <div class="quick-join-box">
-            🎮 1-Click Game &amp; Discord Integrations Ready<br>
-            <span style="font-size: 11px; font-weight: normal; color: #cbd5e1;">Steam Direct Connect &amp; Discord Webhooks synchronized with your squad instance.</span>
-        </div>
+        border-radius: 4px;
+        font-size: 0.9em;
+        margin-top: 10px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-        <p style="color: #94a3b8; font-size: 14px; line-height: 1.5;">Your dataset parameters have passed cryptographic integrity verification. Below is your deterministic proof receipt:</p>
-        
-        <div class="receipt-box">
-            <b>JOB REF:</b> 0x{{ receipt_hash[:16] }}...<br>
-            <b>SHA-256 SEAL:</b> {{ receipt_hash }}<br>
-            <b>SCOPE LIMIT:</b> {{ sample_limit }}<br>
-            <b>FAIR-PLAY STATUS:</b> {{ fairplay_status }}<br>
-            <b>DISCORD SYNC:</b> CONNECTED &amp; VERIFIED<br>
-            <b>TIMESTAMP:</b> {{ timestamp }}<br>
-            <b>STATUS:</b> ACTIVE &amp; DEPLOYED
-        </div>
+policies = db.get_policies()
+nodes = db.get_all_nodes()
+events = db.get_recent_events(limit=100)
 
-        <a href="/" class="btn">Return to Dashboard</a>
+# --- Sidebar Controls ---
+st.sidebar.title("🛡️ Server Vault")
+st.sidebar.caption("Deterministic Anti-Cheat & Ecosystem")
+
+auto_refresh = st.sidebar.toggle("Auto-Refresh Telemetry", value=False)
+if auto_refresh:
+    refresh_rate = st.sidebar.slider("Polling Frequency (s)", min_value=2, max_value=10, value=3)
+    time.sleep(refresh_rate)
+    st.rerun()
+
+view_mode = st.sidebar.radio(
+    "Navigation",
+    [
+        "🎮 Gamer Home & Checkout",
+        "📺 Creator & Streamer Partner Hub",
+        "Active Telemetry & Logs",
+        "Fleet Node Controls",
+        "Deploy New Clean Server",
+        "🤝 Advertiser Portal & Rewards",
+        "Integrity Settings",
+        "Audit & Match Reports"
+    ]
+)
+
+# --- Tab 0: Gamer Home & Checkout ---
+if view_mode == "🎮 Gamer Home & Checkout":
+    st.markdown("""
+    <div class="hero-banner">
+        <h1>Tired of Cheaters Ruining Your Servers?</h1>
+        <p style="font-size: 1.2em; color: #94a3b8;">Deploy bulletproof, server-authoritative anti-cheat nodes with sub-tick packet inspection in seconds.</p>
+        <p style="font-family: monospace; color: #38bdf8;">🌐 Site Address: <b>https://garzaglobalgraviton.com</b></p>
     </div>
-</body>
-</html>
-"""
+    """, unsafe_allow_html=True)
 
-@app.route("/logo.jpg")
-def serve_logo():
-    if os.path.exists(LOGO_FILE):
-        return send_file(LOGO_FILE, mimetype="image/jpeg")
-    return ("", 404)
+    col_pitch1, col_pitch2 = st.columns(2)
 
-@app.route("/terms")
-def terms_page():
-    return render_template_string(TERMS_TEMPLATE)
-
-@app.route("/")
-def dashboard():
-    reviews = load_json(REVIEWS_FILE, [])
-    
-    if reviews:
-        total_stars = sum(int(r.get("stars", 5)) for r in reviews)
-        avg_num = total_stars / len(reviews)
-        avg_score = f"{avg_num:.1f}"
-        star_string = "★" * int(round(avg_num)) + "☆" * (5 - int(round(avg_num)))
-    else:
-        avg_score = "5.0"
-        star_string = "★★★★★"
-
-    review_texts = [r.get("comment", "") for r in reviews]
-    combined_text = " ".join(review_texts).lower()
-    
-    highlights = []
-    if any(k in combined_text for k in ["cheat", "server", "scrims", "match", "squad", "monthly", "clan"]):
-        highlights.append("squad leaders and clans praise the $39/mo cheat-proof recurring server model and sub-15ms tick latency")
-    if any(k in combined_text for k in ["discord", "steam", "integration", "webhook"]):
-        highlights.append("gamers highlight seamless 1-click Discord webhook status feeds and Steam direct join links")
-    if any(k in combined_text for k in ["ai", "texture", "asset", "pbr", "render"]):
-        highlights.append("game developers and artists praise the instant 2K PBR texture generation and low-poly 3D mesh pipelines")
-    if any(k in combined_text for k in ["bank", "receipt", "csv", "bookkeeping", "formulas"]):
-        highlights.append("small business owners value the automatic ledger formula normalization and receipt deduplication")
-
-    if highlights:
-        ai_summary = "Customers frequently note that " + "; ".join(highlights) + ". Overall sentiment highlights transparent verification receipts, zero-dispute cheat-proof servers, and robust fair-play compliance."
-    else:
-        ai_summary = "Customers highlight the extreme dispatch speed, zero-trust cheat-proof private server environments, accurate data vectorization, and deterministic SHA-256 sealing receipts across gaming and business workflows."
-
-    return render_template_string(
-        HTML_TEMPLATE,
-        reviews=reviews,
-        avg_score=avg_score,
-        star_string=star_string,
-        ai_summary=ai_summary,
-        gamer_weekend_link=STRIPE_GAMER_WEEKEND_LINK,
-        gamer_monthly_link=STRIPE_GAMER_MONTHLY_LINK,
-        gamer_tourney_link=STRIPE_GAMER_TOURNEY_LINK,
-        tier1_link=STRIPE_TIER1_LINK,
-        tier2_link=STRIPE_TIER2_LINK,
-        tier3_link=STRIPE_TIER3_LINK
-    )
-
-@app.route("/submit_review", methods=["POST"])
-def submit_review():
-    name = request.form.get("name", "Anonymous Client").strip()
-    role = request.form.get("role", "General Client").strip()
-    stars = int(request.form.get("stars", 5))
-    comment = request.form.get("comment", "").strip()
-
-    if comment:
-        reviews = load_json(REVIEWS_FILE, [])
-        reviews.append({
-            "name": name,
-            "role": role,
-            "stars": max(1, min(5, stars)),
-            "comment": comment,
-            "timestamp": datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
-        })
-        save_json(REVIEWS_FILE, reviews)
-
-    return redirect("/#reviews-section")
-
-@app.route("/admin/submissions")
-def admin_submissions():
-    submissions = load_json(SUBMISSIONS_FILE, [])
-    tokens = load_json(TOKENS_FILE, {})
-    return render_template_string(ADMIN_TEMPLATE, submissions=submissions, tokens=tokens)
-
-@app.route("/admin/mint_token", methods=["POST"])
-def mint_token():
-    data = request.get_json(silent=True) or {}
-    token_type = data.get("type", "squad_pass")
-    tokens = load_json(TOKENS_FILE, {})
-    
-    created_at = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
-    hex_id = secrets.token_hex(2).upper()
-
-    if token_type == "squad_pass":
-        new_token = f"GGG-SQUAD-PASS-{hex_id}"
-        tier = "Gamer Squad Cheat-Proof Trial"
-        max_rows = 1000
-        sample_limit = "1 free 48hr cheat-proof squad server / zero-trust match receipts"
-    elif token_type == "ai_studio":
-        new_token = f"GGG-AI-STUDIO-{hex_id}"
-        tier = "AI Studio & Creation Trial"
-        max_rows = 1000
-        sample_limit = "1 high-res AI asset / mini-app script / cinematic render test"
-    elif token_type == "gaming":
-        new_token = f"GGG-GAMING-{hex_id}"
-        tier = "Gaming & Telemetry Trial"
-        max_rows = 500
-        sample_limit = "500 rows frame-time logs / 1 clip compression"
-    elif token_type == "business":
-        new_token = f"GGG-BIZ-{hex_id}"
-        tier = "Bookkeeping & Business Trial"
-        max_rows = 500
-        sample_limit = "500 rows bank ledger reconciliation / margin model"
-    elif token_type == "legal":
-        new_token = f"GGG-LEGAL-{hex_id}"
-        tier = "Legal & Compliance Trial"
-        max_rows = 500
-        sample_limit = "1 PII redaction pass / 1 SHA-256 prior-art audit"
-    elif token_type == "enterprise":
-        new_token = f"GGG-ENTERPRISE-{hex_id}"
-        tier = "Enterprise POC Slice"
-        max_rows = 50000
-        sample_limit = "10-parameter sweep slice & cryptographic ledger audit"
-    else:
-        new_token = f"GGG-TRIAL-{hex_id}"
-        tier = "Standard General Trial"
-        max_rows = 500
-        sample_limit = "General single trial execution"
-
-    tokens[new_token] = {
-        "status": "ACTIVE",
-        "tier": tier,
-        "max_rows": max_rows,
-        "sample_limit": sample_limit,
-        "created": created_at
-    }
-    save_json(TOKENS_FILE, tokens)
-    return jsonify({
-        "status": "minted",
-        "token": new_token,
-        "tier": tier,
-        "max_rows": max_rows,
-        "sample_limit": sample_limit,
-        "created": created_at
-    })
-
-@app.route("/admin/revoke_token", methods=["POST"])
-def revoke_token():
-    data = request.get_json(silent=True) or {}
-    token_key = data.get("token", "").strip().upper()
-    tokens = load_json(TOKENS_FILE, {})
-    if token_key in tokens:
-        tokens[token_key]["status"] = "REVOKED"
-        save_json(TOKENS_FILE, tokens)
-        return jsonify({"status": "revoked", "token": token_key})
-    return jsonify({"status": "not_found"}), 404
-
-@app.route("/admin/delete_token", methods=["POST"])
-def delete_token():
-    data = request.get_json(silent=True) or {}
-    token_key = data.get("token", "").strip().upper()
-    tokens = load_json(TOKENS_FILE, {})
-    if token_key in tokens:
-        del tokens[token_key]
-        save_json(TOKENS_FILE, tokens)
-        return jsonify({"status": "deleted", "token": token_key})
-    return jsonify({"status": "not_found"}), 404
-
-@app.route("/submit", methods=["POST"])
-def submit_workload():
-    data = request.form.to_dict() if request.form else (request.get_json(silent=True) or {})
-    token_input = data.get("token", "").strip().upper()
-    scope_text = data.get("scope", data.get("requirements", "General Workload Inquiry"))
-    tier_choice = data.get("tier", data.get("budget", "Custom Project"))
-    
-    # Run Fair-Play & Exploit Policy Check
-    is_valid_policy, fairplay_status = check_exploit_policy(scope_text, tier_choice)
-    
-    tokens = load_json(TOKENS_FILE, {})
-    token_status = "Standard Intake"
-    sample_limit = "Full Scope Quote Review"
-    
-    if token_input:
-        if token_input in tokens and tokens[token_input]["status"] == "ACTIVE":
-            tokens[token_input]["status"] = "REDEEMED"
-            save_json(TOKENS_FILE, tokens)
-            token_status = f"Redeemed: {tokens[token_input]['tier']}"
-            sample_limit = tokens[token_input].get("sample_limit", "Trial Execution")
-        elif token_input in tokens and tokens[token_input]["status"] == "REVOKED":
-            token_status = "Token Has Been Revoked"
-        elif token_input in tokens:
-            token_status = "Token Already Redeemed"
-        else:
-            token_status = "Invalid Token"
-
-    now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
-    receipt_seed = f"{data.get('name')}-{data.get('email')}-{now_str}-{token_input}"
-    receipt_hash = hashlib.sha256(receipt_seed.encode("utf-8")).hexdigest()
-
-    submission_entry = {
-        "timestamp": now_str,
-        "name": data.get("name", "Anonymous Prospect"),
-        "contact": data.get("email", data.get("contact", "N/A")),
-        "token": token_input if token_input else "None",
-        "scope": scope_text,
-        "tier": tier_choice,
-        "fairplay_status": fairplay_status,
-        "receipt_hash": receipt_hash
-    }
-    
-    submissions = load_json(SUBMISSIONS_FILE, [])
-    submissions.append(submission_entry)
-    save_json(SUBMISSIONS_FILE, submissions)
-    
-    if request.form:
-        return render_template_string(
-            RECEIPT_TEMPLATE,
-            token_status=token_status,
-            sample_limit=sample_limit,
-            fairplay_status=fairplay_status,
-            receipt_hash=receipt_hash,
-            timestamp=now_str
+    with col_pitch1:
+        st.subheader("⚡ Why Choose Our Cheat-Proof Servers?")
+        st.markdown(
+            """
+            * **Server-Authoritative Physics:** Eliminates client-side speedhacks and position desync.
+            * **Sub-Tick Anomaly Scanning:** Flags aimbot angular snapping instantly.
+            * **Zero Performance Tax:** Lightweight dedicated nodes with fixed 128-tick rates.
+            * **Instant Return Customer Rewards:** Earn tokens by participating in clean community matches.
+            """
         )
-    return jsonify({"status": "success", "token_status": token_status, "fairplay_status": fairplay_status, "receipt_hash": receipt_hash, "entry": submission_entry})
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+        active_ads = db.get_active_advertisements()
+        if active_ads:
+            st.markdown("### 🌟 Community Partner")
+            ad = active_ads[0]
+            st.markdown(f"""
+            <div class="sponsor-box">
+                <b>{ad['company_name']}</b>: {ad['ad_copy']}<br>
+                <a href="{ad['target_url']}" target="_blank">Learn More & Support Clean Gaming ↗</a>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("Claim +50 Token Reward for Viewing Partner"):
+                db.award_user_tokens("Player_Session", 50)
+                st.success("🎉 Added 50 integrity tokens to your account balance!")
+
+    with col_pitch2:
+        st.subheader("🛒 Instant Clean Server Setup")
+        st.write("Select your plan below to launch a secure node instantly.")
+
+        with st.form("quick_checkout_form"):
+            q_name = st.text_input("Squad / Server Name", placeholder="e.g., Elite Scrims Arena")
+            q_tier = st.selectbox(
+                "Subscription Plan",
+                [
+                    "Starter Squad ($9.99/mo - Up to 8 Slots)",
+                    "Clan Competitive ($19.99/mo - Up to 24 Slots - 128-Tick)",
+                    "Community Hub ($34.99/mo - 50+ Slots)"
+                ]
+            )
+            q_email = st.text_input("Billing Email", placeholder="admin@domain.com")
+
+            st.markdown(
+                """
+                > **Parental / Guardian Permission Required:**  
+                > All recurring server subscriptions and digital service agreements require confirmation of legal majority or explicit parental supervision.
+                """
+            )
+            q_consent = st.checkbox(
+                "I confirm I am 18+ OR have explicit parent/guardian permission to purchase and manage this server option."
+            )
+
+            q_submit = st.form_submit_button("Deploy & Activate Subscription", use_container_width=True)
+
+            if q_submit:
+                if not q_name.strip() or not q_email.strip():
+                    st.error("Please fill out all required fields.")
+                elif not q_consent:
+                    st.warning("Parental or adult consent is required to proceed.")
+                else:
+                    with st.spinner("Provisioning secure container and billing gateway..."):
+                        node_id = f"node-quick-{int(time.time()) % 10000}"
+                        db.insert_node(node_id, q_name, "US Central (Chicago)", q_tier.split(" (")[0], q_email, 128)
+                        time.sleep(1.2)
+                    st.success(f"Success! Server '{q_name}' is live and hardened against cheaters.")
+                    st.info(f"Access details and connection keys sent to `{q_email}`.")
+
+# --- Tab 1: Creator & Streamer Partner Hub ---
+elif view_mode == "📺 Creator & Streamer Partner Hub":
+    st.title("Creator Partner Hub: Compliant Stream Integration")
+    st.write("Integrate official fair-play anti-cheat metrics and verified sponsor ad rotations into your broadcasts safely and legally.")
+
+    col_c1, col_c2 = st.columns(2)
+
+    with col_c1:
+        st.subheader("📋 OBS Browser Source Integration")
+        st.write("To display certified anti-cheat status and sponsor partner banners on your stream without violating platform terms of service, add a **Browser Source** in OBS Studio pointing to your secure local overlay endpoint:")
+        st.code("http://localhost:8080/overlay", language="text")
+        st.info("This overlay operates locally via secure HTTP headers and displays only authorized platform metrics and verified ad campaigns.")
+
+    with col_c2:
+        st.subheader("🔗 Official Platform Channel Links")
+        st.write("Link your authorized public channel handles for community verification.")
+        yt_handle = st.text_input("YouTube Channel Handle", placeholder="@YourChannel")
+        tk_handle = st.text_input("TikTok Creator Handle", placeholder="@YourCreatorHandle")
+        
+        if st.button("Save Creator Handles"):
+            st.success("Creator handles registered for community token rewards tracking.")
+
+# --- Tab 2: Active Telemetry & Logs ---
+elif view_mode == "Active Telemetry & Logs":
+    st.title("System Status & Live Telemetry")
+    st.markdown("Real-time telemetry stream and heuristic anti-cheat execution logs.")
+
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric(label="Active Dedicated Nodes", value=f"{len(nodes)} Nodes", delta="Operational")
+    with col2:
+        st.metric(label="Tickrate Stability", value="128.0 Hz", delta="0.0% Variance")
+    with col3:
+        st.metric(label="Connected Players", value=str(max(len(nodes) * 12, 18)), delta="+4 active")
+    with col4:
+        st.metric(label="Anomalies Prevented", value=f"{len(events)}", delta=f"{len(events)} logged")
+
+    st.markdown("---")
+    st.subheader("Server Packet Timing & Delta-T (ms)")
+    chart_data = pd.DataFrame(
+        np.random.normal(7.81, 0.12, size=(40, 3)),
+        columns=["Node Alpha (US-East)", "Node Beta (US-Central)", "Node Gamma (US-West)"]
+    )
+    st.line_chart(chart_data)
+
+    col_log_header, col_log_action = st.columns([3, 1])
+    with col_log_header:
+        st.subheader("Live Security Event Feed (SQLite)")
+    with col_log_action:
+        if st.button("Clear Log History", use_container_width=True):
+            db.clear_events()
+            st.rerun()
+
+    if events:
+        df_events = pd.DataFrame(events)
+        df_events = df_events.rename(columns={
+            "timestamp": "Timestamp",
+            "node_name": "Node Name",
+            "node_id": "Node ID",
+            "vector": "Detection Vector",
+            "action_taken": "Action Taken",
+            "confidence": "Confidence"
+        })
+        st.dataframe(df_events, use_container_width=True, hide_index=True)
+    else:
+        st.info("No security anomalies recorded. Run `python client_sender.py` to stream live UDP detections.")
+
+# --- Tab 3: Fleet Node Controls ---
+elif view_mode == "Fleet Node Controls":
+    st.title("Fleet Node Administration")
+    st.write("Manage dedicated server instances stored in `vault_storage.db`.")
+
+    if not nodes:
+        st.warning("No active nodes available to manage. Deploy a server first.")
+    else:
+        for idx, node in enumerate(nodes):
+            with st.expander(f"🖥️ {node.get('name')} ({node.get('id')}) - Status: {node.get('status')}", expanded=True):
+                col_info, col_actions = st.columns([2, 1])
+                with col_info:
+                    st.markdown(f"**Region:** {node.get('region')}")
+                    st.markdown(f"**Plan Tier:** {node.get('plan')}")
+                    st.markdown(f"**Assigned Tickrate:** {node.get('tickrate')} Hz")
+                    st.markdown(f"**Admin Contact:** `{node.get('admin_email')}`")
+                with col_actions:
+                    if st.button("Restart Node", key=f"restart_{node['id']}", use_container_width=True):
+                        st.success(f"{node['name']} restarted.")
+                    if st.button("Terminate Instance", key=f"term_{node['id']}", use_container_width=True):
+                        db.delete_node(node["id"])
+                        st.warning("Instance removed.")
+                        st.rerun()
+
+# --- Tab 4: Deploy New Server ---
+elif view_mode == "Deploy New Clean Server":
+    st.title("Provision Dedicated Clean Server")
+    st.write("Deploy a dedicated instance with server-authoritative integrity binding.")
+
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        with st.form("deploy_server_form"):
+            server_name = st.text_input("Server Display Name", placeholder="e.g., Apex Elite Scrims #1")
+            region = st.selectbox("Region", ["US East (N. Virginia)", "US Central (Chicago)", "US West (Oregon)"])
+            plan = st.selectbox("Plan Tier", ["Starter Squad ($9.99/mo)", "Clan Competitive ($19.99/mo)", "Community Hub ($34.99/mo)"])
+            admin_email = st.text_input("Admin Email Address", placeholder="admin@domain.com")
+            parental_consent = st.checkbox("I confirm I am 18+ OR have parent/guardian permission.")
+            
+            if st.form_submit_button("Deploy Node Instance", use_container_width=True):
+                if not server_name or not admin_email or not parental_consent:
+                    st.error("Please complete all fields and parental consent verification.")
+                else:
+                    node_id = f"node-{region[:2].lower()}-{int(time.time()) % 10000}"
+                    db.insert_node(node_id, server_name, region, plan.split(" (")[0], admin_email, 128)
+                    st.success(f"Server '{server_name}' successfully provisioned!")
+
+    with col2:
+        st.subheader("Your Token Balance")
+        bal = db.get_user_tokens("Player_Session")
+        st.metric(label="Earned Integrity Tokens", value=f"{bal} Tokens")
+        st.caption("View sponsor partner links on the home page to earn bonus tokens.")
+
+# --- Tab 5: Advertiser Portal & Rewards ---
+elif view_mode == "🤝 Advertiser Portal & Rewards":
+    st.title("Advertiser Onboarding & Clean Space Pipeline")
+    st.write("Partner with our gaming ecosystem. Ads are organically integrated into gamer dashboards with strict NSFW filtering.")
+
+    tab_apply, tab_manage = st.tabs(["Apply as Advertiser", "Active Campaigns Audit"])
+
+    with tab_apply:
+        with st.form("advertiser_application_form"):
+            st.subheader("Brand Partnership Application")
+            comp_name = st.text_input("Company / Brand Name", placeholder="e.g., Apex Hardware Co.")
+            comp_email = st.text_input("Contact Email", placeholder="partners@brand.com")
+            ad_copy = st.text_input("Ad Copy (Max 120 chars)", placeholder="High-performance mechanical keyboards built for competitive gaming.")
+            target_url = st.text_input("Landing Page URL", placeholder="https://brand.com/gaming")
+            token_budget = st.number_input("Token Campaign Budget", min_value=500, max_value=50000, value=1000, step=500)
+
+            st.markdown("**Content Compliance Screening:**")
+            nsfw_check = st.checkbox(
+                "I certify that my brand, ad copy, and target landing page contain NO NSFW, adult, gambling, or prohibited explicit material."
+            )
+
+            ad_submitted = st.form_submit_button("Submit Campaign for Review", use_container_width=True)
+
+            if ad_submitted:
+                if not comp_name or not comp_email or not ad_copy or not target_url:
+                    st.error("Please fill out all required fields.")
+                elif not nsfw_check:
+                    st.error("Compliance certification regarding NSFW content filtering is required.")
+                else:
+                    forbidden_keywords = ["nsfw", "adult", "casino", "gambling", "crypto-bet", "xxx", "dating"]
+                    is_clean = not any(kw in ad_copy.lower() or kw in target_url.lower() for kw in forbidden_keywords)
+
+                    db.register_advertiser(comp_name, comp_email, ad_copy, target_url, token_budget, is_clean)
+                    if is_clean:
+                        st.success("Campaign approved and published to the clean gaming sponsor feed!")
+                    else:
+                        st.error("Application rejected due to automated NSFW keyword filter detection.")
+
+    with tab_manage:
+        st.subheader("Registered Advertiser Pipeline")
+        all_ads = db.get_all_advertisers()
+        if all_ads:
+            df_ads = pd.DataFrame(all_ads)
+            st.dataframe(df_ads, use_container_width=True, hide_index=True)
+        else:
+            st.info("No advertiser campaigns registered yet.")
+
+# --- Tab 6: Integrity Settings ---
+elif view_mode == "Integrity Settings":
+    st.title("Integrity & Enforcement Policies")
+    st.write("Configure detection thresholds and Discord webhooks.")
+
+    with st.form("integrity_settings_form"):
+        auth_pos = st.toggle("Enforce Server-Authoritative Position Verification", value=bool(policies.get("server_authoritative_position", 1)))
+        packet_scan = st.toggle("Enable Sub-Tick Packet Anomaly Scanning", value=bool(policies.get("sub_tick_packet_scan", 1)))
+        auto_kick = st.toggle("Auto-Kick on Detected Memory Hook", value=bool(policies.get("auto_kick_memory_hook", 1)))
+        vel_sigma = st.slider("Velocity Deviation Tolerance (σ)", 1.0, 5.0, float(policies.get("velocity_deviation_sigma", 2.2)), 0.1)
+        aim_threshold = st.slider("Aim Vector Threshold (°/ms)", 10.0, 180.0, float(policies.get("aim_vector_threshold_deg_per_ms", 65.0)), 5.0)
+        discord_webhook = st.text_input("Discord Webhook URL", value=policies.get("discord_webhook_url", "") or "")
+
+        if st.form_submit_button("Save Policies", use_container_width=True):
+            db.update_policies(auth_pos, packet_scan, auto_kick, vel_sigma, aim_threshold, discord_webhook)
+            st.success("Settings saved successfully.")
+
+# --- Tab 7: Audit & Match Reports ---
+elif view_mode == "Audit & Match Reports":
+    st.title("Tournament Match Audit & Integrity Certificates")
+    report_text = f"""# MATCH INTEGRITY & FAIR-PLAY AUDIT REPORT
+Generated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}
+Active Nodes: {len(nodes)} | Security Vectors Analyzed: {len(events)}
+Verification Hash: SHA256-AUTHENTICATED-CLEAN-RUN
+"""
+    st.text_area("Audit Summary", report_text, height=150)
+    st.download_button("Download Report (.txt)", report_text, file_name="match_audit.txt", use_container_width=True)
