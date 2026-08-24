@@ -1,7 +1,7 @@
 """
 ai_sandbox_api.py - Restricted AI Sandbox & Secured Multi-Sector Platform
 Provides secure endpoints, developer instructions, and public commercial services 
-with integrated Google Ads tracking tags.
+with fully installed Google Ads tracking tags.
 """
 
 from fastapi import FastAPI, Header, HTTPException, Depends
@@ -14,7 +14,7 @@ from datetime import datetime
 app = FastAPI(
     title="Garza Global Graviton - Restricted AI Sandbox & Commercial Platform",
     description="Secure evaluation gateway, developer instructions, and decentralized multi-sector commercial services.",
-    version="2.7.0"
+    version="2.8.0"
 )
 
 DB_NAME = "vault_storage.db"
