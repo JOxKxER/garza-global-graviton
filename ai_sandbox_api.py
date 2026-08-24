@@ -1,7 +1,7 @@
 """
 ai_sandbox_api.py - Restricted AI Sandbox & Secured Multi-Sector Platform
 Provides secure endpoints, developer instructions, and public commercial services 
-while isolating sensitive defense and EW capabilities.
+with integrated Google Ads tracking tags.
 """
 
 from fastapi import FastAPI, Header, HTTPException, Depends
@@ -14,7 +14,7 @@ from datetime import datetime
 app = FastAPI(
     title="Garza Global Graviton - Restricted AI Sandbox & Commercial Platform",
     description="Secure evaluation gateway, developer instructions, and decentralized multi-sector commercial services.",
-    version="2.6.0"
+    version="2.7.0"
 )
 
 DB_NAME = "vault_storage.db"
@@ -80,11 +80,26 @@ def verify_sandbox_token(x_api_key: str = Header(...)):
 
 @app.get("/", response_class=HTMLResponse)
 def sandbox_root():
-    """Integrated developer instructions, FAQs, commercial multi-sector services, and onboarding guide displayed directly in the web app."""
+    """Integrated developer instructions, FAQs, commercial multi-sector services, and Google tracking tags displayed directly in the web app."""
     return """
     <html>
         <head>
             <title>Garza Global Graviton - Sandbox & Commercial Services</title>
+            
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18405631729"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-18405631729');
+            </script>
+            
+            <!-- Event snippet for Submit lead form (1) conversion page -->
+            <script>
+              gtag('event', 'conversion', {'send_to': 'AW-18405631729/eRtSCK--5eYcEPHNvshE'});
+            </script>
+
             <style>
                 body { font-family: Arial, sans-serif; background-color: #0f172a; color: #e2e8f0; padding: 40px; }
                 .container { max-width: 950px; margin: auto; background: #1e293b; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
