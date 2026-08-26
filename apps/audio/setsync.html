@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SetSync - Live Lyric & Chord Prompter</title>
+  <style>
+    body { background: #000; color: #fff; font-family: monospace; margin: 0; padding: 15px; }
+    .control-bar { position: fixed; top: 0; left: 0; right: 0; background: #0f172a; border-bottom: 1px solid #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+    .content-area { margin-top: 70px; font-size: 1.3rem; line-height: 2.2; white-space: pre-wrap; padding-bottom: 300px; }
+    .chord { color: #facc15; font-weight: bold; }
+    button { background: #38bdf8; color: #020617; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #0284c7; }
+  </style>
+</head>
+<body>
+
+<div class="control-bar">
+  <div>
+    <strong style="color: #38bdf8;">SETSYNC™</strong> | <span id="speed-label">Speed: 1x</span>
+  </div>
+  <div style="display: flex; gap: 8px;">
+    <button id="toggle-scroll">Start Auto-Scroll</button>
+    <button id="faster-btn" style="background: #334155; color: #fff;">Speed +</button>
+    <button id="reset-btn" style="background: #ef4444; color: #fff;">Top</button>
+  </div>
+</div>
+
+<div class="content-area" id="lyrics">
+<span class="chord">[Intro]</span>
+G    Em7    Cadd9    D
+
+<span class="chord">[Verse 1]</span>
+G                               Em7
+Pack the trailer up before the morning light breaks through
+Cadd9                           D
+Five hundred miles of highway and another gig to do
+G                               Em7
+Soundcheck at five, doors at eight, running clean on time
+Cadd9                           D
+Turn the monitors up loud and lock into the line
+
+<span class="chord">[Chorus]</span>
+Cadd9               D           G        D/F#   Em7
+We build it from the ground up, zero wires in the way
+Cadd9               D           G
+Singing all night long until the break of day
+</div>
+
+<script>
+  let isScrolling = false;
+  let scrollSpeed = 1;
+  let scrollInterval = null;
+
+  function runScroll() {
+    if (isScrolling) {
+      window.scrollBy({ top: scrollSpeed, behavior: 'smooth' });
+    }
+  }
+
+  document.getElementById('toggle-scroll').addEventListener('click', () => {
+    isScrolling = !isScrolling;
+    document.getElementById('toggle-scroll').innerText = isScrolling ? "Pause Scroll" : "Resume Scroll";
+    if (isScrolling && !scrollInterval) {
+      scrollInterval = setInterval(runScroll, 50);
+    } else if (!isScrolling) {
+      clearInterval(scrollInterval);
+      scrollInterval = null;
+    }
+  });
+
+  document.getElementById('faster-btn').addEventListener('click', () => {
+    scrollSpeed = scrollSpeed >= 4 ? 1 : scrollSpeed + 1;
+    document.getElementById('speed-label').innerText = `Speed: ${scrollSpeed}x`;
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Spacebar / Foot-pedal binding
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      document.getElementById('toggle-scroll').click();
+    }
+  });
+</script>
+</body>
+</html>

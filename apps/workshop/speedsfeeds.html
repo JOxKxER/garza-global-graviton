@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speeds & Feeds - CNC Machining Engine</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 480px; width: 100%; padding: 25px; border-radius: 12px; }
+    h1 { color: #38bdf8; font-size: 1.3rem; margin-top: 0; }
+    .badge { background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; float: right; }
+    label { font-size: 0.85rem; color: #94a3b8; display: block; margin: 12px 0 4px; }
+    select, input { width: 100%; background: #1e293b; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; box-sizing: border-box; }
+    button { width: 100%; background: #38bdf8; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+    .readout { background: #020617; border: 1px solid #334155; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-size: 1.2rem; color: #34d399; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <span class="badge" id="daily-badge">Daily: 0/15</span>
+  <h1>SPEEDS & FEEDS™ // CNC ENGINE</h1>
+  <div style="font-size: 0.8rem; color: #64748b;">SPINDLE RPM & FEED RATE CALCULATOR</div>
+
+  <label>Workpiece Material</label>
+  <select id="material">
+    <option value="600">6061-T6 Aluminum (600 SFM)</option>
+    <option value="120">304 Stainless Steel (120 SFM)</option>
+    <option value="250">Mild Steel 1018 (250 SFM)</option>
+    <option value="80">Titanium 6Al-4V (80 SFM)</option>
+  </select>
+
+  <label>Tool Diameter (Inches)</label>
+  <input type="number" id="tool-dia" value="0.500" step="0.0625">
+
+  <label>Flute Count</label>
+  <input type="number" id="flutes" value="3" step="1">
+
+  <button id="calc-btn">Compute Spindle RPM & Feed Rate</button>
+
+  <div class="readout" id="results">RPM: 4,583 | FEED: 41.2 IPM</div>
+</div>
+
+<script>
+  const MAX_FREE = 15;
+  function getUsage() {
+    const today = new Date().toISOString().split('T')[0];
+    const data = JSON.parse(localStorage.getItem('speedsfeeds_usage') || '{}');
+    return (data.date === today) ? data : { date: today, count: 0 };
+  }
+  function updateDisplay() {
+    const usage = getUsage();
+    document.getElementById('daily-badge').innerText = `Daily: ${usage.count}/${MAX_FREE}`;
+    if (usage.count >= MAX_FREE) document.getElementById('calc-btn').disabled = true;
+  }
+  function incrementUsage() {
+    const usage = getUsage();
+    usage.count++;
+    localStorage.setItem('speedsfeeds_usage', JSON.stringify(usage));
+    updateDisplay();
+  }
+
+  document.getElementById('calc-btn').addEventListener('click', () => {
+    const usage = getUsage();
+    if (usage.count >= MAX_FREE) return;
+
+    const sfm = parseFloat(document.getElementById('material').value);
+    const dia = parseFloat(document.getElementById('tool-dia').value);
+    const flutes = parseInt(document.getElementById('flutes').value);
+
+    // RPM = (SFM * 3.82) / Tool Diameter
+    const rpm = Math.round((sfm * 3.82) / dia);
+    // Chip load approximation
+    const ipt = dia * 0.006;
+    const ipm = (rpm * flutes * ipt).toFixed(1);
+
+    document.getElementById('results').innerText = `RPM: ${rpm.toLocaleString()} | FEED: ${ipm} IPM`;
+    incrementUsage();
+  });
+
+  updateDisplay();
+</script>
+</body>
+</html>

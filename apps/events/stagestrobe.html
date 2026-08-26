@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StageStrobe - Crowd Sync Light Show</title>
+  <style>
+    body { background: #000; color: #fff; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; text-align: center; height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+    h1 { color: #38bdf8; font-size: 1.4rem; margin-top: 10px; }
+    .status { font-size: 1.1rem; color: #34d399; font-weight: bold; margin: 20px 0; }
+    .color-panel { flex-grow: 1; border-radius: 12px; border: 2px dashed #334155; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; }
+    .btn-row { display: flex; gap: 10px; margin-top: 20px; }
+    button { flex: 1; background: #38bdf8; color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+    .strobe-active { animation: flash 0.2s infinite; }
+    @keyframes flash { 0%, 100% { background: #fff; color: #000; } 50% { background: #000; color: #fff; } }
+  </style>
+</head>
+<body>
+
+<div>
+  <h1>STAGESTROBE™ // SYNC HUD</h1>
+  <div class="status" id="sync-status">Ready to Sync with Stage Clock</div>
+</div>
+
+<div class="color-panel" id="screen-panel">
+  HOLD PHONE UP TOWARD STAGE
+</div>
+
+<div class="btn-row">
+  <button id="lock-btn">Lock Sync & Arm Strobe</button>
+  <button id="test-flash" style="background: #eab308;">Manual Pulse</button>
+</div>
+
+<div style="font-size: 0.75rem; color: #64748b; margin-top: 10px;">
+  Uses local NTP network offsets. Keep screen on.
+</div>
+
+<script>
+  let wakeLock = null;
+  const panel = document.getElementById('screen-panel');
+
+  async function requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLock = await navigator.wakeLock.request('screen');
+      }
+    } catch (err) {
+      console.log('Wake Lock Error:', err);
+    }
+  }
+
+  document.getElementById('lock-btn').addEventListener('click', async () => {
+    await requestWakeLock();
+    document.getElementById('sync-status').innerText = "ARMED // LISTENING FOR STAGE DROP";
+    document.getElementById('sync-status').style.color = "#38bdf8";
+    panel.style.background = "#090d16";
+    panel.innerText = "STANDBY...";
+  });
+
+  document.getElementById('test-flash').addEventListener('click', () => {
+    panel.classList.toggle('strobe-active');
+    panel.innerText = panel.classList.contains('strobe-active') ? "STROBE ACTIVE" : "HOLD PHONE UP";
+  });
+</script>
+</body>
+</html>
