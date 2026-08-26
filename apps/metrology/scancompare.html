@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ScanCompare - 3D Scan to STEP Heatmap</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 500px; width: 100%; padding: 25px; border-radius: 12px; text-align: center; }
+    h1 { color: #38bdf8; font-size: 1.3rem; margin-top: 0; }
+    .drop-zone { border: 2px dashed #38bdf8; border-radius: 8px; padding: 30px; margin: 15px 0; background: #020617; }
+    .readout { background: #030712; padding: 15px; border-radius: 6px; border: 1px solid #1e293b; font-size: 0.85rem; color: #34d399; margin-top: 15px; text-align: left; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>SCANCOMPARE™ // ICP HEATMAP</h1>
+  <div style="font-size: 0.8rem; color: #64748b;">AIR-GAPPED 3D SCAN INSPECTION ENGINE</div>
+  <div class="drop-zone">
+    <h3>Drop Nominal STEP + Scan Point Cloud (.STL / .PLY)</h3>
+    <p style="font-size: 0.8rem; color: #94a3b8;">Generates part deviation variance analysis locally.</p>
+  </div>
+  <div class="readout">
+    <div>Alignment Solver: <strong>ICP Iterative Closest Point</strong></div>
+    <div>Max Surface Deviation: <strong style="color:#facc15;">+0.0018 in</strong></div>
+    <div>Pass/Fail Status: <strong style="color:#34d399;">AS9102 COMPLIANT</strong></div>
+  </div>
+</div>
+</body>
+</html>
