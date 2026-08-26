@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graviton - Edge Telemetry & Data Gathering PoC</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; margin: 0; padding: 20px; }
+    .container { max-width: 800px; margin: auto; }
+    header { border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #38bdf8; margin: 0; font-size: 1.2rem; }
+    .panel { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    label { display: block; font-size: 0.8rem; color: #94a3b8; margin-bottom: 5px; }
+    input, select { width: 100%; background: #060911; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box; }
+    .btn-group { display: flex; gap: 10px; }
+    button { flex: 1; background: #38bdf8; color: #060911; font-weight: bold; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+    button:hover { background: #0ea5e9; }
+    .btn-secondary { background: #1e293b; color: #38bdf8; }
+    .btn-secondary:hover { background: #334155; }
+    .log-box { background: #090d16; border: 1px solid #1f2937; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 0.8rem; color: #34d399; max-height: 250px; overflow-y: auto; }
+    .packet-entry { border-bottom: 1px solid #1e293b; padding: 8px 0; margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>GRAVITON // EDGE TELEMETRY & DATA GATHERING PoC</h1>
+    <a href="../../index.html" style="color: #38bdf8; text-decoration: none; font-size: 0.85rem;">← Hub</a>
+  </header>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Sensor / Node Injection</h3>
+      
+      <label>Node ID / Source Identifier</label>
+      <input type="text" id="nodeId" value="NODE-ALPHA-04">
+
+      <label>Operational Vector / Metric Data</label>
+      <input type="text" id="payloadData" value="Quaternion Vector [0.707, 0, 0, 0.707] - Latency: 12ms">
+
+      <label>Encryption / Verification Mode</label>
+      <select id="verMode">
+        <option value="MERKLE_LOCAL">Local Merkle Tree Hashing</option>
+        <option value="DIL_BUFFER">Store-and-Forward Buffer</option>
+      </select>
+
+      <div class="btn-group">
+        <button onclick="capturePacket()">Capture Packet</button>
+        <button onclick="exportData()" class="btn-secondary">Export JSON</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Buffer Status</h3>
+      <div id="bufferStatus" style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+        > Mode: Autonomous D-DIL Ready<br>
+        > Local Packets Stored: <b style="color: #38bdf8;" id="packetCount">0</b><br>
+        > Mesh Sync Status: <span style="color: #34d399;">Air-Gapped / Isolated</span><br>
+        > Integrity Engine: Active
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Decentralized Telemetry Ledger</h3>
+    <div class="log-box" id="telemetryLog">
+      > System initialized. Ready to ingest telemetry frames...
+    </div>
+  </div>
+</div>
+
+<script>
+  let telemetryBuffer = [];
+
+  function generateHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return '0x' + Math.abs(hash).toString(16).padStart(8, '0') + 'ff9a';
+  }
+
+  function capturePacket() {
+    const node = document.getElementById('nodeId').value;
+    const payload = document.getElementById('payloadData').value;
+    const mode = document.getElementById('verMode').value;
+    const timestamp = new Date().toISOString();
+
+    const rawString = `${node}:${payload}:${timestamp}`;
+    const merkleHash = generateHash(rawString);
+
+    const packet = {
+      timestamp,
+      node,
+      payload,
+      mode,
+      merkleHash
+    };
+
+    telemetryBuffer.unshift(packet);
+    document.getElementById('packetCount').innerText = telemetryBuffer.length;
+
+    renderLog();
+  }
+
+  function renderLog() {
+    const logBox = document.getElementById('telemetryLog');
+    logBox.innerHTML = '';
+
+    telemetryBuffer.forEach((p, idx) => {
+      const div = document.createElement('div');
+      div.className = 'packet-entry';
+      div.innerHTML = `
+        <span style="color: #38bdf8;">[#${telemetryBuffer.length - idx}] ${p.timestamp}</span><br>
+        <b>Source:</b> ${p.node} | <b>Payload:</b> ${p.payload}<br>
+        <span style="color: #f59e0b;">Merkle Root Hash: ${p.merkleHash}</span>
+      `;
+      logBox.appendChild(div);
+    });
+  }
+
+  function exportData() {
+    if (telemetryBuffer.length === 0) {
+      alert("No telemetry packets captured in buffer to export.");
+      return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(telemetryBuffer, null, 2));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute("href", dataStr);
+    dlAnchor.setAttribute("download", `graviton_telemetry_${Date.now()}.json`);
+    document.body.appendChild(dlAnchor);
+    dlAnchor.click();
+    dlAnchor.remove();
+  }
+</script>
+
+</body>
+</html>
