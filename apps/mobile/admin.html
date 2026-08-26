@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="data:,">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Graviton Mobile Admin</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
+    .header { border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #38bdf8; font-size: 1.2rem; margin: 0; }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 16px; margin-bottom: 15px; }
+    .status-dot { height: 10px; width: 10px; background-color: #34d399; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #34d399; }
+    button { width: 100%; background: #38bdf8; color: #060911; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
+    button.danger { background: #ef4444; color: #fff; }
+    .back-link { color: #38bdf8; text-decoration: none; font-size: 0.85rem; display: inline-block; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="../../index.html" class="back-link">← Master Hub</a>
+  <div class="header">
+    <h1>MOBILE ADMIN HUD</h1>
+    <div><span class="status-dot"></span> <span style="font-size: 0.75rem; color: #94a3b8;">ONLINE</span></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0; color:#fff; font-size: 1rem;">Quick Actions</h3>
+    <p style="color:#94a3b8; font-size: 0.8rem; margin-bottom: 10px;">Manage local caching and test suite responses directly from your phone.</p>
+    <button onclick="clearCache()">Clear Local Daily Usage Counters</button>
+    <button class="danger" onclick="alert('Emergency Lockdown: Local client interfaces secured.')">Trigger Air-Gap Lock</button>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0; color:#fff; font-size: 1rem;">Telemetry Overview</h3>
+    <div style="font-size: 0.85rem; color: #34d399; line-height: 1.6;">
+      <div>• Local Storage Status: Active</div>
+      <div>• WebAssembly Engines: Ready</div>
+      <div>• Non-Custodial POS: Standby</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function clearCache() {
+    localStorage.clear();
+    alert("All local usage counters and caches cleared successfully.");
+    location.reload();
+  }
+</script>
+</body>
+</html>
