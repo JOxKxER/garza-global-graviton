@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graviton Workshop - Maintenance Ledger</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; margin: 0; padding: 20px; }
+    .container { max-width: 600px; margin: auto; }
+    header { border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #38bdf8; margin: 0; font-size: 1.3rem; }
+    .panel { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; }
+    input, select { width: 100%; background: #060911; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box; }
+    button { background: #38bdf8; color: #060911; font-weight: bold; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+    button:hover { background: #0ea5e9; }
+    .log-item { background: #090d16; padding: 12px; border-radius: 6px; border: 1px solid #1f2937; margin-bottom: 10px; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>SHOP MACHINE MAINTENANCE LOG</h1>
+    <a href="../../index.html" style="color: #38bdf8; text-decoration: none; font-size: 0.85rem;">← Back to Hub</a>
+  </header>
+
+  <div class="panel">
+    <label>Machine / Tool Name</label>
+    <input type="text" id="machineName" value="Shapeoko Pro CNC">
+
+    <label>Service Type</label>
+    <select id="serviceType">
+      <option value="Spindle Greasing / Lube">Spindle Greasing & Bearings</option>
+      <option value="Way Lube & Ball Screws">Way Lube & Ball Screws</option>
+      <option value="Coolant Flush & Refill">Coolant Flush & Refill</option>
+      <option value="Belt Tension Check">Belt & Pulley Tension Check</option>
+    </select>
+
+    <label>Operating Hours at Service</label>
+    <input type="number" id="opHours" value="250">
+
+    <button onclick="logMaintenance()">Record Service Event →</button>
+  </div>
+
+  <div class="panel">
+    <h3>Service History Ledger</h3>
+    <div id="logContainer">
+      <div class="log-item">No local logs recorded yet. Add an entry above.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function logMaintenance() {
+    const name = document.getElementById('machineName').value;
+    const type = document.getElementById('serviceType').value;
+    const hours = document.getElementById('opHours').value;
+    const date = new Date().toLocaleDateString();
+
+    const container = document.getElementById('logContainer');
+    if (container.innerHTML.includes('No local logs')) {
+      container.innerHTML = '';
+    }
+
+    const item = document.createElement('div');
+    item.className = 'log-item';
+    item.innerHTML = `
+      <strong style="color: #38bdf8;">${name}</strong> - ${type}<br>
+      <span style="color: #94a3b8;">Logged at: ${hours} hrs | Date: ${date}</span>
+    `;
+    
+    container.prepend(item);
+  }
+</script>
+
+</body>
+</html>

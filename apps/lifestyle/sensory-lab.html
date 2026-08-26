@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graviton Lab - Kinetic Sensory Reaction</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; margin: 0; padding: 20px; text-align: center; }
+    .container { max-width: 600px; margin: auto; }
+    header { border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+    h1 { color: #38bdf8; margin: 0; font-size: 1.2rem; }
+    .stimulus-box { background: #1e293b; border: 2px dashed #475569; border-radius: 12px; height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; margin-bottom: 20px; transition: 0.1s; user-select: none; }
+    .stimulus-box.active { background: #064e3b; border-color: #34d399; }
+    .metrics { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 15px; text-align: left; font-family: monospace; font-size: 0.85rem; color: #34d399; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>KINETIC SENSORY REFLEX LAB</h1>
+    <a href="../../index.html" style="color: #38bdf8; text-decoration: none; font-size: 0.85rem;">← Back</a>
+  </header>
+
+  <div class="stimulus-box" id="stimBox" onclick="handleClick()">
+    <h2 id="boxText" style="color: #fff; margin: 0;">Tap Here to Start Test</h2>
+    <p id="subText" style="color: #94a3b8; font-size: 0.8rem; margin-top: 5px;">Wait for green illumination, then tap instantly.</p>
+  </div>
+
+  <div class="metrics" id="metricsOutput">
+    > Status: Awaiting initialization sequence.<br>
+    > Last Recorded Reaction: None<br>
+    > Average Reflex Score: -- ms
+  </div>
+</div>
+
+<script>
+  let state = 'IDLE'; // IDLE, WAITING, READY
+  let startTime = 0;
+  let timeoutId = null;
+  let scores = [];
+
+  const box = document.getElementById('stimBox');
+  const boxText = document.getElementById('boxText');
+  const subText = document.getElementById('subText');
+  const output = document.getElementById('metricsOutput');
+
+  function handleClick() {
+    if (state === 'IDLE') {
+      startTest();
+    } else if (state === 'WAITING') {
+      clearTimeout(timeoutId);
+      box.style.background = '#7f1d1d';
+      boxText.innerText = 'False Start!';
+      subText.innerText = 'Tapped too early. Tap to retry.';
+      state = 'IDLE';
+    } else if (state === 'READY') {
+      let reactionTime = Date.now() - startTime;
+      scores.push(reactionTime);
+      let avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+
+      box.style.background = '#1e293b';
+      boxText.innerText = `${reactionTime} ms`;
+      subText.innerText = 'Tap to run next trial.';
+      
+      output.innerHTML = `
+        > Status: Trial Complete.<br>
+        > Last Recorded Reaction: <b>${reactionTime} ms</b><br>
+        > Average Reflex Score (${scores.length} trials): <b style="color: #38bdf8;">${avg} ms</b>
+      `;
+      state = 'IDLE';
+    }
+  }
+
+  function startTest() {
+    state = 'WAITING';
+    box.style.background = '#1e293b';
+    boxText.innerText = 'Get Ready...';
+    subText.innerText = 'Keep holding position...';
+
+    let randomDelay = Math.random() * 2500 + 1000;
+    timeoutId = setTimeout(() => {
+      state = 'READY';
+      startTime = Date.now();
+      box.style.background = '#064e3b';
+      boxText.innerText = 'TAP NOW!';
+      subText.innerText = 'GO GO GO!';
+    }, randomDelay);
+  }
+</script>
+
+</body>
+</html>

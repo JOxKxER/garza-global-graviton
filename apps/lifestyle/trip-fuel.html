@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graviton Fleet - Trip ETA & Fuel Solver</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; margin: 0; padding: 20px; }
+    .container { max-width: 600px; margin: auto; }
+    header { border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #38bdf8; margin: 0; font-size: 1.3rem; }
+    .panel { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; }
+    input { width: 100%; background: #060911; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box; }
+    button { background: #38bdf8; color: #060911; font-weight: bold; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+    button:hover { background: #0ea5e9; }
+    .results { background: #090d16; padding: 15px; border-radius: 6px; border: 1px solid #1f2937; font-family: monospace; font-size: 0.9rem; color: #34d399; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>TRUCK TRIP ETA & FUEL SOLVER</h1>
+    <a href="../../index.html" style="color: #38bdf8; text-decoration: none; font-size: 0.85rem;">← Back to Hub</a>
+  </header>
+
+  <div class="panel">
+    <label>Total Distance (Miles)</label>
+    <input type="number" id="distance" value="850">
+
+    <label>Average Speed (MPH)</label>
+    <input type="number" id="speed" value="60">
+
+    <label>Truck Fuel Economy (MPG)</label>
+    <input type="number" id="mpg" value="6.5">
+
+    <label>Average Diesel Price ($ / Gallon)</label>
+    <input type="number" id="fuelPrice" value="3.89">
+
+    <button onclick="calculateTrip()">Compute Trip Metrics →</button>
+  </div>
+
+  <div class="panel">
+    <h3>Operational Output</h3>
+    <div class="results" id="tripOutput">
+      Enter route metrics above to compute fuel overhead and driving schedule.
+    </div>
+  </div>
+</div>
+
+<script>
+  function calculateTrip() {
+    const dist = parseFloat(document.getElementById('distance').value);
+    const speed = parseFloat(document.getElementById('speed').value);
+    const mpg = parseFloat(document.getElementById('mpg').value);
+    const price = parseFloat(document.getElementById('fuelPrice').value);
+
+    let drivingHours = dist / speed;
+    // Account for mandatory 30-min break every 8 hours / fuel stops
+    let estimatedStops = Math.floor(drivingHours / 4);
+    let totalHours = drivingHours + (estimatedStops * 0.5);
+
+    let gallonsNeeded = dist / mpg;
+    let totalFuelCost = gallonsNeeded * price;
+
+    document.getElementById('tripOutput').innerHTML = `
+      > Active Driving Time: <b>${drivingHours.toFixed(1)} hours</b><br>
+      > Estimated Total Time (w/ Stops): <b>${totalHours.toFixed(1)} hours</b><br>
+      > Fuel Burned: <b>${gallonsNeeded.toFixed(1)} Gallons</b><br>
+      > Total Fuel Cost: <b style="color: #38bdf8;">$${totalFuelCost.toFixed(2)}</b><br>
+      > Recommended Fuel Stops: <b>${Math.ceil(gallonsNeeded / 120)} stops</b>
+    `;
+  }
+</script>
+
+</body>
+</html>

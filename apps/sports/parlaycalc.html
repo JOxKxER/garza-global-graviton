@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graviton Sports - Parlay Calculator</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; margin: 0; padding: 20px; }
+    .container { max-width: 600px; margin: auto; }
+    header { border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+    h1 { color: #38bdf8; margin: 0; font-size: 1.3rem; }
+    .panel { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    label { display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; }
+    input { width: 100%; background: #060911; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box; }
+    button { background: #38bdf8; color: #060911; font-weight: bold; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 0.9rem; }
+    button:hover { background: #0ea5e9; }
+    .results { background: #090d16; padding: 15px; border-radius: 6px; border: 1px solid #1f2937; font-family: monospace; font-size: 0.9rem; color: #34d399; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>PARLAY ODDS CALCULATOR</h1>
+    <a href="../../index.html" style="color: #38bdf8; text-decoration: none; font-size: 0.85rem;">← Back to Hub</a>
+  </header>
+
+  <div class="panel">
+    <label>Bet Stake ($)</label>
+    <input type="number" id="stake" value="50">
+
+    <label>American Odds (Comma-separated, e.g., -110, +150, -200)</label>
+    <input type="text" id="oddsList" value="-110, +130, -110">
+
+    <button onclick="calculateParlay()">Compute Parlay Payout →</button>
+  </div>
+
+  <div class="panel">
+    <h3>Parlay Summary</h3>
+    <div class="results" id="output">
+      Configure stakes and odds legs above to compute return.
+    </div>
+  </div>
+</div>
+
+<script>
+  function americanToDecimal(odds) {
+    if (odds > 0) {
+      return (odds / 100) + 1;
+    } else {
+      return (100 / Math.abs(odds)) + 1;
+    }
+  }
+
+  function calculateParlay() {
+    const stake = parseFloat(document.getElementById('stake').value);
+    const rawOdds = document.getElementById('oddsList').value.split(',');
+
+    let cumulativeDecimal = 1;
+    let valid = true;
+
+    rawOdds.forEach(o => {
+      let val = parseFloat(o.trim());
+      if (!isNaN(val)) {
+        cumulativeDecimal *= americanToDecimal(val);
+      }
+    });
+
+    let totalPayout = stake * cumulativeDecimal;
+    let netProfit = totalPayout - stake;
+    
+    // Convert back to American approx
+    let finalAmerican = cumulativeDecimal >= 2.0 
+      ? Math.round((cumulativeDecimal - 1) * 100) 
+      : Math.round(-100 / (cumulativeDecimal - 1));
+    
+    let impliedProb = ((1 / cumulativeDecimal) * 100).toFixed(2);
+
+    document.getElementById('output').innerHTML = `
+      > Combined Decimal Odds: <b>${cumulativeDecimal.toFixed(2)}</b><br>
+      > Equivalent American Odds: <b>${finalAmerican > 0 ? '+' + finalAmerican : finalAmerican}</b><br>
+      > Implied Probability: <b>${impliedProb}%</b><br>
+      > Total Potential Payout: <b style="color: #38bdf8;">$${totalPayout.toFixed(2)}</b><br>
+      > Net Profit: <b>$${netProfit.toFixed(2)}</b>
+    `;
+  }
+</script>
+
+</body>
+</html>
