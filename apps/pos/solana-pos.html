@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graviton POS - Solana Pay Terminal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body { background: #090d16; color: #f8fafc; font-family: system-ui, sans-serif; display: flex; justify-content: center; padding: 30px 15px; }
+    .pos-card { background: #111827; border: 1px solid #1f2937; padding: 25px; border-radius: 12px; max-width: 420px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f2937; padding-bottom: 10px; margin-bottom: 15px; }
+    .badge { background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-family: monospace; }
+    label { font-size: 0.85rem; color: #94a3b8; display: block; margin: 10px 0 4px; }
+    input, select { width: 100%; background: #1f2937; border: 1px solid #374151; color: #fff; padding: 10px; border-radius: 6px; box-sizing: border-box; }
+    button { width: 100%; background: #38bdf8; color: #090d16; border: none; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 15px; }
+    button:hover { background: #0284c7; }
+    #qr-box { display: none; text-align: center; background: #fff; padding: 20px; border-radius: 8px; margin-top: 15px; }
+    #qrcode { display: flex; justify-content: center; }
+    .alert-banner { display: none; background: #7f1d1d; color: #fca5a5; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-top: 15px; text-align: center; }
+    .alert-banner a { color: #fff; font-weight: bold; text-decoration: underline; }
+    .disclaimer { font-size: 0.7rem; color: #64748b; margin-top: 15px; line-height: 1.3; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="pos-card">
+  <div class="header">
+    <h2 style="margin: 0; font-size: 1.2rem; color: #38bdf8;">GRAVITON-POS</h2>
+    <span class="badge" id="pos-badge">Free Daily: 0/15</span>
+  </div>
+
+  <div id="checkout-form">
+    <label>Merchant Solana Wallet Address</label>
+    <input type="text" id="merchant-addr" value="7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU">
+
+    <label>Sale Amount (USD / USDC)</label>
+    <input type="number" id="sale-amt" step="0.01" placeholder="10.00" value="5.00">
+
+    <label>Asset</label>
+    <select id="asset-choice">
+      <option value="USDC">USDC (Stablecoin - Zero Volatility)</option>
+      <option value="SOL">SOL (Native)</option>
+    </select>
+
+    <button id="charge-btn">Generate Solana Pay QR</button>
+  </div>
+
+  <div id="limit-box" class="alert-banner">
+    ⚠️ <strong>Daily Limit Reached (15/15).</strong><br>
+    Unlimited transactions, inventory databases, and Bluetooth receipt printing available.<br>
+    <a href="https://garzaglobalgraviton.com/commercial" target="_blank">Upgrade to Commercial POS</a>
+  </div>
+
+  <div id="qr-box">
+    <div id="qrcode"></div>
+    <div id="qr-title" style="color: #0f172a; font-weight: bold; margin-top: 10px;"></div>
+    <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">Scan with Phantom, Solflare, or Coinbase Wallet</div>
+    <button id="reset-pos" style="background: #0f172a; color: #fff; padding: 8px; margin-top: 12px; font-size: 0.85rem;">New Transaction</button>
+  </div>
+
+  <div class="disclaimer">
+    <strong>Non-Custodial Notice:</strong> Graviton-POS does not hold or transmit funds. Transactions settle directly peer-to-peer on Solana. Users are responsible for tax reporting.
+  </div>
+</div>
+
+<script>
+  const MAX_FREE = 15;
+  const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+
+  function getUsage() {
+    const today = new Date().toISOString().split('T')[0];
+    const data = JSON.parse(localStorage.getItem('graviton_pos_usage') || '{}');
+    return (data.date === today) ? data : { date: today, count: 0 };
+  }
+
+  function updateDisplay() {
+    const usage = getUsage();
+    document.getElementById('pos-badge').innerText = `Free Daily: ${usage.count}/${MAX_FREE}`;
+    if (usage.count >= MAX_FREE) {
+      document.getElementById('charge-btn').disabled = true;
+      document.getElementById('limit-box').style.display = 'block';
+    }
+  }
+
+  function incrementUsage() {
+    const usage = getUsage();
+    usage.count++;
+    localStorage.setItem('graviton_pos_usage', JSON.stringify(usage));
+    updateDisplay();
+  }
+
+  document.getElementById('charge-btn').addEventListener('click', () => {
+    const usage = getUsage();
+    if (usage.count >= MAX_FREE) return;
+
+    const recipient = document.getElementById('merchant-addr').value.trim();
+    const amount = document.getElementById('sale-amt').value.trim();
+    const asset = document.getElementById('asset-choice').value;
+
+    if (!recipient || !amount) return;
+
+    let uri = `solana:${recipient}?amount=${amount}&label=Garza%20POS%20Merchant&message=Order%20Payment`;
+    if (asset === 'USDC') uri += `&spl-token=${USDC_MINT}`;
+
+    const qrDiv = document.getElementById('qrcode');
+    qrDiv.innerHTML = '';
+    new QRCode(qrDiv, { text: uri, width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M });
+
+    document.getElementById('qr-title').innerText = `Pay ${amount} ${asset}`;
+    document.getElementById('checkout-form').style.display = 'none';
+    document.getElementById('qr-box').style.display = 'block';
+
+    incrementUsage();
+  });
+
+  document.getElementById('reset-pos').addEventListener('click', () => {
+    document.getElementById('qr-box').style.display = 'none';
+    document.getElementById('checkout-form').style.display = 'block';
+    document.getElementById('sale-amt').value = '';
+  });
+
+  updateDisplay();
+</script>
+</body>
+</html>

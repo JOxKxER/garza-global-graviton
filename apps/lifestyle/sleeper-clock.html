@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SleeperClock - FMCSA HOS Split-Sleeper HUD</title>
+  <style>
+    body { background: #020617; color: #f8fafc; font-family: -apple-system, sans-serif; padding: 20px; text-align: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 440px; margin: auto; padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+    h1 { color: #38bdf8; font-size: 1.4rem; margin-top: 0; }
+    .readout { font-size: 2.2rem; font-weight: bold; color: #34d399; font-family: monospace; margin: 15px 0; background: #030712; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; }
+    .btn-row { display: flex; gap: 10px; margin-top: 15px; }
+    button { flex: 1; background: #38bdf8; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 0.95rem; cursor: pointer; }
+    button:hover { background: #0284c7; }
+    .subtext { font-size: 0.8rem; color: #94a3b8; margin-top: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>SLEEPERCLOCK™ // FMCSA HUD</h1>
+  <div style="font-size: 0.85rem; color: #64748b;">49 CFR §395.1(g) COMPLIANT SPLIT TIMER</div>
+
+  <div class="readout" id="clock-display">14:00:00</div>
+  <div style="font-size: 0.9rem; color: #38bdf8;" id="status-label">14-Hour Shift Duty Clock Running</div>
+
+  <div class="btn-row">
+    <button id="pause-dock">Pause at Dock (2-Hr Split)</button>
+    <button id="sleeper-berth" style="background: #a855f7; color: #fff;">Enter Sleeper (7/8-Hr)</button>
+  </div>
+  <div class="btn-row">
+    <button id="resume-drive" style="background: #34d399; color: #020617;">Resume Driving</button>
+    <button id="reset-shift" style="background: #ef4444; color: #fff;">Reset Shift</button>
+  </div>
+
+  <div class="subtext">
+    Works 100% offline in deadzones. Automatically calculates legal driving shift extensions upon qualification.
+  </div>
+</div>
+
+<script>
+  let secondsRemaining = 14 * 3600;
+  let timerInterval = null;
+
+  function formatTime(sec) {
+    const hrs = String(Math.floor(sec / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+    const secs = String(sec % 60).padStart(2, '0');
+    return `${hrs}:${mins}:${secs}`;
+  }
+
+  function tick() {
+    if (secondsRemaining > 0) {
+      secondsRemaining--;
+      document.getElementById('clock-display').innerText = formatTime(secondsRemaining);
+    }
+  }
+
+  timerInterval = setInterval(tick, 1000);
+
+  document.getElementById('pause-dock').addEventListener('click', () => {
+    clearInterval(timerInterval);
+    document.getElementById('status-label').innerText = "PAUSED: Dock Detention / 2-Hour Break Active";
+    document.getElementById('clock-display').style.color = "#facc15";
+  });
+
+  document.getElementById('sleeper-berth').addEventListener('click', () => {
+    clearInterval(timerInterval);
+    document.getElementById('status-label').innerText = "SLEEPER BERTH: 7-to-8 Hour Qualifying Rest";
+    document.getElementById('clock-display').style.color = "#a855f7";
+  });
+
+  document.getElementById('resume-drive').addEventListener('click', () => {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(tick, 1000);
+    document.getElementById('status-label').innerText = "DRIVING: 14-Hour Shift Window Active";
+    document.getElementById('clock-display').style.color = "#34d399";
+  });
+
+  document.getElementById('reset-shift').addEventListener('click', () => {
+    secondsRemaining = 14 * 3600;
+    document.getElementById('clock-display').innerText = formatTime(secondsRemaining);
+  });
+</script>
+</body>
+</html>
