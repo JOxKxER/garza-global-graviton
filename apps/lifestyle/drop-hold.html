@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DropHold - Offline Ballistics HUD</title>
+  <style>
+    body { background: #030712; color: #f8fafc; font-family: monospace; padding: 25px; }
+    .box { background: #111827; border: 1px solid #1f2937; max-width: 480px; margin: auto; padding: 20px; border-radius: 8px; }
+    h1 { color: #22c55e; margin: 0 0 15px; font-size: 1.2rem; }
+    label { color: #94a3b8; font-size: 0.8rem; display: block; margin: 10px 0 3px; }
+    input, select { width: 100%; background: #1f2937; border: 1px solid #374151; color: #22c55e; padding: 8px; border-radius: 4px; box-sizing: border-box; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+    .output-card { background: #030712; border: 1px solid #22c55e; padding: 12px; border-radius: 4px; text-align: center; }
+    .val { font-size: 1.4rem; font-weight: bold; color: #22c55e; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h1>DROPHOLD™ // BALLISTIC SIGHTING</h1>
+  <label>Caliber Profile</label>
+  <select id="caliber">
+    <option value="0.450,2650">.308 Win (168gr BTHP - MV 2650 fps)</option>
+    <option value="0.545,2710">6.5 Creedmoor (140gr ELD - MV 2710 fps)</option>
+    <option value="0.305,3100">.223 Rem (55gr FMJ - MV 3100 fps)</option>
+  </select>
+
+  <label>Target Distance (Yards)</label>
+  <input type="number" id="dist" value="300" step="25">
+
+  <label>Crosswind (MPH @ 90°)</label>
+  <input type="number" id="wind" value="10">
+
+  <div class="grid">
+    <div class="output-card">
+      <div style="font-size: 0.75rem; color: #94a3b8;">ELEVATION ADJUST</div>
+      <div class="val" id="elev-val">4.2 MOA</div>
+      <div style="font-size: 0.7rem; color: #64748b;">17 Clicks (1/4 MOA)</div>
+    </div>
+    <div class="output-card">
+      <div style="font-size: 0.75rem; color: #94a3b8;">WINDAGE HOLD</div>
+      <div class="val" id="wind-val">1.8 MOA</div>
+      <div style="font-size: 0.7rem; color: #64748b;">7 Clicks Left</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function compute() {
+    const dist = parseFloat(document.getElementById('dist').value) || 100;
+    const wind = parseFloat(document.getElementById('wind').value) || 0;
+    
+    // Ballistic drop approximation curves
+    const dropInches = (dist > 100) ? 0.00045 * Math.pow(dist - 100, 2) : 0;
+    const moaElev = (dropInches / (dist / 100)).toFixed(1);
+    const moaWind = ((wind * (dist / 100)) / 15).toFixed(1);
+
+    document.getElementById('elev-val').innerText = `+${moaElev} MOA`;
+    document.getElementById('wind-val').innerText = `${moaWind} MOA`;
+  }
+
+  document.getElementById('dist').addEventListener('input', compute);
+  document.getElementById('wind').addEventListener('input', compute);
+  document.getElementById('caliber').addEventListener('change', compute);
+  compute();
+</script>
+</body>
+</html>

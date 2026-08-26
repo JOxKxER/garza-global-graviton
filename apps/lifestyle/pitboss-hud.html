@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PitBoss HUD - Reverse Smoker Planner</title>
+  <style>
+    body { background: #0b0f19; color: #f8fafc; font-family: -apple-system, sans-serif; padding: 25px; }
+    .card { background: #111827; border: 1px solid #1f2937; max-width: 500px; margin: auto; padding: 25px; border-radius: 12px; }
+    h1 { color: #f97316; margin-top: 0; font-size: 1.3rem; }
+    label { font-size: 0.85rem; color: #94a3b8; display: block; margin: 12px 0 4px; }
+    select, input { width: 100%; background: #1f2937; border: 1px solid #374151; color: #fff; padding: 10px; border-radius: 6px; box-sizing: border-box; }
+    button { width: 100%; background: #f97316; color: #0b0f19; border: none; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 15px; }
+    .timeline { margin-top: 20px; border-left: 2px solid #f97316; padding-left: 15px; }
+    .event { margin-bottom: 12px; }
+    .time { font-family: monospace; color: #38bdf8; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>PITBOSS HUD // REVERSE SMOKE PLANNER</h1>
+  <label>Target Meal Time</label>
+  <input type="time" id="target-time" value="17:00">
+
+  <label>Meat Cut & Profile</label>
+  <select id="meat-cut">
+    <option value="12">Texas Brisket (12-14 hr + 2 hr Rest)</option>
+    <option value="9">Pork Shoulder / Butt (8-9 hr + 1 hr Rest)</option>
+    <option value="6">St. Louis Ribs 3-2-1 (6 hr Total)</option>
+  </select>
+
+  <label>Weather Condition (Ambient Adjustment)</label>
+  <select id="weather-adj">
+    <option value="1.0">Standard / Mild Day</option>
+    <option value="1.15">Cold / High Wind (+15% Cook Time)</option>
+  </select>
+
+  <button id="calc-btn">Generate Reverse Timeline</button>
+
+  <div class="timeline" id="timeline-box" style="display: none;">
+    <div class="event"><span class="time" id="t-fire"></span> — Light Coals & Preheat Pit</div>
+    <div class="event"><span class="time" id="t-on"></span> — Meat on Grates (Smoke Phase)</div>
+    <div class="event"><span class="time" id="t-wrap"></span> — The Stall: Butcher Paper Wrap</div>
+    <div class="event"><span class="time" id="t-pull"></span> — Probe Tender (203°F): Pull & Cooler Hold</div>
+    <div class="event"><span class="time" id="t-serve"></span> — Slice & Serve</div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('calc-btn').addEventListener('click', () => {
+    const targetVal = document.getElementById('target-time').value;
+    if (!targetVal) return;
+
+    const [tH, tM] = targetVal.split(':').map(Number);
+    const baseHours = parseFloat(document.getElementById('meat-cut').value);
+    const multiplier = parseFloat(document.getElementById('weather-adj').value);
+    const totalMinutes = Math.round(baseHours * multiplier * 60);
+
+    const targetDate = new Date();
+    targetDate.setHours(tH, tM, 0, 0);
+
+    const fmt = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const pullDate = new Date(targetDate.getTime() - (90 * 60000));
+    const wrapDate = new Date(targetDate.getTime() - (totalMinutes * 0.45 * 60000));
+    const onDate = new Date(targetDate.getTime() - (totalMinutes * 60000));
+    const fireDate = new Date(onDate.getTime() - (45 * 60000));
+
+    document.getElementById('t-fire').innerText = fmt(fireDate);
+    document.getElementById('t-on').innerText = fmt(onDate);
+    document.getElementById('t-wrap').innerText = fmt(wrapDate);
+    document.getElementById('t-pull').innerText = fmt(pullDate);
+    document.getElementById('t-serve').innerText = fmt(targetDate);
+
+    document.getElementById('timeline-box').style.display = 'block';
+  });
+</script>
+</body>
+</html>

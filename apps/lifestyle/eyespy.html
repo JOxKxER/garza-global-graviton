@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EyeSpy - Visual Search & Annotation</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, monospace; margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .game-card { background: #0f172a; border: 1px solid #1e293b; padding: 20px; border-radius: 12px; max-width: 600px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 10px; margin-bottom: 15px; }
+    .badge { background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+    .prompt-box { background: #1e293b; color: #38bdf8; font-size: 1.1rem; font-weight: bold; padding: 12px; border-radius: 6px; text-align: center; margin-bottom: 15px; }
+    #canvas-container { position: relative; width: 100%; background: #020617; border-radius: 8px; overflow: hidden; touch-action: none; border: 1px solid #334155; }
+    canvas { display: block; width: 100%; cursor: crosshair; }
+    .log-box { background: #030712; padding: 10px; border-radius: 6px; font-size: 0.75rem; color: #34d399; margin-top: 15px; max-height: 120px; overflow-y: auto; }
+    button { background: #38bdf8; color: #020617; border: none; padding: 10px; border-radius: 6px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #0284c7; }
+    .alert-banner { display: none; background: #7f1d1d; color: #fca5a5; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-top: 15px; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="game-card">
+  <div class="header">
+    <h2 style="margin: 0; font-size: 1.2rem; color: #38bdf8;">EYESPY™ // VISION LAB</h2>
+    <span class="badge" id="daily-badge">Rounds: 0/15</span>
+  </div>
+
+  <div id="limit-box" class="alert-banner">
+    ⚠️ <strong>Daily Rounds Completed (15/15).</strong><br>
+    Custom dataset generation tools and enterprise annotation pipelines available at Garza Global Graviton.
+  </div>
+
+  <div class="prompt-box" id="target-prompt">I spy with my little eye: The Golden Metric Socket</div>
+
+  <div id="canvas-container">
+    <canvas id="gameCanvas" width="600" height="350"></canvas>
+  </div>
+
+  <button id="next-round-btn">Next Target / Level</button>
+
+  <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 15px; font-weight: bold;">Harvested Coordinate & Kinetic Telemetry:</div>
+  <pre class="log-box" id="telemetry-log">// Tap target to record spatial coordinates and kinetic touch variance...</pre>
+</div>
+
+<script>
+  const MAX_ROUNDS = 15;
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  let startTime = Date.now();
+  let targetFound = false;
+
+  // Mock Target Center
+  let target = { x: 420, y: 180, radius: 35, name: "The Golden Metric Socket" };
+
+  function getUsage() {
+    const today = new Date().toISOString().split('T')[0];
+    const data = JSON.parse(localStorage.getItem('eyespy_usage') || '{}');
+    return (data.date === today) ? data : { date: today, count: 0 };
+  }
+
+  function updateDisplay() {
+    const usage = getUsage();
+    document.getElementById('daily-badge').innerText = `Rounds: ${usage.count}/${MAX_ROUNDS}`;
+    if (usage.count >= MAX_ROUNDS) {
+      document.getElementById('next-round-btn').disabled = true;
+      document.getElementById('limit-box').style.display = 'block';
+    }
+  }
+
+  function incrementUsage() {
+    const usage = getUsage();
+    usage.count++;
+    localStorage.setItem('eyespy_usage', JSON.stringify(usage));
+    updateDisplay();
+  }
+
+  function drawScene() {
+    // Background
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Decorative distractor shapes (simulating visual clutter)
+    for (let i = 0; i < 25; i++) {
+      ctx.fillStyle = `hsl(${i * 15}, 40%, 25%)`;
+      ctx.fillRect((i * 67) % 550, (i * 43) % 300, 30 + (i % 20), 20 + (i % 15));
+    }
+
+    // Target object
+    ctx.fillStyle = "#facc15";
+    ctx.beginPath();
+    ctx.arc(target.x, target.y, 18, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#eab308";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+  }
+
+  canvas.addEventListener('pointerdown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const clickX = (e.clientX - rect.left) * scaleX;
+    const clickY = (e.clientY - rect.top) * scaleY;
+    const searchLatencyMs = Date.now() - startTime;
+
+    const dist = Math.hypot(clickX - target.x, clickY - target.y);
+    const isHit = dist <= target.radius;
+
+    // Draw tap marker
+    ctx.strokeStyle = isHit ? "#34d399" : "#ef4444";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(clickX, clickY, 15, 0, Math.PI * 2);
+    ctx.stroke();
+
+    const telemetry = {
+      timestamp: new Date().toISOString(),
+      target: target.name,
+      click_coords: { x: parseFloat(clickX.toFixed(1)), y: parseFloat(clickY.toFixed(1)) },
+      target_nominal: { x: target.x, y: target.y },
+      hit: isHit,
+      latency_ms: searchLatencyMs,
+      pointer_type: e.pointerType,
+      pressure: e.pressure || 1.0,
+      entropy_vector: Math.sin(clickX) * Math.cos(clickY)
+    };
+
+    document.getElementById('telemetry-log').textContent = JSON.stringify(telemetry, null, 2);
+
+    if (isHit && !targetFound) {
+      targetFound = true;
+      incrementUsage();
+      document.getElementById('target-prompt').innerHTML = "🎯 Target Located! Tap Next to continue.";
+    }
+  });
+
+  document.getElementById('next-round-btn').addEventListener('click', () => {
+    const usage = getUsage();
+    if (usage.count >= MAX_ROUNDS) return;
+
+    targetFound = false;
+    startTime = Date.now();
+    target.x = 50 + Math.random() * 500;
+    target.y = 50 + Math.random() * 250;
+    document.getElementById('target-prompt').innerText = `I spy with my little eye: ${target.name}`;
+    drawScene();
+  });
+
+  drawScene();
+  updateDisplay();
+</script>
+</body>
+</html>
