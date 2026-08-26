@@ -3,57 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Graviton Mobile Widget</title>
+  <title>Graviton Mobile Studio</title>
   <style>
     body { background: #060911; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 15px; }
-    .widget-container { max-width: 450px; margin: auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
-    h1 { color: #38bdf8; font-size: 1.1rem; margin: 0; letter-spacing: 0.5px; }
+    .container { max-width: 500px; margin: auto; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
+    h1 { color: #38bdf8; font-size: 1.1rem; margin: 0; }
     .status { font-size: 0.7rem; color: #34d399; background: #064e3b; padding: 3px 6px; border-radius: 4px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-    .btn-tile { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 15px 10px; text-align: center; text-decoration: none; color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 70px; transition: 0.1s; }
-    .btn-tile:active { background: #1e293b; border-color: #38bdf8; }
-    .btn-tile span { font-size: 0.8rem; font-weight: bold; color: #38bdf8; margin-top: 5px; }
-    .btn-tile small { font-size: 0.65rem; color: #94a3b8; }
-    .footer-btn { display: block; background: #38bdf8; color: #060911; text-align: center; font-weight: bold; text-decoration: none; padding: 12px; border-radius: 8px; font-size: 0.85rem; }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+    h3 { margin: 0 0 10px; color: #fff; font-size: 0.95rem; }
+    p { color: #94a3b8; font-size: 0.8rem; line-height: 1.4; margin-bottom: 12px; }
+    .btn { display: block; width: 100%; background: #38bdf8; color: #060911; text-align: center; font-weight: bold; text-decoration: none; padding: 12px; border-radius: 6px; font-size: 0.85rem; box-sizing: border-box; margin-bottom: 10px; }
+    .btn-sec { background: #1e293b; color: #38bdf8; }
   </style>
 </head>
 <body>
 
-<div class="widget-container">
-  <div class="header">
-    <h1>GRAVITON WIDGET</h1>
-    <span class="status">● OFFLINE READY</span>
+<div class="container">
+  <header>
+    <h1>MOBILE CODE STUDIO</h1>
+    <span class="status">● GITHUB SYNC</span>
+  </header>
+
+  <div class="card">
+    <h3>GitHub Repository Editor</h3>
+    <p>Jump straight into GitHub's mobile web file tree to create new HTML app files, edit code blocks, and commit changes instantly.</p>
+    <a href="https://github.com/joelgarz/garza-global-graviton" target="_blank" class="btn">Open GitHub Repository →</a>
   </div>
 
-  <div class="grid">
-    <a href="forge/cad-analyzer.html" class="btn-tile">
-      <small>FORGE</small>
-      <span>CAD/CAM</span>
-    </a>
-    <a href="forge/cae-stress-solver.html" class="btn-tile">
-      <small>FORGE</small>
-      <span>CAE Solver</span>
-    </a>
-    <a href="workshop/speedsfeeds.html" class="btn-tile">
-      <small>WORKSHOP</small>
-      <span>Speeds & Feeds</span>
-    </a>
-    <a href="outdoor/drophold.html" class="btn-tile">
-      <small>LONG-RANGE</small>
-      <span>DropHold</span>
-    </a>
-    <a href="caraudio/boxtuner.html" class="btn-tile">
-      <small>12V AUDIO</small>
-      <span>BoxTuner</span>
-    </a>
-    <a href="pos/solana-pos.html" class="btn-tile">
-      <small>COMMERCE</small>
-      <span>Solana POS</span>
-    </a>
+  <div class="card">
+    <h3>Cloud VS Code (Codespaces)</h3>
+    <p>Launch a full cloud-based VS Code terminal and editor environment right inside your mobile browser window.</p>
+    <a href="https://github.com/codespaces" target="_blank" class="btn btn-sec">Launch Mobile Codespace →</a>
   </div>
 
-  <a href="../index.html" class="footer-btn">Open Full Master Hub →</a>
+  <a href="../index.html" style="display: block; text-align: center; color: #64748b; text-decoration: none; font-size: 0.8rem; margin-top: 20px;">← Back to Master Hub</a>
 </div>
 
 </body>
