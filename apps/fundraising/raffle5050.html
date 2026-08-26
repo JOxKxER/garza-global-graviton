@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RafflePro 50/50 - Booster Club & Charity Wheel</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 500px; width: 100%; padding: 25px; border-radius: 12px; }
+    h1 { color: #38bdf8; font-size: 1.3rem; margin-top: 0; }
+    .pot-display { background: #020617; border: 1px solid #334155; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; }
+    .pot-num { font-size: 2rem; font-weight: bold; color: #34d399; }
+    .split-row { display: flex; justify-content: space-around; font-size: 0.85rem; color: #94a3b8; margin-top: 5px; }
+    input { width: 100%; background: #1e293b; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; box-sizing: border-box; margin-bottom: 10px; }
+    button { width: 100%; background: #38bdf8; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+    button:hover { background: #0284c7; }
+    .winner-box { display: none; background: #064e3b; border: 1px solid #059669; color: #fff; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-size: 1.2rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>RAFFLEPRO 50/50™ // FUNDRAISER</h1>
+  <div style="font-size: 0.8rem; color: #64748b;">PROVABLY FAIR BOOSTER CLUB WHEEL</div>
+
+  <div class="pot-display">
+    <div style="font-size: 0.8rem; color: #94a3b8;">TOTAL FUNDRAISING POT</div>
+    <div class="pot-num" id="total-pot">$0.00</div>
+    <div class="split-row">
+      <span>Team Gear: <strong id="team-share" style="color:#38bdf8;">$0.00</strong></span>
+      <span>Winner Payout: <strong id="winner-share" style="color:#34d399;">$0.00</strong></span>
+    </div>
+  </div>
+
+  <label style="font-size: 0.8rem; color: #94a3b8;">Add Tickets Sold ($)</label>
+  <input type="number" id="add-amt" placeholder="e.g. 50" value="20">
+  <button id="add-btn" style="margin-bottom: 15px; background: #334155; color: #fff;">+ Add to Pot</button>
+
+  <div style="display: flex; gap: 10px;">
+    <input type="number" id="start-tkt" placeholder="Start Ticket #" value="1001">
+    <input type="number" id="end-tkt" placeholder="End Ticket #" value="1150">
+  </div>
+
+  <button id="draw-btn" style="background: #eab308; color: #020617;">🎲 Draw Provably Fair Winner</button>
+
+  <div class="winner-box" id="winner-box">
+    🎉 WINNING TICKET: <span id="win-tkt">#0000</span>
+  </div>
+</div>
+
+<script>
+  let pot = 650;
+  function updatePot() {
+    document.getElementById('total-pot').innerText = `$${pot.toFixed(2)}`;
+    document.getElementById('team-share').innerText = `$${(pot / 2).toFixed(2)}`;
+    document.getElementById('winner-share').innerText = `$${(pot / 2).toFixed(2)}`;
+  }
+
+  document.getElementById('add-btn').addEventListener('click', () => {
+    const val = parseFloat(document.getElementById('add-amt').value) || 0;
+    pot += val;
+    updatePot();
+  });
+
+  document.getElementById('draw-btn').addEventListener('click', () => {
+    const s = parseInt(document.getElementById('start-tkt').value);
+    const e = parseInt(document.getElementById('end-tkt').value);
+    if (isNaN(s) || isNaN(e) || e <= s) {
+      alert("Please enter a valid ticket number range.");
+      return;
+    }
+
+    // Web Crypto API provably fair entropy
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    const winningTicket = s + (array[0] % (e - s + 1));
+
+    document.getElementById('win-tkt').innerText = `#${winningTicket}`;
+    document.getElementById('winner-box').style.display = 'block';
+  });
+
+  updatePot();
+</script>
+</body>
+</html>

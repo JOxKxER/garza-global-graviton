@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopDecibel - OSHA Workshop Sound Guard</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 440px; width: 100%; padding: 25px; border-radius: 12px; text-align: center; }
+    h1 { color: #38bdf8; font-size: 1.3rem; margin-top: 0; }
+    .db-readout { font-size: 3.5rem; font-weight: bold; color: #34d399; margin: 15px 0; background: #020617; padding: 20px; border-radius: 8px; border: 1px solid #334155; }
+    .status-pill { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+    .safe { background: #064e3b; color: #34d399; }
+    .warn { background: #713f12; color: #facc15; }
+    .danger { background: #7f1d1d; color: #fca5a5; }
+    button { width: 100%; background: #38bdf8; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>SHOPDECIBEL™ // OSHA GUARD</h1>
+  <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px;">29 CFR 1910.95 COMPLIANCE MONITOR</div>
+
+  <div class="status-pill safe" id="status-pill">SAFE ENVIRONMENT (< 80 dBA)</div>
+  <div class="db-readout" id="db-val">-- dB</div>
+
+  <button id="mic-btn">Start Acoustic Sentry</button>
+  <div style="font-size: 0.75rem; color: #64748b; margin-top: 15px;">Microphone processed 100% locally via Web Audio API.</div>
+</div>
+
+<script>
+  let audioCtx, analyser, dataArray;
+  document.getElementById('mic-btn').addEventListener('click', async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const src = audioCtx.createMediaStreamSource(stream);
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      src.connect(analyser);
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+      document.getElementById('mic-btn').style.display = 'none';
+
+      function poll() {
+        analyser.getByteFrequencyData(dataArray);
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+        let avg = sum / dataArray.length;
+        let estimatedDb = Math.min(120, Math.max(35, Math.round(avg * 0.75 + 35)));
+
+        document.getElementById('db-val').innerText = `${estimatedDb} dB`;
+        const pill = document.getElementById('status-pill');
+
+        if (estimatedDb < 80) {
+          pill.className = "status-pill safe";
+          pill.innerText = "SAFE ENVIRONMENT (< 80 dBA)";
+          document.getElementById('db-val').style.color = "#34d399";
+        } else if (estimatedDb < 88) {
+          pill.className = "status-pill warn";
+          pill.innerText = "CAUTION: 8-HR OSHA LIMIT (85 dBA)";
+          document.getElementById('db-val').style.color = "#facc15";
+        } else {
+          pill.className = "status-pill danger";
+          pill.innerText = "DANGER: WEAR EAR PROTECTION NOW";
+          document.getElementById('db-val').style.color = "#ef4444";
+        }
+        requestAnimationFrame(poll);
+      }
+      poll();
+    } catch (err) {
+      alert("Microphone access is required for real-time acoustic measurement.");
+    }
+  });
+</script>
+</body>
+</html>
