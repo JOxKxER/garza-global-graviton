@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HymnCast - Live Pew Scripture & Lyric Streamer</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: -apple-system, serif; margin: 0; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 90vh; }
+    .header { text-align: center; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
+    h1 { color: #38bdf8; font-size: 1.4rem; margin: 0; font-family: -apple-system, sans-serif; }
+    .content-area { text-align: center; margin: auto; max-width: 600px; padding: 20px 0; }
+    .hymn-title { font-size: 1.1rem; color: #94a3b8; margin-bottom: 15px; font-family: -apple-system, sans-serif; }
+    .verse-text { font-size: 1.5rem; line-height: 1.8; color: #fff; }
+    .nav-bar { display: flex; gap: 10px; max-width: 500px; margin: auto; width: 100%; }
+    button { flex: 1; background: #38bdf8; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem; font-family: -apple-system, sans-serif; }
+    button:hover { background: #0284c7; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>HYMNCAST™ // PEW SYNC</h1>
+  <div style="font-size: 0.8rem; color: #64748b; font-family: -apple-system, sans-serif;">LOCAL WI-FI BULLETIN & SCRIPTURE HUD</div>
+</div>
+
+<div class="content-area">
+  <div class="hymn-title" id="slide-title">Hymn #104: Amazing Grace (Verse 1)</div>
+  <div class="verse-text" id="slide-body">
+    Amazing grace! How sweet the sound<br>
+    That saved a wretch like me!<br>
+    I once was lost, but now am found;<br>
+    Was blind, but now I see.
+  </div>
+</div>
+
+<div class="nav-bar">
+  <button id="prev-btn" style="background: #1e293b; color: #fff;">← Previous</button>
+  <button id="next-btn">Next Slide →</button>
+</div>
+
+<script>
+  const slides = [
+    { title: "Hymn #104: Amazing Grace (Verse 1)", body: "Amazing grace! How sweet the sound<br>That saved a wretch like me!<br>I once was lost, but now am found;<br>Was blind, but now I see." },
+    { title: "Hymn #104: Amazing Grace (Verse 2)", body: "'Twas grace that taught my heart to fear,<br>And grace my fears relieved;<br>How precious did that grace appear<br>The hour I first believed." },
+    { title: "Today's Scripture: Psalm 23:1-3", body: "The Lord is my shepherd; I shall not want.<br>He makes me lie down in green pastures.<br>He leads me beside still waters.<br>He restores my soul." }
+  ];
+
+  let current = 0;
+
+  function render() {
+    document.getElementById('slide-title').innerText = slides[current].title;
+    document.getElementById('slide-body').innerHTML = slides[current].body;
+  }
+
+  document.getElementById('next-btn').addEventListener('click', () => {
+    current = (current + 1) % slides.length;
+    render();
+  });
+
+  document.getElementById('prev-btn').addEventListener('click', () => {
+    current = (current - 1 + slides.length) % slides.length;
+    render();
+  });
+</script>
+</body>
+</html>

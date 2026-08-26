@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GlowSquish - Kinetic Sensory Sandbox</title>
+  <style>
+    body { background: #000; margin: 0; overflow: hidden; touch-action: none; font-family: monospace; }
+    #hud { position: fixed; top: 10px; left: 10px; color: #38bdf8; font-size: 0.8rem; pointer-events: none; z-index: 10; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+
+<div id="hud">GLOWSQUISH™ // SENSORY FLUID HUD</div>
+<canvas id="canvas"></canvas>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let particles = [];
+
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class Particle {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 6;
+      this.vy = (Math.random() - 0.5) * 6;
+      this.radius = Math.random() * 20 + 10;
+      this.hue = Math.random() * 60 + 160; // Blue-green neon
+      this.alpha = 1.0;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.alpha -= 0.015;
+      this.radius *= 0.98;
+    }
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, this.alpha);
+      ctx.fillStyle = `hsl(${this.hue}, 100%, 50%)`;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = `hsl(${this.hue}, 100%, 50%)`;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, Math.max(1, this.radius), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function spawn(x, y) {
+    for (let i = 0; i < 4; i++) {
+      particles.push(new Particle(x, y));
+    }
+  }
+
+  window.addEventListener('pointermove', (e) => spawn(e.clientX, e.clientY));
+  window.addEventListener('pointerdown', (e) => spawn(e.clientX, e.clientY));
+
+  function animate() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctx.fillRect(0, 0, width, height);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      particles[i].update();
+      particles[i].draw();
+      if (particles[i].alpha <= 0 || particles[i].radius <= 1) {
+        particles.splice(i, 1);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+</body>
+</html>

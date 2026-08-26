@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PriceDrop Live - Flash Sale HUD</title>
+  <style>
+    body { background: #020617; color: #f8fafc; font-family: monospace; padding: 20px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 480px; width: 100%; padding: 25px; border-radius: 12px; text-align: center; }
+    h1 { color: #f43f5e; font-size: 1.3rem; margin-top: 0; }
+    .timer { font-size: 3rem; font-weight: bold; color: #facc15; background: #030712; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; margin: 15px 0; }
+    .stock-box { font-size: 1.5rem; color: #34d399; font-weight: bold; margin-bottom: 15px; }
+    .btn-row { display: flex; gap: 10px; }
+    button { flex: 1; background: #f43f5e; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+    button:hover { background: #e11d48; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>PRICEDROP LIVE™ // STREAM HUD</h1>
+  <div style="font-size: 0.8rem; color: #64748b;">TIKTOK & INSTAGRAM LIVE SALE CLOCKER</div>
+
+  <div class="timer" id="timer-display">02:00</div>
+  <div class="stock-box">REMAINING UNITS: <span id="stock-count">10</span></div>
+
+  <div class="btn-row">
+    <button id="claim-btn" style="background: #22c55e; color: #020617;">-1 SOLD / CLAIM</button>
+    <button id="start-btn" style="background: #38bdf8; color: #020617;">Start Drop</button>
+  </div>
+</div>
+
+<script>
+  let seconds = 120;
+  let stock = 10;
+  let timerInterval = null;
+
+  function updateTimer() {
+    const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const secs = String(seconds % 60).padStart(2, '0');
+    document.getElementById('timer-display').innerText = `${mins}:${secs}`;
+  }
+
+  document.getElementById('start-btn').addEventListener('click', () => {
+    clearInterval(timerInterval);
+    seconds = 120;
+    updateTimer();
+    timerInterval = setInterval(() => {
+      if (seconds > 0) {
+        seconds--;
+        updateTimer();
+      } else {
+        clearInterval(timerInterval);
+        document.getElementById('timer-display').innerText = "DROP CLOSED";
+        document.getElementById('timer-display').style.color = "#ef4444";
+      }
+    }, 1000);
+  });
+
+  document.getElementById('claim-btn').addEventListener('click', () => {
+    if (stock > 0) {
+      stock--;
+      document.getElementById('stock-count').innerText = stock;
+      if (stock === 0) {
+        document.getElementById('stock-count').innerText = "SOLD OUT";
+        document.getElementById('stock-count').style.color = "#ef4444";
+      }
+    }
+  });
+</script>
+</body>
+</html>
