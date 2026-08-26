@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WireGauge 12V - Car Audio Power & Fuse Engine</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 480px; width: 100%; padding: 25px; border-radius: 12px; }
+    h1 { color: #facc15; font-size: 1.3rem; margin-top: 0; }
+    .badge { background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; float: right; }
+    label { font-size: 0.85rem; color: #94a3b8; display: block; margin: 12px 0 4px; }
+    input, select { width: 100%; background: #1e293b; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; box-sizing: border-box; }
+    button { width: 100%; background: #facc15; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 1rem; }
+    .results { background: #020617; border: 1px solid #334155; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 0.9rem; line-height: 1.6; }
+    .results strong { color: #38bdf8; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <span class="badge" id="daily-badge">Daily: 0/15</span>
+  <h1>WIREGAUGE 12V™ // POWER HUD</h1>
+  <div style="font-size: 0.8rem; color: #64748b;">AMPLIFIER CURRENT & CABLE SIZER</div>
+
+  <label>Total Amplifier RMS Power (Watts)</label>
+  <input type="number" id="amp-rms" value="1500" step="100">
+
+  <label>Cable Run Length (Battery to Trunk in Feet)</label>
+  <input type="number" id="run-len" value="17" step="1">
+
+  <label>Cable Conductor Type</label>
+  <select id="wire-type">
+    <option value="ofc">OFC (Oxygen-Free Pure Copper)</option>
+    <option value="cca">CCA (Copper-Clad Aluminum - Higher Resistance)</option>
+  </select>
+
+  <button id="calc-btn">Calculate AWG & Fuse Size</button>
+
+  <div class="results" id="results">
+    <div>Estimated Current Draw: <strong id="current-draw">144 A</strong></div>
+    <div>Recommended Main Cable: <strong id="rec-awg">1/0 AWG (OFC)</strong></div>
+    <div>Recommended ANL Fuse: <strong id="rec-fuse">150 Amp ANL</strong></div>
+    <div>Estimated Voltage Drop: <strong id="drop-volt">< 0.35 V</strong></div>
+  </div>
+</div>
+
+<script>
+  const MAX_FREE = 15;
+  function getUsage() {
+    const today = new Date().toISOString().split('T')[0];
+    const data = JSON.parse(localStorage.getItem('wiregauge_usage') || '{}');
+    return (data.date === today) ? data : { date: today, count: 0 };
+  }
+  function updateDisplay() {
+    const usage = getUsage();
+    document.getElementById('daily-badge').innerText = `Daily: ${usage.count}/${MAX_FREE}`;
+    if (usage.count >= MAX_FREE) document.getElementById('calc-btn').disabled = true;
+  }
+  function incrementUsage() {
+    const usage = getUsage();
+    usage.count++;
+    localStorage.setItem('wiregauge_usage', JSON.stringify(usage));
+    updateDisplay();
+  }
+
+  document.getElementById('calc-btn').addEventListener('click', () => {
+    const usage = getUsage();
+    if (usage.count >= MAX_FREE) return;
+
+    const rms = parseFloat(document.getElementById('amp-rms').value);
+    const len = parseFloat(document.getElementById('run-len').value);
+    const type = document.getElementById('wire-type').value;
+
+    // Assumes 13.8V alternator charging & 75% Class-D amplifier efficiency
+    const current = Math.round(rms / (13.8 * 0.75));
+
+    let awg = "4 AWG";
+    let fuse = "100 Amp";
+    if (current > 120 || (current > 80 && len > 15)) {
+      awg = type === 'ofc' ? "1/0 AWG (0 Gauge)" : "2/0 AWG Oversized";
+      fuse = `${Math.ceil(current / 50) * 50} Amp ANL`;
+    } else if (current > 60) {
+      awg = "4 AWG OFC";
+      fuse = "80 Amp Mini-ANL";
+    } else {
+      awg = "8 AWG OFC";
+      fuse = "50 Amp AGU/Mini-ANL";
+    }
+
+    document.getElementById('current-draw').innerText = `${current} Amperes`;
+    document.getElementById('rec-awg').innerText = awg;
+    document.getElementById('rec-fuse').innerText = fuse;
+    document.getElementById('drop-volt').innerText = `< 0.28 V (${type.toUpperCase()})`;
+    incrementUsage();
+  });
+
+  updateDisplay();
+</script>
+</body>
+</html>

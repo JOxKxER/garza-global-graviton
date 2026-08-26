@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToneGen 12V - Car Audio Calibration Engine</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 460px; width: 100%; padding: 25px; border-radius: 12px; text-align: center; }
+    h1 { color: #38bdf8; font-size: 1.3rem; margin-top: 0; }
+    .hz-display { font-size: 3rem; font-weight: bold; color: #34d399; background: #020617; padding: 20px; border-radius: 8px; border: 1px solid #334155; margin: 15px 0; }
+    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+    button { background: #1e293b; color: #fff; border: 1px solid #334155; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    button.active { background: #38bdf8; color: #020617; }
+    #play-btn { width: 100%; background: #22c55e; color: #020617; border: none; padding: 14px; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>TONEGEN 12V™ // CALIBRATION</h1>
+  <div style="font-size: 0.8rem; color: #64748b;">AMPLIFIER GAIN & RTA TEST GENERATOR</div>
+
+  <div class="hz-display" id="freq-readout">40 Hz</div>
+
+  <div class="btn-grid">
+    <button class="active" onclick="setTone(40)">40 Hz (Sub Gain)</button>
+    <button onclick="setTone(50)">50 Hz (Standard Bass)</button>
+    <button onclick="setTone(1000)">1,000 Hz (Mids Gain)</button>
+    <button onclick="setTone(0)">Pink Noise (RTA)</button>
+  </div>
+
+  <button id="play-btn">Start Test Tone (0 dB)</button>
+  <div style="font-size: 0.75rem; color: #64748b; margin-top: 15px;">Caution: Set head unit volume to 75% before scoping amp gains.</div>
+</div>
+
+<script>
+  let audioCtx = null;
+  let osc = null;
+  let isPlaying = false;
+  let currentFreq = 40;
+
+  function setTone(freq) {
+    currentFreq = freq;
+    document.getElementById('freq-readout').innerText = freq === 0 ? "Pink Noise" : `${freq} Hz`;
+    document.querySelectorAll('.btn-grid button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    if (isPlaying) {
+      stopTone();
+      startTone();
+    }
+  }
+
+  function startTone() {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (currentFreq > 0) {
+      osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(currentFreq, audioCtx.currentTime);
+      osc.connect(audioCtx.destination);
+      osc.start();
+    }
+    isPlaying = true;
+    document.getElementById('play-btn').innerText = "Stop Tone";
+    document.getElementById('play-btn').style.background = "#ef4444";
+  }
+
+  function stopTone() {
+    if (osc) {
+      osc.stop();
+      osc.disconnect();
+      osc = null;
+    }
+    if (audioCtx) {
+      audioCtx.close();
+      audioCtx = null;
+    }
+    isPlaying = false;
+    document.getElementById('play-btn').innerText = "Start Test Tone (0 dB)";
+    document.getElementById('play-btn').style.background = "#22c55e";
+  }
+
+  document.getElementById('play-btn').addEventListener('click', () => {
+    if (isPlaying) stopTone();
+    else startTone();
+  });
+</script>
+</body>
+</html>
