@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BetEdge - Sports Betting & Implied Odds HUD</title>
+  <style>
+    body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
+    .card { background: #0f172a; border: 1px solid #1e293b; max-width: 480px; width: 100%; padding: 25px; border-radius: 12px; }
+    h1 { color: #34d399; font-size: 1.3rem; margin-top: 0; }
+    .badge { background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; float: right; }
+    label { font-size: 0.85rem; color: #94a3b8; display: block; margin: 12px 0 4px; }
+    input { width: 100%; background: #1e293b; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 6px; box-sizing: border-box; }
+    button { width: 100%; background: #34d399; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 1rem; }
+    .readout { background: #020617; border: 1px solid #334155; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-size: 1.1rem; color: #38bdf8; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <span class="badge" id="daily-badge">Daily: 0/15</span>
+  <h1>BETEDGE™ // ODDS CALCULATOR</h1>
+  <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px;">IMPLIED PROBABILITY & VIG STRIPPING</div>
+
+  <label>American Odds (e.g. -110 or +150)</label>
+  <input type="number" id="odds-input" value="-110">
+
+  <button id="calc-btn">Calculate Implied Probability</button>
+
+  <div class="readout" id="results">Implied Probability: 52.4%</div>
+</div>
+
+<script>
+  const MAX_FREE = 15;
+  function getUsage() {
+    const today = new Date().toISOString().split('T')[0];
+    const data = JSON.parse(localStorage.getItem('betedge_usage') || '{}');
+    return (data.date === today) ? data : { date: today, count: 0 };
+  }
+  function updateDisplay() {
+    const usage = getUsage();
+    document.getElementById('daily-badge').innerText = `Daily: ${usage.count}/${MAX_FREE}`;
+    if (usage.count >= MAX_FREE) document.getElementById('calc-btn').disabled = true;
+  }
+  function incrementUsage() {
+    const usage = getUsage();
+    usage.count++;
+    localStorage.setItem('betedge_usage', JSON.stringify(usage));
+    updateDisplay();
+  }
+
+  document.getElementById('calc-btn').addEventListener('click', () => {
+    const usage = getUsage();
+    if (usage.count >= MAX_FREE) return;
+
+    const odds = parseFloat(document.getElementById('odds-input').value);
+    let prob = 0;
+    if (odds > 0) prob = (100 / (odds + 100)) * 100;
+    else prob = (Math.abs(odds) / (Math.abs(odds) + 100)) * 100;
+
+    document.getElementById('results').innerText = `Implied Probability: ${prob.toFixed(1)}%`;
+    incrementUsage();
+  });
+
+  updateDisplay();
+</script>
+</body>
+</html>

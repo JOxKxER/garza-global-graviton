@@ -2,20 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GravitonMesh VPN</title>
+  <title>GravitonMesh VPN - Zero-Log Tunnel</title>
   <style>
     body { background: #060911; color: #f8fafc; font-family: monospace; padding: 25px; display: flex; justify-content: center; }
     .card { background: #0f172a; border: 1px solid #1e293b; max-width: 480px; width: 100%; padding: 25px; border-radius: 12px; text-align: center; }
     h1 { color: #38bdf8; font-size: 1.3rem; margin-top: 0; }
+    .badge { background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; float: right; }
+    .status { font-size: 1.5rem; font-weight: bold; color: #ef4444; margin: 20px 0; background: #020617; padding: 15px; border-radius: 8px; border: 1px solid #334155; }
+    button { width: 100%; background: #38bdf8; color: #020617; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+    .alert-banner { display: none; background: #7f1d1d; color: #fca5a5; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-top: 15px; }
+    .alert-banner a { color: #fff; font-weight: bold; text-decoration: underline; }
   </style>
 </head>
 <body>
+
 <div class="card">
+  <span class="badge" id="daily-badge">Daily: 0/15</span>
   <h1>GRAVITONMESH VPN™</h1>
   <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px;">ZERO-LOG WIREGUARD TUNNEL</div>
-  <div style="background:#020617; padding:15px; border-radius:6px; border:1px solid #334155; color:#34d399;">
-    Status: <strong>Secured (ChaCha20-Poly1305)</strong>
+
+  <div class="status" id="vpn-status">DISCONNECTED</div>
+
+  <div id="limit-box" class="alert-banner">
+    ⚠️ <strong>Daily Free Limit Reached (15/15).</strong><br>
+    Unlimited high-speed tunneling across 50+ global exit nodes available.<br>
+    <a href="https://garzaglobalgraviton.com/commercial" target="_blank">Upgrade to Commercial VPN</a>
   </div>
+
+  <button id="toggle-btn">Connect WireGuard Tunnel</button>
 </div>
+
+<script>
+  const MAX_FREE = 15;
+  let isConnected = false;
+
+  function getUsage() {
+    const today = new Date().toISOString().split('T')[0];
+    const data = JSON.parse(localStorage.getItem('vpn_usage') || '{}');
+    return (data.date === today) ? data : { date: today, count: 0 };
+  }
+
+  function updateDisplay() {
+    const usage = getUsage();
+    document.getElementById('daily-badge').innerText = `Daily: ${usage.count}/${MAX_FREE}`;
+    if (usage.count >= MAX_FREE) {
+      document.getElementById('toggle-btn').disabled = true;
+      document.getElementById('limit-box').style.display = 'block';
+    }
+  }
+
+  function incrementUsage() {
+    const usage = getUsage();
+    usage.count++;
+    localStorage.setItem('vpn_usage', JSON.stringify(usage));
+    updateDisplay();
+  }
+
+  document.getElementById('toggle-btn').addEventListener('click', () => {
+    const usage = getUsage();
+    if (usage.count >= MAX_FREE) return;
+
+    isConnected = !isConnected;
+    const statusEl = document.getElementById('vpn-status');
+    const btn = document.getElementById('toggle-btn');
+
+    if (isConnected) {
+      statusEl.innerText = "SECURED (CHACHA20)";
+      statusEl.style.color = "#34d399";
+      btn.innerText = "Disconnect Tunnel";
+      btn.style.background = "#ef4444";
+      btn.style.color = "#fff";
+      incrementUsage();
+    } else {
+      statusEl.innerText = "DISCONNECTED";
+      statusEl.style.color = "#ef4444";
+      btn.innerText = "Connect WireGuard Tunnel";
+      btn.style.background = "#38bdf8";
+      btn.style.color = "#020617";
+    }
+  });
+
+  updateDisplay();
+</script>
 </body>
 </html>
