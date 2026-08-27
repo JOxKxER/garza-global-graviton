@@ -46,13 +46,12 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
-
 def compute_hash(order_id: str, batch: int, client: str, count: int) -> str:
     raw = f"{order_id}_{batch}_{client}_{count}".encode()
     return hashlib.sha256(raw).hexdigest()
 
 def db_record_completed_order(order_id, client_ref, count, scale, batch, root):
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute(
@@ -71,6 +70,12 @@ class WorkloadSubmission(BaseModel):
 def serve_dashboard():
     with open(DASHBOARD_TEMPLATE, "r", encoding="utf-8") as f:
         return f.read()
+
+
+@app.get("/health", include_in_schema=False)
+def health_check():
+    """Return immediately without touching external services or large data."""
+    return {"status": "ok"}
 
 
 @app.get("/downloads/{filename}", response_class=FileResponse)
@@ -109,6 +114,7 @@ async def submit_compute_order(payload: WorkloadSubmission, x_api_key: str = Hea
 
 @app.get("/api/v1/orders/{order_id}/status", tags=["Commercial Intake"])
 async def get_order_status(order_id: str):
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT status, settled_batch, merkle_root FROM orders WHERE order_id = ?", (order_id,))
@@ -128,6 +134,7 @@ async def get_order_status(order_id: str):
 
 @app.get("/api/v1/ledger/verify", tags=["Audit"])
 def verify_ledger_integrity():
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -156,6 +163,7 @@ def verify_ledger_integrity():
 
 @app.get("/api/v1/ledger/export", tags=["Audit"])
 def export_ledger(format: str = "json"):
+    init_db()
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
