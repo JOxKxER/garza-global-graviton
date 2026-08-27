@@ -21,5 +21,5 @@ COPY . .
 # Render supplies PORT at runtime; 8000 remains the local fallback.
 EXPOSE 8000
 
-# Bind FastAPI to Render's runtime port and expose it on every container interface.
-CMD ["sh", "-c", "exec uvicorn src.api:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Use Docker exec form so Uvicorn starts without a shell wrapper.
+CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]
