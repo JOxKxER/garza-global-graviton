@@ -2,3 +2,4 @@
 build/
 *.exe
 __pycache__/
+.env

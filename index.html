@@ -1,201 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" href="data:,">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garza Global Graviton - Master Suite Hub</title>
-  <style>
-    body { background: #060911; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; margin: 0; padding: 40px 20px; }
-    .container { max-width: 1100px; margin: auto; }
-    header { border-bottom: 1px solid #1e293b; padding-bottom: 25px; margin-bottom: 35px; display: flex; justify-content: space-between; align-items: flex-end; }
-    h1 { color: #38bdf8; margin: 0; font-size: 1.8rem; letter-spacing: 1px; }
-    h2 { color: #38bdf8; font-size: 1.2rem; margin: 35px 0 15px; border-left: 3px solid #38bdf8; padding-left: 10px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
-    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 20px; transition: 0.2s; }
-    .card:hover { border-color: #38bdf8; transform: translateY(-2px); }
-    .tag { font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
-    .tag-free { background: #064e3b; color: #34d399; }
-    .tag-comm { background: #312e81; color: #818cf8; }
-    h3 { margin: 10px 0 6px; color: #fff; font-size: 1.1rem; }
-    p { color: #94a3b8; font-size: 0.85rem; line-height: 1.4; margin-bottom: 15px; }
-    .btn { display: inline-block; background: #38bdf8; color: #060911; font-weight: bold; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; }
-    .investor-box { background: #111827; border: 1px solid #374151; padding: 30px; border-radius: 10px; margin-top: 40px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Editor App</title>
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <div>
-      <h1>GARZA GLOBAL GRAVITON</h1>
-      <div style="color: #64748b; font-size: 0.9rem; margin-top: 4px;">Zero-Cloud Client-Side Computation & Applied Metrology Engines</div>
-    </div>
-    <div>
-      <a href="apps/mobile-widget.html" style="color: #34d399; font-size: 0.85rem; text-decoration: none; font-weight: bold; margin-right: 20px;">📱 Mobile Studio →</a>
-      <a href="legal/terms.html" style="color: #38bdf8; font-size: 0.85rem; text-decoration: none; font-weight: bold;">User Agreement & Legal Disclaimers →</a>
-    </div>
-  </header>
-
-  <h2>GRAVITON CORE // PROOF-OF-CONCEPT & EDGE ARCHITECTURE</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag tag-free">PoC / D-DIL</span>
-      <h3>Graviton Edge Telemetry Lab</h3>
-      <p>Simulates offline mesh node data gathering, local packet buffering, and Merkle hash verification.</p>
-      <a href="apps/graviton/telemetry-poc.html" class="btn">Launch PoC Lab →</a>
-    </div>
-  </div>
-
-  <h2>GRAVITON FORGE™ // CAD, CAE, METROLOGY & WORKSHOP</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span> <span class="tag tag-comm">Commercial Pro</span>
-      <h3>Graviton Forge CAD/CAM</h3>
-      <p>Local B-Rep parser for STEP/DWG files. Computes bounding dimensions, billet weights, and DMIS inspection routines.</p>
-      <a href="apps/forge/cad-analyzer.html" class="btn">Launch Web App →</a>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'geo')">Spatial / GPS</button>
+        <button class="tab-btn" onclick="switchTab(event, 'motion')">Motion & Inertial</button>
+        <button class="tab-btn" onclick="switchTab(event, 'status')">Device & Node</button>
+        <button class="tab-btn" onclick="switchTab(event, 'log')">Field Event</button>
     </div>
 
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span> <span class="tag tag-comm">Commercial Pro</span>
-      <h3>Graviton Forge CAE Solver</h3>
-      <p>Client-side finite element analysis for Von Mises stress concentration, thermal gradients, and safety factors.</p>
-      <a href="apps/forge/cae-stress-solver.html" class="btn">Launch Solver →</a>
+    <!-- TAB 1: GEO -->
+    <div id="geo" class="panel active">
+        <h2>Precision Geolocation</h2>
+        <pre id="geo-data">Acquiring satellite lock...</pre>
+        <button class="action" onclick="requestGeoPermission()">Enable GPS Feed</button>
     </div>
 
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span>
-      <h3>Speeds & Feeds Engine</h3>
-      <p>CNC spindle RPM and table feed rate solver across Aluminum, Stainless, Steel, and Titanium alloys.</p>
-      <a href="apps/workshop/speedsfeeds.html" class="btn">Launch Solver →</a>
+    <!-- TAB 2: MOTION -->
+    <div id="motion" class="panel">
+        <h2>Motion & Orientation</h2>
+        <pre id="motion-data">Awaiting sensor handshake...</pre>
+        <button class="action" onclick="requestMotionPermission()">Enable Sensors</button>
     </div>
 
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>Shop Machine Maintenance Log</h3>
-      <p>Tracks machinery service intervals, spindle grease cycles, and filter changes via secure local storage.</p>
-      <a href="apps/workshop/maintenancelog.html" class="btn">Launch Log →</a>
+    <!-- TAB 3: STATUS -->
+    <div id="status" class="panel">
+        <h2>Node & Network Health</h2>
+        <pre id="status-data">Checking environment...</pre>
     </div>
 
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>ShopDecibel Noise Guard</h3>
-      <p>OSHA 85 dBA sound monitor for workshops, machine tools, and yard equipment using local audio DSP.</p>
-      <a href="apps/workshop/shopdecibel.html" class="btn">Launch Guard →</a>
-    </div>
-  </div>
-
-  <h2>OUTDOOR, FLEET & LONG-RANGE SUITE</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span> <span class="tag tag-comm">Commercial Pro</span>
-      <h3>DropHold Ballistics Solver</h3>
-      <p>Offline bullet drop and crosswind calculator with preset hunting calibers, atmospheric offsets, and MOA adjustments.</p>
-      <a href="apps/outdoor/drophold.html" class="btn">Launch Solver →</a>
+    <!-- TAB 4: MANUAL LOG -->
+    <div id="log" class="panel">
+        <h2>Field Event Logger</h2>
+        <textarea id="log-notes" rows="4" style="width:100%; background:#090d16; color:#fff; border:none; padding:0.5rem; border-radius:0.5rem;" placeholder="Enter tactical or logistics notes..."></textarea>
+        <button class="action" onclick="submitLog()">Transmit Packet</button>
     </div>
 
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span> <span class="tag tag-comm">Commercial Pro</span>
-      <h3>PitBoss Reverse BBQ HUD</h3>
-      <p>Reverse-engineered smoking schedule calculator accounting for stall windows, wrapping, and cooler resting.</p>
-      <a href="apps/outdoor/pitboss.html" class="btn">Launch Planner →</a>
-    </div>
+<script>
+    let telemetryBuffer = [];
 
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>Truck Trip ETA & Fuel Solver</h3>
-      <p>Calculates active driving windows, DOT rest breaks, diesel burn rates, and total trip fuel overhead.</p>
-      <a href="apps/lifestyle/trip-fuel.html" class="btn">Launch Solver →</a>
-    </div>
+    function switchTab(evt, tabId) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
 
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>SleeperClock HOS HUD</h3>
-      <p>FMCSA split-sleeper pause timer for commercial truck drivers. Fully operational in deadzones.</p>
-      <a href="apps/lifestyle/sleeper-clock.html" class="btn">Launch HUD →</a>
-    </div>
-  </div>
+    // 1. Geolocation Stream
+    function requestGeoPermission() {
+        if ('geolocation' in navigator) {
+            navigator.geolocation.watchPosition(pos => {
+                const data = {
+                    lat: pos.coords.latitude,
+                    lon: pos.coords.longitude,
+                    alt: pos.coords.altitude,
+                    speed: pos.coords.speed,
+                    heading: pos.coords.heading,
+                    timestamp: pos.timestamp
+                };
+                document.getElementById('geo-data').innerText = JSON.stringify(data, null, 2);
+                telemetryBuffer.push({ type: 'geo', payload: data });
+            }, err => alert(err.message), { enableHighAccuracy: true });
+        }
+    }
 
-  <h2>ANALYTICS, SENSORY & SPORTS</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>Kinetic Sensory Reflex Lab</h3>
-      <p>Measures cognitive reaction times in milliseconds and logs performance biometrics locally.</p>
-      <a href="apps/lifestyle/sensory-lab.html" class="btn">Launch Lab →</a>
-    </div>
+    // 2. Motion & Orientation
+    function requestMotionPermission() {
+        if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission().then(response => {
+                if (response === 'granted') startMotionListeners();
+            });
+        } else {
+            startMotionListeners();
+        }
+    }
 
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span>
-      <h3>Sports Parlay Calculator</h3>
-      <p>Calculates combined cumulative parlay odds, potential payouts, and implied win probabilities.</p>
-      <a href="apps/sports/parlaycalc.html" class="btn">Launch Calculator →</a>
-    </div>
-  </div>
+    function startMotionListeners() {
+        window.addEventListener('devicemotion', (e) => {
+            const data = {
+                accel: { x: e.acceleration.x, y: e.acceleration.y, z: e.acceleration.z },
+                rotation: { alpha: e.rotationRate.alpha, beta: e.rotationRate.beta, gamma: e.rotationRate.gamma }
+            };
+            document.getElementById('motion-data').innerText = JSON.stringify(data, null, 2);
+        });
+    }
 
-  <h2>12-VOLT AUDIO & CAR STEREO INSTALLATION</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span>
-      <h3>BoxTuner Sub Enclosure Solver</h3>
-      <p>Calculates internal net box volume, wood displacement, and slot port tuning lengths (Fb Hz).</p>
-      <a href="apps/caraudio/boxtuner.html" class="btn">Launch Tuner →</a>
-    </div>
+    // 3. Status Polling
+    setInterval(async () => {
+        let batteryInfo = {};
+        if ('getBattery' in navigator) {
+            const b = await navigator.getBattery();
+            batteryInfo = { level: b.level, charging: b.charging };
+        }
+        const netInfo = navigator.connection ? { type: navigator.connection.effectiveType, downlink: navigator.connection.downlink } : {};
+        
+        document.getElementById('status-data').innerText = JSON.stringify({
+            battery: batteryInfo,
+            network: netInfo,
+            online: navigator.onLine,
+            queuedPackets: telemetryBuffer.length
+        }, null, 2);
+    }, 2000);
 
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span>
-      <h3>WireGauge 12V Power Engine</h3>
-      <p>Determines amplifier current draw, OFC/CCA wire gauge sizing, ANL fuses, and voltage drop across runs.</p>
-      <a href="apps/caraudio/wiregauge.html" class="btn">Launch Sizer →</a>
-    </div>
-
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>ToneGen 12V Gain & RTA Calibration</h3>
-      <p>Outputs precise 40 Hz and 1000 Hz 0 dB sine waves for setting amp gains with an oscilloscope.</p>
-      <a href="apps/caraudio/tonegen.html" class="btn">Launch Generator →</a>
-    </div>
-  </div>
-
-  <h2>COMMERCE, STAGE & FAITH COMMUNITIES</h2>
-  <div class="grid">
-    <div class="card">
-      <span class="tag tag-free">Free (15/Day)</span> <span class="tag tag-comm">Commercial</span>
-      <h3>Graviton-POS (Solana Pay)</h3>
-      <p>Non-custodial POS terminal. Generates instant dynamic QR codes for USDC and SOL with direct settlement.</p>
-      <a href="apps/pos/solana-pos.html" class="btn">Launch Terminal →</a>
-    </div>
-
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>PriceDrop Live Stream HUD</h3>
-      <p>Flash sale countdown timer and real-time inventory claim tracker for TikTok and IG Live sellers.</p>
-      <a href="apps/social/pricedrop.html" class="btn">Launch HUD →</a>
-    </div>
-
-    <div class="card">
-      <span class="tag tag-free">100% Free</span>
-      <h3>HymnCast Pew Sync</h3>
-      <p>Zero-internet live lyric and scripture streamer for churches and small congregations.</p>
-      <a href="apps/church/hymncast.html" class="btn">Launch Streamer →</a>
-    </div>
-  </div>
-
-  <div class="investor-box">
-    <h3 style="color: #38bdf8; margin-top: 0;">Intellectual Property, Licensing & Acquisitions</h3>
-    <p style="color: #94a3b8; font-size: 0.9rem;">These utilities represent micro-deliverables of our proprietary local-first core architecture. Garza Global Graviton LLC operates with zero cloud infrastructure overhead and zero urgency to divest.</p>
-    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 15px;">
-      <div style="flex: 1; min-width: 250px; background: #090d16; padding: 15px; border-radius: 6px; border: 1px solid #1f2937;">
-        <strong style="color: #fff;">Option A: Exclusive Commercial License</strong>
-        <p style="font-size: 0.8rem; margin: 5px 0; color: #94a3b8;">Annual recurring flat licensing fee with market exclusivity. Requires upfront non-refundable retainer for confidential diligence windows.</p>
-      </div>
-      <div style="flex: 1; min-width: 250px; background: #090d16; padding: 15px; border-radius: 6px; border: 1px solid #1f2937;">
-        <strong style="color: #fff;">Option B: Full Asset Divestiture</strong>
-        <p style="font-size: 0.8rem; margin: 5px 0; color: #94a3b8;">Complete IP acquisition via upfront lump-sum cash plus structured equity/stock options in the acquiring entity.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
+    function submitLog() {
+        const notes = document.getElementById('log-notes').value;
+        alert("Packet queued locally: " + notes);
+        document.getElementById('log-notes').value = '';
+    }
+</script>
 </body>
+</html>
 </html>

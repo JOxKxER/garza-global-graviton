@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graviton Field Ops Suite | Offline Workstation</title>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: monospace; padding: 2rem; }
+        .container { max-width: 900px; margin: auto; background: #1e293b; padding: 2rem; border-radius: 8px; border: 1px solid #334155; }
+        h1 { color: #38bdf8; }
+        h3 { color: #38bdf8; border-bottom: 1px solid #334155; padding-bottom: 0.5px; }
+        button { background: #0284c7; color: white; border: none; padding: 0.75rem 1.5rem; cursor: pointer; border-radius: 4px; font-weight: bold; margin-top: 0.5rem; }
+        button:hover { background: #0369a1; }
+        textarea, input { width: 100%; background: #0f172a; color: #38bdf8; border: 1px solid #334155; padding: 0.75rem; border-radius: 4px; font-family: monospace; margin-top: 0.5rem; box-sizing: border-box; }
+        pre { background: #0f172a; padding: 1rem; margin-top: 1rem; border-radius: 4px; color: #38bdf8; white-space: pre-wrap; max-height: 220px; overflow-y: auto; }
+        .module { margin-bottom: 2rem; }
+        .master-box { border: 2px solid #38bdf8; background: #0f172a; padding: 1.5rem; border-radius: 6px; margin-bottom: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GRAVITON FIELD OPS SUITE</h1>
+        <p>Air-Gapped Tactical Utilities, Fluid Pipeline Vault, & Offline AI Engine</p>
+        <hr style="border-color: #334155; margin: 1.5rem 0;">
+        
+        <!-- MASTER EXECUTION BUTTON -->
+        <div class="master-box">
+            <h3 style="margin-top:0; color:#38bdf8;">MASTER SYSTEM EXECUTION</h3>
+            <p>Trigger and verify all 10 tactical subsystems simultaneously with a single master command.</p>
+            <button onclick="runAllSystems()" style="background:#0284c7; font-size:15px; width:100%;">⚡ START THEM ALL (FULL SYSTEM EXECUTION)</button>
+            <pre id="master-output">Awaiting master sequence execution...</pre>
+        </div>
+        
+        <div class="module">
+            <h3>1. GPS Signal Stress-Tester (Telemetry Vault)</h3>
+            <button onclick="runGPS()">Run Diagnostics Test</button>
+            <pre id="gps-output">Awaiting test execution...</pre>
+        </div>
+
+        <div class="module">
+            <h3>2. Local Offline AI Research Assistant (Ollama)</h3>
+            <textarea id="ai-prompt" rows="2">Explain how toroidal tensor manifolds optimize data compression.</textarea>
+            <button onclick="runAI()">Query Local AI</button>
+            <pre id="ai-output">Awaiting query...</pre>
+        </div>
+
+        <div class="module">
+            <h3>3. Mobile Hotspot & Edge-Mesh Booster</h3>
+            <button onclick="runHotspotBoost()">Optimize Hotspot Pipeline</button>
+            <pre id="hotspot-output">Awaiting hotspot optimization...</pre>
+        </div>
+
+        <div class="module">
+            <h3>4. Fluid Parametric Storage Manifold</h3>
+            <button onclick="runFluidCompression()">Compress to Manifold</button>
+            <pre id="fluid-output">Awaiting fluid compression execution...</pre>
+        </div>
+
+        <div class="module">
+            <h3>5. Hardened Security & Biometric Vault</h3>
+            <input type="password" id="vault-pin" placeholder="Enter PIN / Biometric Code (e.g. 0000)">
+            <button onclick="runSecurityLock()">Scramble & Lock Vault</button>
+            <pre id="security-output">Vault status: Armed and secure.</pre>
+        </div>
+
+        <div class="module">
+            <h3>6. 4D Spatial Vector & Quaternion Engine</h3>
+            <button onclick="runQuaternionTransform()">Execute 4D Transformation</button>
+            <pre id="quaternion-output">Awaiting spatial coordinate calculation...</pre>
+        </div>
+
+        <div class="module">
+            <h3>7. Merkle Distributed Integrity Verifier</h3>
+            <button onclick="runMerkleVerify()">Generate Merkle Root</button>
+            <pre id="merkle-output">Awaiting block verification...</pre>
+        </div>
+
+        <div class="module">
+            <h3>8. Toroidal Node Mesh Routing Engine</h3>
+            <button onclick="runToroidalRoute()">Simulate Toroidal Routing</button>
+            <pre id="toroidal-output">Awaiting node path simulation...</pre>
+        </div>
+
+        <div class="module">
+            <h3>9. Asynchronous Telemetry & Event Stream Pipeline</h3>
+            <button onclick="runAsyncStream()">Ingest & Process Stream</button>
+            <pre id="async-output">Awaiting async stream batch...</pre>
+        </div>
+
+        <!-- NEW: Fractal Entropy Module -->
+        <div class="module">
+            <h3>10. Shannon Entropy & Fractal Signal Processor</h3>
+            <p>Measure stream information density and model Menger Sponge structural scattering.</p>
+            <button onclick="runFractalEntropy()">Analyze Signal Entropy</button>
+            <pre id="fractal-output">Awaiting signal analysis...</pre>
+        </div>
+    </div>
+
+    <script>
+        async function runAllSystems() {
+            document.getElementById('master-output').innerText = "Executing all 10 modules across the stack...";
+            let res = await fetch('/tools/run-all', { method: 'POST' });
+            let data = await res.json();
+            document.getElementById('master-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runGPS() {
+            let res = await fetch('/tools/gps-simulator', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ packet_loss: 25, noise_level: 12 }) });
+            let data = await res.json();
+            document.getElementById('gps-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runAI() {
+            let promptText = document.getElementById('ai-prompt').value;
+            let res = await fetch('/tools/ai-research', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ prompt: promptText }) });
+            let data = await res.json();
+            document.getElementById('ai-output').innerText = data.response;
+        }
+        async function runHotspotBoost() {
+            let res = await fetch('/tools/hotspot-booster', { method: 'POST' });
+            let data = await res.json();
+            document.getElementById('hotspot-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runFluidCompression() {
+            let res = await fetch('/tools/fluid-compress', { method: 'POST' });
+            let data = await res.json();
+            document.getElementById('fluid-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runSecurityLock() {
+            let pinCode = document.getElementById('vault-pin').value;
+            let res = await fetch('/tools/security-lock', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ pin: pinCode }) });
+            let data = await res.json();
+            document.getElementById('security-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runQuaternionTransform() {
+            let res = await fetch('/tools/quaternion-transform', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ coords: [15.5, 8.2, 3.1], angles: [0.78, 1.57, 0.33] }) });
+            let data = await res.json();
+            document.getElementById('quaternion-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runMerkleVerify() {
+            let res = await fetch('/tools/merkle-verify', { method: 'POST' });
+            let data = await res.json();
+            document.getElementById('merkle-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runToroidalRoute() {
+            let res = await fetch('/tools/toroidal-route', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: [1, 2], target: [14, 13] }) });
+            let data = await res.json();
+            document.getElementById('toroidal-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runAsyncStream() {
+            let res = await fetch('/tools/async-stream', { method: 'POST' });
+            let data = await res.json();
+            document.getElementById('async-output').innerText = JSON.stringify(data, null, 2);
+        }
+        async function runFractalEntropy() {
+            let res = await fetch('/tools/fractal-entropy', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ stream: "X9-AEROSPACE-ENCRYPTED-NOISE-55412", depth: 4 }) });
+            let data = await res.json();
+            document.getElementById('fractal-output').innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Vault</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Security Vault</h1>
+        <input type="password" id="pinInput" placeholder="Enter PIN">
+        <button onclick="lockFile()">Lock File</button>
+        <button onclick="unlockFile()">Unlock File</button>
+        <script>
+            async function lockFile() {
+                const pin = document.getElementById('pinInput').value;
+                try {
+                    const response = await fetch('/tools/security-lock', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ pin })
+                    });
+                    if (response.ok) {
+                        alert('File locked successfully!');
+                    } else {
+                        alert('Failed to lock file.');
+                    }
+                } catch (error) {
+                    console.error('Error locking file:', error);
+                }
+            }
+
+            async function unlockFile() {
+                const pin = document.getElementById('pinInput').value;
+                try {
+                    const response = await fetch('/tools/security-lock', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ pin })
+                    });
+                    if (response.ok) {
+                        alert('File unlocked successfully!');
+                    } else {
+                        alert('Failed to unlock file.');
+                    }
+                } catch (error) {
+                    console.error('Error unlocking file:', error);
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
