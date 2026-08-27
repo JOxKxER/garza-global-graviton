@@ -1,18 +1,32 @@
-from fastapi import FastAPI, HTTPException, Header, Request, Response, JSONResponse, File, UploadFile
+from fastapi import (
+    FastAPI,
+    Header,
+    HTTPException,
+    Response,
+)
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
+from pathlib import Path
 import sqlite3
 import hashlib
 import uuid
 import csv
 import io
-import os
 
 app = FastAPI(title="Garza Global Graviton - Commercial Compute API", version="0.1.0")
 
 API_KEY = "ggg_live_secret_key_8899"
-DB_PATH = Path("cluster_ledger.db")
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / "cluster_ledger.db"
+DASHBOARD_TEMPLATE = BASE_DIR / "templates" / "index.html"
+DOWNLOADABLE_FILES = {
+    "start_graviton.bat",
+    "launch_engine.bat",
+    "requirements.txt",
+    "graviton_fluid_compression_utility.py",
+    "graviton_telemetry_client.py",
+}
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
@@ -55,9 +69,22 @@ class WorkloadSubmission(BaseModel):
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def serve_dashboard():
-    template_path = os.path.join(os.path.dirname(__file__), "templates", "index.html")
-    with open(template_path, "r", encoding="utf-8") as f:
+    with open(DASHBOARD_TEMPLATE, "r", encoding="utf-8") as f:
         return f.read()
+
+
+@app.get("/downloads/{filename}", response_class=FileResponse)
+def download_client(filename: str):
+    if filename not in DOWNLOADABLE_FILES:
+        raise HTTPException(status_code=404, detail="Download not found")
+    file_path = BASE_DIR / filename
+    if not file_path.is_file():
+        raise HTTPException(status_code=404, detail="Download not found")
+    return FileResponse(
+        path=file_path,
+        filename=filename,
+        media_type="application/octet-stream",
+    )
 
 @app.post("/api/v1/orders/submit", tags=["Commercial Intake"])
 async def submit_compute_order(payload: WorkloadSubmission, x_api_key: str = Header(...)):
