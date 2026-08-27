@@ -21,5 +21,5 @@ COPY . .
 # Render supplies PORT at runtime; 8000 remains the local fallback.
 EXPOSE 8000
 
-# Serve the Flask dashboard and its API routes.
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-8000} main:app"]
+# Bind FastAPI to Render's runtime port and expose it on every container interface.
+CMD ["sh", "-c", "exec uvicorn src.api:app --host 0.0.0.0 --port ${PORT:-8000}"]
