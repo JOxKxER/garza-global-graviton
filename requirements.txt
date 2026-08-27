@@ -1,9 +1,2 @@
 fastapi
 uvicorn
-pydantic
-boto3
-python-dotenv
-numpy
-Flask
-gunicorn
-cryptography
