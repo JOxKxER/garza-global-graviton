@@ -41,6 +41,8 @@ DOWNLOADABLE_FILES = {
     'start_graviton.bat',
     'launch_engine.bat',
     'requirements.txt',
+    'graviton_fluid_compression_utility.py',
+    'graviton_telemetry_client.py',
 }
 os.makedirs(STAGING_DIR, exist_ok=True)
 
