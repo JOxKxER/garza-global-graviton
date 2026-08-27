@@ -18,8 +18,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy source application
 COPY . .
 
-# Expose production port
+# Render supplies PORT at runtime; 8000 remains the local fallback.
 EXPOSE 8000
 
-# Run production Uvicorn server with multiple workers
-CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+# Serve the Flask dashboard and its API routes.
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-8000} main:app"]
