@@ -14,6 +14,18 @@
         pre { background: #0f172a; padding: 1rem; margin-top: 1rem; border-radius: 4px; color: #38bdf8; white-space: pre-wrap; max-height: 220px; overflow-y: auto; }
         .module { margin-bottom: 2rem; }
         .master-box { border: 2px solid #38bdf8; background: #0f172a; padding: 1.5rem; border-radius: 6px; margin-bottom: 2rem; }
+        .fluid-panel { border: 1px solid #22c55e; background: #10231b; padding: 1.5rem; border-radius: 6px; margin-bottom: 2rem; }
+        .fluid-panel h2 { color: #86efac; margin-top: 0; }
+        .tooltip { border-bottom: 1px dotted #86efac; cursor: help; }
+        .playground-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .playground-card { background: #0f172a; border: 1px solid #334155; padding: 1rem; border-radius: 4px; }
+        .metric { color: #86efac; font-size: 1.25rem; font-weight: bold; }
+        .download-list { display: grid; gap: 0.75rem; }
+        .download-link { display: block; color: #7dd3fc; padding: 0.75rem; border: 1px solid #334155; border-radius: 4px; text-decoration: none; }
+        .download-link:hover { background: #0f172a; border-color: #38bdf8; }
+        details { background: #0f172a; border: 1px solid #334155; border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 0.75rem; }
+        summary { color: #7dd3fc; cursor: pointer; font-weight: bold; }
+        @media (max-width: 700px) { .playground-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -93,14 +105,130 @@
             <button onclick="runFractalEntropy()">Analyze Signal Entropy</button>
             <pre id="fractal-output">Awaiting signal analysis...</pre>
         </div>
+
+        <section class="fluid-panel" aria-labelledby="fluid-title">
+            <h2 id="fluid-title">Fluid Compression & Analytics</h2>
+            <p>
+                Fluid compression represents repeating information with a smooth mathematical
+                pattern instead of storing every rigid bit separately.
+                <span class="tooltip" title="A ratio of 2.0 means the compressed data is half the original size.">Hover for a plain-English ratio explanation.</span>
+            </p>
+            <div class="playground-grid">
+                <div class="playground-card">
+                    <h3>Try a File or Telemetry Stream</h3>
+                    <label for="fluid-file">Choose a small file</label>
+                    <input id="fluid-file" type="file">
+                    <label for="fluid-text">Or paste everyday telemetry</label>
+                    <textarea id="fluid-text" rows="6" placeholder="Example: temperature=21.4, speed=58, battery=87"></textarea>
+                    <button onclick="runFluidPlayground()">Compare Storage</button>
+                    <p id="fluid-status">Ready for a local browser-only comparison.</p>
+                </div>
+                <div class="playground-card">
+                    <h3>Live Comparison</h3>
+                    <p>Original size: <span class="metric" id="fluid-original-size">0 B</span></p>
+                    <p>Compressed size: <span class="metric" id="fluid-compressed-size">0 B</span></p>
+                    <p>Compression ratio: <span class="metric" id="fluid-ratio">0.00x</span></p>
+                    <label for="fluid-reconstruction">Reconstruction output</label>
+                    <pre id="fluid-reconstruction">Your reconstructed data will appear here.</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="module" aria-labelledby="downloads-title">
+            <h2 id="downloads-title">Downloads & Clients</h2>
+            <p>Choose a launcher, install the dependencies, and start the workspace from the folder you downloaded.</p>
+            <div class="download-list">
+                <a class="download-link" href="/downloads/start_graviton.bat" download>Download Graviton launcher</a>
+                <a class="download-link" href="/downloads/launch_engine.bat" download>Download offline workspace launcher</a>
+                <a class="download-link" href="/downloads/requirements.txt" download>Download Python dependencies</a>
+            </div>
+            <details>
+                <summary>Setup help</summary>
+                <p>Install Python 3.11 or newer, run <strong>pip install -r requirements.txt</strong>, then launch the workspace script for your platform.</p>
+            </details>
+        </section>
+
+        <section class="module" aria-labelledby="onboarding-title">
+            <h2 id="onboarding-title">Getting Started</h2>
+            <span class="badge" id="onboarding-status">Ready</span>
+            <details open>
+                <summary>Start here: run one module</summary>
+                <p>Begin with the Fluid Compression panel, then compare its ratio and reconstructed output before running the full system.</p>
+            </details>
+            <details>
+                <summary>What does mesh routing do?</summary>
+                <p>It estimates the shortest wraparound path between two nodes and reports the expected travel time.</p>
+            </details>
+            <details>
+                <summary>What does signal analysis do?</summary>
+                <p>It measures how varied a signal is and shows whether the stream looks easy or difficult to compress.</p>
+            </details>
+            <details>
+                <summary>How do I track an order?</summary>
+                <p>Use the client key and workload controls above. Successful submissions appear in the live consensus log and can be exported as audit receipts.</p>
+            </details>
+        </section>
     </div>
 
     <script>
+        function formatBytes(bytes) {
+            if (bytes < 1024) return `${bytes} B`;
+            if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+            return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+        }
+
+        async function compressAndRestore(source) {
+            if (!('CompressionStream' in window) || !('DecompressionStream' in window)) {
+                throw new Error('This browser does not support the local compression demo.');
+            }
+            const compressedStream = new Blob([source]).stream().pipeThrough(new CompressionStream('gzip'));
+            const compressed = await new Response(compressedStream).arrayBuffer();
+            const restoredStream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
+            const restored = await new Response(restoredStream).arrayBuffer();
+            return { compressed, restored };
+        }
+
+        async function runFluidPlayground() {
+            const file = document.getElementById('fluid-file').files[0];
+            const text = document.getElementById('fluid-text').value;
+            const status = document.getElementById('fluid-status');
+            if (!file && !text) {
+                status.innerText = 'Choose a file or paste telemetry first.';
+                return;
+            }
+
+            status.innerText = 'Comparing locally...';
+            try {
+                const source = file ? await file.arrayBuffer() : new TextEncoder().encode(text).buffer;
+                const result = await compressAndRestore(source);
+                const originalSize = source.byteLength;
+                const compressedSize = result.compressed.byteLength;
+                const ratio = compressedSize ? originalSize / compressedSize : 0;
+                document.getElementById('fluid-original-size').innerText = formatBytes(originalSize);
+                document.getElementById('fluid-compressed-size').innerText = formatBytes(compressedSize);
+                document.getElementById('fluid-ratio').innerText = `${ratio.toFixed(2)}x`;
+
+                if (file) {
+                    const preview = new TextDecoder().decode(result.restored.slice(0, 512));
+                    document.getElementById('fluid-reconstruction').innerText =
+                        preview || `[Binary file reconstructed: ${result.restored.byteLength} bytes]`;
+                } else {
+                    document.getElementById('fluid-reconstruction').innerText =
+                        new TextDecoder().decode(result.restored);
+                }
+                status.innerText = 'Complete. Your data stayed in this browser.';
+            } catch (error) {
+                status.innerText = `Demo unavailable: ${error.message}`;
+            }
+        }
+
         async function runAllSystems() {
+            document.getElementById('onboarding-status').innerText = 'Running';
             document.getElementById('master-output').innerText = "Executing all 10 modules across the stack...";
             let res = await fetch('/tools/run-all', { method: 'POST' });
             let data = await res.json();
             document.getElementById('master-output').innerText = JSON.stringify(data, null, 2);
+            document.getElementById('onboarding-status').innerText = data.failed_subsystems ? 'Review' : 'Complete';
         }
         async function runGPS() {
             let res = await fetch('/tools/gps-simulator', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ packet_loss: 25, noise_level: 12 }) });

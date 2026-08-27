@@ -23,6 +23,8 @@
         .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 16px; }
         .tier-card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 16px; text-align: center; }
         .tier-card.featured { border-color: var(--accent); }
+        .tier-card.free-tier { border-color: var(--green); }
+        .usage-meter { color: #7ee787; font-size: 13px; font-weight: bold; margin: 12px 0; }
         .price { font-size: 24px; font-weight: bold; color: #fff; margin: 8px 0; }
         .card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin-bottom: 16px; }
         label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px; }
@@ -42,6 +44,13 @@
 
     <!-- Self-Serve Commercial Pricing -->
     <div class=\"pricing-grid\">
+        <div class=\"tier-card free-tier\">
+            <h3 style=\"margin:0; color:#7ee787;\">Freemium Sandbox</h3>
+            <div class=\"price\">Free</div>
+            <p style=\"font-size:12px; color:#8b949e;\">100,000 Verified Elements + Local Sandbox Access</p>
+            <div class=\"usage-meter\" id=\"sandbox-usage\">Used: 0 / 100,000</div>
+            <button onclick=\"configureSandbox()\">Use Free Sandbox</button>
+        </div>
         <div class=\"tier-card\">
             <h3 style=\"margin:0; color:#fff;\">Starter Shard</h3>
             <div class=\"price\"></div>
@@ -85,34 +94,89 @@
 </div>
 
 <script>
-    function log(msg) {
-        const box = document.getElementById(\"logs\");
-        const ts = new Date().toISOString().split(\"T\")[1].slice(0, 8);
-        box.innerHTML = [] \n + box.innerHTML;
+    const SANDBOX_ALLOCATION = 100000;
+    const SANDBOX_USAGE_KEY = "ggg_freemium_sandbox_usage";
+    let sandboxMode = false;
+
+    function getSandboxUsage() {
+        const storedUsage = Number.parseInt(
+            localStorage.getItem(SANDBOX_USAGE_KEY) || "0",
+            10
+        );
+        return Number.isFinite(storedUsage)
+            ? Math.min(Math.max(storedUsage, 0), SANDBOX_ALLOCATION)
+            : 0;
+    }
+
+    function updateSandboxUsage() {
+        document.getElementById("sandbox-usage").innerText =
+            `Used: ${getSandboxUsage().toLocaleString()} / ${SANDBOX_ALLOCATION.toLocaleString()}`;
+    }
+
+    function recordSandboxUsage(elementCount) {
+        const nextUsage = Math.min(
+            SANDBOX_ALLOCATION,
+            getSandboxUsage() + Math.max(0, Number(elementCount) || 0)
+        );
+        localStorage.setItem(SANDBOX_USAGE_KEY, String(nextUsage));
+        updateSandboxUsage();
+    }
+
+    function configureSandbox() {
+        sandboxMode = true;
+        const remaining = SANDBOX_ALLOCATION - getSandboxUsage();
+        document.getElementById("clientRef").value = "Freemium_Sandbox_Client";
+        document.getElementById("elementCount").value = remaining;
+        log(`Freemium Sandbox ready: ${remaining.toLocaleString()} elements remaining.`);
+        document.getElementById("elementCount").focus();
+    }
+
+    function log(message) {
+        const box = document.getElementById("logs");
+        const timestamp = new Date().toISOString().split("T")[1].slice(0, 8);
+        box.innerText = `[${timestamp}] ${message}\n${box.innerText}`;
     }
 
     async function submitJob() {
-        const key = document.getElementById(\"apiKey\").value;
+        const key = document.getElementById("apiKey").value;
         const payload = {
-            client_ref: document.getElementById(\"clientRef\").value,
-            element_count: parseInt(document.getElementById(\"elementCount\").value),
+            client_ref: document.getElementById("clientRef").value,
+            element_count: Number.parseInt(
+                document.getElementById("elementCount").value,
+                10
+            ),
             scale_factor: 2.0
         };
-        log(Ingesting paid job ( elements)...);
+        if (sandboxMode && payload.element_count > SANDBOX_ALLOCATION - getSandboxUsage()) {
+            log("Sandbox request exceeds the remaining free allocation.");
+            return;
+        }
+        log(`Submitting ${payload.element_count.toLocaleString()} elements...`);
         try {
-            const res = await fetch(\"/api/v1/orders/submit\", {
-                method: \"POST\",
-                headers: { \"Content-Type\": \"application/json\", \"x-api-key\": key },
+            const response = await fetch("/api/v1/orders/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": key
+                },
                 body: JSON.stringify(payload)
             });
-            const data = await res.json();
-            if (res.ok) {
-                log(SETTLED -> Order  | Merkle: ...);
+            const data = await response.json();
+            if (response.ok) {
+                if (sandboxMode) {
+                    recordSandboxUsage(payload.element_count);
+                }
+                sandboxMode = false;
+                log(`Settled order ${data.order_id || "unknown"}.`);
             } else {
-                log(Error: );
+                log(`Request failed: ${data.detail || response.statusText}`);
             }
-        } catch(e) { log(Network Error: ); }
+        } catch (error) {
+            log(`Network error: ${error.message}`);
+        }
     }
+
+    updateSandboxUsage();
 </script>
 </body>
 </html>

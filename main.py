@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import datetime
 import os
 import json
@@ -37,6 +37,11 @@ from src.toroidal_router import ToroidalMeshRouter as SrcToroidalMeshRouter
 app = Flask(__name__)
 
 STAGING_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), 'vault_pipeline/incoming_data'))
+DOWNLOADABLE_FILES = {
+    'start_graviton.bat',
+    'launch_engine.bat',
+    'requirements.txt',
+}
 os.makedirs(STAGING_DIR, exist_ok=True)
 
 manifold_store = FluidManifoldStorage()
@@ -53,6 +58,17 @@ flask_telemetry_stats = {'processed': 0, 'failed': 0}
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/downloads/<path:filename>')
+def download_client(filename):
+    if filename not in DOWNLOADABLE_FILES:
+        return jsonify({'error': 'Download not found'}), 404
+    return send_from_directory(
+        os.path.dirname(__file__),
+        filename,
+        as_attachment=True,
+    )
 
 @app.route('/tools/gps-simulator', methods=['POST'])
 def gps_simulator():
