@@ -25,6 +25,7 @@ coverage.xml
 # Local-only runtime state for the airgap_attestation submission API
 submissions.db
 airgap_attestation/demo_bundle.json
+cnc_attestation/demo_cnc_bundle.json
 
 # Android: regeneratable build/cache output and machine-specific SDK path
 # (local.properties hardcodes an absolute path to this machine's Android SDK).
