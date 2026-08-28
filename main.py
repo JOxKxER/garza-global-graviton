@@ -392,3 +392,29 @@ if __name__ == '__main__':
         port=int(os.getenv('PORT', '5000')),
         debug=False,
     )
+# Siemens NX CMC and Air-Gapped 3D Printer Freemium Endpoints
+@app.route('/api/process-cmc', methods=['POST'])
+def handle_cmc_processing():
+    try:
+        from nx_cmc_service import process_cmc_file
+        import tempfile
+        uploaded_file = request.files.get('file')
+        if not uploaded_file:
+            return jsonify({"error": "No file uploaded"}), 400
+        temp_path = os.path.join(tempfile.gettempdir(), uploaded_file.filename)
+        uploaded_file.save(temp_path)
+        result = process_cmc_file(temp_path)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/secure-print', methods=['POST'])
+def handle_secure_print():
+    try:
+        from nx_cmc_service import process_airgapped_print_job
+        data = request.get_json() or {}
+        gcode = data.get('gcode', 'M104 S200')
+        result = process_airgapped_print_job(gcode)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
