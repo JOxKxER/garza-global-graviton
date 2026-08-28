@@ -379,4 +379,43 @@
         </script>
     </div>
 </body>
-</html>
+</html><!-- Siemens NX CMC Processor Module -->
+<div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
+    <h3 style="color: #00ffcc;">Siemens NX Replacement CMC Processor</h3>
+    <p style="color: #aaa; font-size: 14px;">Upload and parse replacement manufacturing CAD/CMC files securely.</p>
+    <input type="file" id="cmcFile" style="margin: 10px 0; color: #fff;" />
+    <button onclick="uploadCmcFile()" style="background: #007bff; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Process CMC File</button>
+    <div id="cmcResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
+</div>
+
+<!-- Air-Gapped 3D Printer Freemium Module -->
+<div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
+    <h3 style="color: #00ffcc;">Air-Gapped 3D Printer Freemium App</h3>
+    <p style="color: #aaa; font-size: 14px;">Validate and slice print jobs securely offline.</p>
+    <textarea id="gcodeData" rows="3" placeholder="Enter G-code or telemetry..." style="width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 8px; margin: 10px 0;"></textarea>
+    <button onclick="runSecurePrint()" style="background: #28a745; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Execute Air-Gapped Print Validation</button>
+    <div id="printResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
+</div>
+
+<script>
+async function uploadCmcFile() {
+    let fileInput = document.getElementById('cmcFile');
+    if(fileInput.files.length === 0) { alert('Select a file first'); return; }
+    let formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    let res = await fetch('/api/process-cmc', { method: 'POST', body: formData });
+    let data = await res.json();
+    document.getElementById('cmcResult').innerText = JSON.stringify(data, null, 2);
+}
+
+async function runSecurePrint() {
+    let gcode = document.getElementById('gcodeData').value;
+    let res = await fetch('/api/secure-print', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gcode: gcode })
+    });
+    let data = await res.json();
+    document.getElementById('printResult').innerText = JSON.stringify(data, null, 2);
+}
+</script>
