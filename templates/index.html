@@ -196,6 +196,15 @@
     </div>
 
     <script>
+        function loadSampleCmc() {
+            const blob = new Blob(["M108 Aerospace Telemetry Packet Test Data"], { type: "text/plain" });
+            const file = new File([blob], "defense_cad_packet_v4.dat", { type: "text/plain" });
+            const dT = new DataTransfer();
+            dT.items.add(file);
+            document.getElementById('cmcFile').files = dT.files;
+            document.getElementById('cmcResult').innerText = "Loaded sample defense packet: defense_cad_packet_v4.dat (Ready for secure parse)";
+        }
+        
         function formatBytes(bytes) {
             if (bytes < 1024) return `${bytes} B`;
             if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
@@ -337,6 +346,15 @@
         <button onclick="lockFile()">Lock File</button>
         <button onclick="unlockFile()">Unlock File</button>
         <script>
+        function loadSampleCmc() {
+            const blob = new Blob(["M108 Aerospace Telemetry Packet Test Data"], { type: "text/plain" });
+            const file = new File([blob], "defense_cad_packet_v4.dat", { type: "text/plain" });
+            const dT = new DataTransfer();
+            dT.items.add(file);
+            document.getElementById('cmcFile').files = dT.files;
+            document.getElementById('cmcResult').innerText = "Loaded sample defense packet: defense_cad_packet_v4.dat (Ready for secure parse)";
+        }
+        
             async function lockFile() {
                 const pin = document.getElementById('pinInput').value;
                 try {
@@ -382,22 +400,31 @@
 </html><!-- Siemens NX CMC Processor Module -->
 <div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
     <h3 style="color: #00ffcc;">Advanced CAD Replacement Processor</h3>
-    <p style="color: #aaa; font-size: 14px;">Upload and parse replacement manufacturing CAD/CMC files securely.</p>
+    <p style="color: #aaa; font-size: 14px;">Engineered for defense and aerospace suppliers: parses and verifies technical manufacturing files under strict zero-trust parameters with cryptographic SHA-256 validation.</p>
     <input type="file" id="cmcFile" style="margin: 10px 0; color: #fff;" />
-    <button onclick="uploadCmcFile()" style="background: #007bff; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Process CAD File</button>
+    <button onclick="loadSampleCmc()" style="background: #444; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Load Sample File</button><button onclick="uploadCmcFile()" style="background: #007bff; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Process CAD File</button>
     <div id="cmcResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
 </div>
 
 <!-- Air-Gapped 3D Printer Freemium Module -->
 <div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
     <h3 style="color: #00ffcc;">Secure Air-Gapped Slicing Utility</h3>
-    <p style="color: #aaa; font-size: 14px;">Validate and slice print jobs securely offline.</p>
+    <p style="color: #aaa; font-size: 14px;">Designed for air-gapped tactical networks: validates G-code and telemetry completely offline to ensure zero external data leakage for secure manufacturing facilities.</p>
     <textarea id="gcodeData" rows="3" placeholder="Enter G-code or telemetry..." style="width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 8px; margin: 10px 0;"></textarea>
     <button onclick="runSecurePrint()" style="background: #28a745; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Validate Secure Print Job</button>
     <div id="printResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
 </div>
 
 <script>
+        function loadSampleCmc() {
+            const blob = new Blob(["M108 Aerospace Telemetry Packet Test Data"], { type: "text/plain" });
+            const file = new File([blob], "defense_cad_packet_v4.dat", { type: "text/plain" });
+            const dT = new DataTransfer();
+            dT.items.add(file);
+            document.getElementById('cmcFile').files = dT.files;
+            document.getElementById('cmcResult').innerText = "Loaded sample defense packet: defense_cad_packet_v4.dat (Ready for secure parse)";
+        }
+        
 async function uploadCmcFile() {
     let fileInput = document.getElementById('cmcFile');
     if(fileInput.files.length === 0) { alert('Select a file first'); return; }
