@@ -399,8 +399,8 @@
 </body>
 </html><!-- Siemens NX CMC Processor Module -->
 <div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
-    <h3 style="color: #00ffcc;">Advanced CAD Replacement Processor</h3>
-    <p style="color: #aaa; font-size: 14px;">Engineered for defense and aerospace suppliers: parses and verifies technical manufacturing files under strict zero-trust parameters with cryptographic SHA-256 validation.</p>
+    <h3 style="color: #00ffcc;">Advanced CAD Replacement Processor <span style="font-size: 12px; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; vertical-align: middle; margin-left: 10px;">FREEMIUM</span></h3>
+    <p style="color: #aaa; font-size: 14px;">Engineered for defense and aerospace suppliers: parses and verifies technical manufacturing files under strict zero-trust parameters with cryptographic SHA-256 validation.<br><br><span style="color: #ffaa00; font-size: 13px; font-weight: bold;">Freemium Tier:</span> <span style="color: #aaa; font-size: 13px;">Limited to 3 file parses per day.</span> <a href="#" style="color: #00ffcc; font-size: 13px; text-decoration: none; border-bottom: 1px solid #00ffcc; margin-left: 10px;">Upgrade to Defense Enterprise</a></p>
     <input type="file" id="cmcFile" style="margin: 10px 0; color: #fff;" />
     <button onclick="loadSampleCmc()" style="background: #444; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Load Sample File</button><button onclick="uploadCmcFile()" style="background: #007bff; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Process CAD File</button>
     <div id="cmcResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
@@ -408,8 +408,8 @@
 
 <!-- Air-Gapped 3D Printer Freemium Module -->
 <div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
-    <h3 style="color: #00ffcc;">Secure Air-Gapped Slicing Utility</h3>
-    <p style="color: #aaa; font-size: 14px;">Designed for air-gapped tactical networks: validates G-code and telemetry completely offline to ensure zero external data leakage for secure manufacturing facilities.</p>
+    <h3 style="color: #00ffcc;">Secure Air-Gapped Slicing Utility <span style="font-size: 12px; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; vertical-align: middle; margin-left: 10px;">FREEMIUM</span></h3>
+    <p style="color: #aaa; font-size: 14px;">Designed for air-gapped tactical networks: validates G-code and telemetry completely offline to ensure zero external data leakage for secure manufacturing facilities.<br><br><span style="color: #ffaa00; font-size: 13px; font-weight: bold;">Freemium Tier:</span> <span style="color: #aaa; font-size: 13px;">Max 5MB G-Code telemetry evaluation.</span> <a href="#" style="color: #00ffcc; font-size: 13px; text-decoration: none; border-bottom: 1px solid #00ffcc; margin-left: 10px;">Upgrade to Defense Enterprise</a></p>
     <textarea id="gcodeData" rows="3" placeholder="Enter G-code or telemetry..." style="width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 8px; margin: 10px 0;"></textarea>
     <button onclick="runSecurePrint()" style="background: #28a745; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Validate Secure Print Job</button>
     <div id="printResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
