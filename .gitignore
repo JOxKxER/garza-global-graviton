@@ -4,6 +4,9 @@ build/
 __pycache__/
 .env
 
+# Runtime logs from machine_boost_supervisor.py / machine_boost_service.py
+logs/
+
 # Local toolchains downloaded during Android/Gradle troubleshooting -- large
 # binaries that should never live in git history; re-fetch on demand instead.
 .gradle-local/

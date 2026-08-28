@@ -170,6 +170,68 @@ python airgap_attestation/cli/verify_cli.py \
 Exit code `0` = passed, `1` = a real check failed (do not proceed with
 purchase), `2` = usage/file error.
 
+## Background system maintenance (`GGGMachineBoost` Windows service)
+
+[`machine_boost_supervisor.py`](machine_boost_supervisor.py) runs this
+machine's legitimate maintenance/health daemons on a schedule, with automatic
+restart for the long-running ones. [`machine_boost_service.py`](machine_boost_service.py)
+wraps it as a native Windows service (via `pywin32`) so it starts at **boot**,
+not just at user logon.
+
+| Daemon | Mode | Interval |
+|---|---|---|
+| `watchdog_daemon.py` | one-shot, re-run | every 5 minutes |
+| `system_watchdog.py` | one-shot, re-run | every 5 minutes |
+| `snapshot_daemon.py` | one-shot, re-run | every 60 minutes |
+| `mesh_ping_daemon.py` | one-shot, re-run | every 1 minute |
+| `health_monitor.py` | persistent (self-looping) | started once, auto-restarted if it exits |
+
+**Deliberately excluded:** `traffic_daemon.py` and `live_cluster_daemon.py`.
+Both generate fake synthetic "client orders" tagged with real defense
+contractor names (Lockheed, DARPA, Raytheon, General Dynamics, Northrop)
+against a local API with a hardcoded key -- not a maintenance function, and
+not something that should run unattended at every machine startup fabricating
+usage data attributed to real companies.
+
+**Environment hardening applied to every managed child process:**
+
+| Variable | Why it's required |
+|---|---|
+| `PYTHONIOENCODING=utf-8` | Several daemons print emoji; without this they crash with `UnicodeEncodeError` the moment they run without a real console (exactly the situation under a Windows service). |
+| `PYTHONUTF8=1` | Belt-and-suspenders UTF-8 mode for the child interpreter. |
+| `PYTHONUNBUFFERED=1` | Piped stdout is fully block-buffered by default (not line-buffered); without this, `health_monitor.py`'s output can sit invisible in the child's buffer indefinitely instead of streaming to the log. |
+
+The supervisor's own `subprocess.run`/`Popen` calls also pass
+`encoding="utf-8"` explicitly -- `text=True` alone still decodes captured
+output using the OS locale (cp1252 on this machine) regardless of what the
+child's own encoding is set to, which silently reintroduces the same crash
+one layer up if omitted.
+
+All output is logged to `logs/machine_boost_supervisor.log` (git-ignored;
+it's runtime state, not source).
+
+### Installing the service (requires an elevated/Administrator shell)
+
+```powershell
+pip install -r requirements.txt   # installs pywin32 among the rest
+python machine_boost_service.py install
+python machine_boost_service.py start
+```
+
+Check on it later:
+
+```powershell
+Get-Service GGGMachineBoost
+Get-Content logs\machine_boost_supervisor.log -Tail 50 -Wait
+```
+
+Stop/remove it:
+
+```powershell
+python machine_boost_service.py stop
+python machine_boost_service.py remove
+```
+
 ## CI
 
 [`ci.yml`](.github/workflows/ci.yml) runs on every push/PR to `main`: Python

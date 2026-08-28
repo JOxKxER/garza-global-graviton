@@ -6,3 +6,4 @@ cryptography
 fastapi
 uvicorn
 pydantic
+pywin32; sys_platform == "win32"
