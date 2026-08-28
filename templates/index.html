@@ -446,3 +446,35 @@ async function runSecurePrint() {
     document.getElementById('printResult').innerText = JSON.stringify(data, null, 2);
 }
 </script>
+<!-- Local Storage & Secure Transmission Vault (Freemium) -->
+<div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
+    <h3 style="color: #00ffcc;">Local Storage & Secure Transmission Vault <span style="font-size: 12px; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; vertical-align: middle; margin-left: 10px;">FREEMIUM</span></h3>
+    <p style="color: #aaa; font-size: 14px;">
+        Deploy <strong>unlimited local data storage</strong> constrained strictly by your physical hardware capacity (completely self-hosted on your machine with zero cloud rent or artificial server caps). 
+        Includes cryptographic file lockers, secure peer-to-peer sending, and advanced environmental security layers.
+    </p>
+    <div style="background: #1a1a1a; padding: 12px; border-radius: 6px; margin: 10px 0; border: 1px dashed #444;">
+        <p style="color: #ffaa00; font-size: 13px; margin: 0 0 5px 0;"><strong>Active Enterprise Security Protocols:</strong></p>
+        <ul style="color: #ccc; font-size: 13px; margin: 0; padding-left: 20px;">
+            <li><strong>Wi-Fi Proximity Check:</strong> Scans local wireless channels to confirm zero unauthorized nodes or nearby devices are present before granting vault access.</li>
+            <li><strong>Repeating Biometric Auto-Lock:</strong> Enforces periodic re-verification prompts so vaults automatically lock if left unattended.</li>
+        </ul>
+    </div>
+    <button onclick="runWifiScan()" style="background: #17a2b8; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Scan Wi-Fi Proximity</button>
+    <button onclick="triggerBiometricVault()" style="background: #28a745; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Verify Biometrics & Open Vault</button>
+    <div id="vaultResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
+</div>
+
+<script>
+async function runWifiScan() {
+    let res = await fetch('/api/wifi-proximity-scan', { method: 'POST' });
+    let data = await res.json();
+    document.getElementById('vaultResult').innerText = JSON.stringify(data, null, 2);
+}
+
+async function triggerBiometricVault() {
+    let res = await fetch('/api/biometric-session', { method: 'POST' });
+    let data = await res.json();
+    document.getElementById('vaultResult').innerText = JSON.stringify(data, null, 2);
+}
+</script>
