@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graviton Sensory Lab</title>
+  <style>
+    :root { color-scheme: dark; --bg: #08111f; --panel: #10233b; --line: #2b4662; --ink: #e7f0f8; --accent: #66d9ef; --ok: #7ee787; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, #163654, var(--bg) 55%); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+    main { width: min(920px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 48px; }
+    header, section { background: rgba(16, 35, 59, .94); border: 1px solid var(--line); border-radius: 10px; padding: 24px; margin-bottom: 18px; }
+    h1, h2 { margin-top: 0; color: var(--accent); }
+    canvas { display: block; width: 100%; max-width: 820px; height: 360px; margin: 16px auto; background: #07101b; border: 2px solid var(--line); border-radius: 8px; touch-action: none; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .metric { padding: 12px; background: #07101b; border-radius: 6px; }
+    .metric strong { display: block; color: var(--ok); font-size: 1.35rem; }
+    button { border: 0; border-radius: 6px; padding: 11px 16px; background: var(--accent); color: #07101b; cursor: pointer; font-weight: 700; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    #status { color: var(--ok); min-height: 1.5em; }
+    @media (max-width: 650px) { .grid { grid-template-columns: 1fr; } canvas { height: 300px; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Graviton Sensory Lab</h1>
+    <p>A small interaction game for testing touch timing. It records only anonymous timing and canvas-position measurements. No names, text, account data, or raw device identifiers are collected.</p>
+  </header>
+  <section>
+    <h2>Tap the moving target</h2>
+    <canvas id="game" width="820" height="360" aria-label="Interactive sensory telemetry game"></canvas>
+    <button id="send" type="button">Send anonymous batch</button>
+    <p id="status" role="status">0 interactions ready.</p>
+  </section>
+  <section class="grid" aria-label="Live anonymous metrics">
+    <div class="metric">Interactions<strong id="count">0</strong></div>
+    <div class="metric">Average touch latency<strong id="latency">0 ms</strong></div>
+    <div class="metric">Last batch<strong id="batch">Not sent</strong></div>
+  </section>
+</main>
+<script>
+(() => {
+  const canvas = document.getElementById('game');
+  const context = canvas.getContext('2d', { alpha: false });
+  const target = { x: 120, y: 140, radius: 28 };
+  const events = [];
+  let targetShownAt = performance.now();
+  let sentCount = 0;
+
+  function draw() {
+    context.fillStyle = '#07101b';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = '#66d9ef';
+    context.beginPath();
+    context.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = '#e7f0f8';
+    context.font = '18px system-ui';
+    context.fillText('Tap the circle', 20, 32);
+  }
+
+  function moveTarget() {
+    target.x = 40 + Math.random() * (canvas.width - 80);
+    target.y = 60 + Math.random() * (canvas.height - 100);
+    targetShownAt = performance.now();
+    draw();
+  }
+
+  function record(event) {
+    const rect = canvas.getBoundingClientRect();
+    const point = event.touches ? event.touches[0] : event;
+    const x = Math.min(1, Math.max(0, (point.clientX - rect.left) / rect.width));
+    const y = Math.min(1, Math.max(0, (point.clientY - rect.top) / rect.height));
+    events.push({
+      type: event.type === 'pointerdown' ? 'pointerdown' : 'touchstart',
+      latency_ms: Math.min(60000, Math.max(0, performance.now() - targetShownAt)),
+      x,
+      y
+    });
+    document.getElementById('count').innerText = events.length;
+    const average = events.reduce((sum, item) => sum + item.latency_ms, 0) / events.length;
+    document.getElementById('latency').innerText = `${average.toFixed(1)} ms`;
+    moveTarget();
+  }
+
+  canvas.addEventListener('pointerdown', record, { passive: true });
+  canvas.addEventListener('touchstart', record, { passive: true });
+  document.getElementById('send').addEventListener('click', async () => {
+    if (!events.length) return;
+    const button = document.getElementById('send');
+    button.disabled = true;
+    document.getElementById('status').innerText = 'Sending anonymous batch...';
+    try {
+      const response = await fetch('/api/v1/sensory/telemetry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ events: events.splice(0, 100) })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Batch rejected');
+      sentCount += result.event_count;
+      document.getElementById('batch').innerText = result.merkle_root.slice(0, 12);
+      document.getElementById('status').innerText = `${sentCount} anonymous interactions stored securely.`;
+      document.getElementById('count').innerText = events.length;
+    } catch (error) {
+      document.getElementById('status').innerText = `Not sent: ${error.message}`;
+    } finally {
+      button.disabled = false;
+    }
+  });
+  draw();
+})();
+</script>
+</body>
+</html>

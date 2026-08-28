@@ -1,0 +1,46 @@
+# Hardened, fully network-isolated execution harness.
+# Build context is this directory (airgap_attestation/); the Dockerfile
+# path below is resolved relative to it.
+#
+# Bring up with:
+#   docker compose -f docker-compose.yml run --rm airgap-runner
+#
+# Every control below is redundant-by-design: if one layer is misconfigured
+# or bypassed, the others still hold.
+services:
+  airgap-runner:
+    build:
+      context: .
+      dockerfile: container/Dockerfile
+    image: airgap-runner:latest
+    container_name: airgap_runner
+
+    # --- Network isolation (primary control) ---
+    network_mode: none            # no network namespace peer at all, not even loopback-only bridge
+
+    # --- Filesystem isolation ---
+    read_only: true                # entire root filesystem is immutable at runtime
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+      - seccomp:container/seccomp-hardened.json
+    pids_limit: 256                 # bounds forkbomb-style resource exhaustion
+
+    tmpfs:
+      - /tmp:size=64M,noexec,nosuid,nodev
+
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+
+    volumes:
+      # Required inputs: job.json + the platform signing key material.
+      - ./container/job_input:/job/input:ro
+      - ./container/job_secrets:/job/secrets:ro
+      # Bundle output: a real host directory (not tmpfs), so the finished
+      # AttestationBundle.json survives after the container exits without
+      # needing a `docker cp` step before removal.
+      - ./job_output:/job/output:rw

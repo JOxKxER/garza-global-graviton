@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 import datetime
+import base64
+import hmac
+import hashlib
 import os
 import json
 import random
@@ -7,6 +10,7 @@ import asyncio
 import importlib.util
 import time
 import numpy as np
+from pathlib import Path
 from storage_manifold import FluidManifoldStorage
 from security_vault import HardenedSecuritySuite
 from quaternion_engine import QuaternionVectorEngine
@@ -33,8 +37,20 @@ from src.fractal_processor import (
 )
 from src.telemetry_worker import BackgroundTelemetryWorker, TelemetryPacket
 from src.toroidal_router import ToroidalMeshRouter as SrcToroidalMeshRouter
+from src.sensory_telemetry import SensoryTelemetryVault
+from telemetry_collector import EncryptedFileVault
+from cryptography.fernet import InvalidToken
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 64 * 1024
+app.extensions['gateway_vault'] = None
+
+GATEWAY_MAGIC = b'GGG-AESCBC-HMAC1\x00'
+GATEWAY_SALT_BYTES = 16
+GATEWAY_IV_BYTES = 16
+GATEWAY_MAC_BYTES = 32
+GATEWAY_KDF_ITERATIONS = 390_000
 
 STAGING_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), 'vault_pipeline/incoming_data'))
 DOWNLOADABLE_FILES = {
@@ -56,10 +72,150 @@ fractal_processor = FractalEntropyProcessor()
 src_router = SrcToroidalMeshRouter()
 src_signal_processor = SrcFractalSignalProcessor()
 flask_telemetry_stats = {'processed': 0, 'failed': 0}
+sensory_vault = SensoryTelemetryVault()
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/sensory-game')
+def sensory_game():
+    return render_template('sensory_game.html')
+
+
+@app.route('/api/v1/sensory/telemetry', methods=['POST'])
+def receive_sensory_telemetry():
+    if request.mimetype == 'application/octet-stream':
+        return receive_encrypted_sensory_telemetry()
+    payload = request.get_json(silent=True)
+    try:
+        response, future = sensory_vault.submit(payload)
+    except (TypeError, ValueError) as error:
+        return jsonify({'error': str(error)}), 400
+    except RuntimeError:
+        return jsonify({
+            'error': 'Encrypted telemetry vault is not configured'
+        }), 503
+
+    def record_failure(completed):
+        if completed.exception() is not None:
+            sensory_vault.record_failure()
+
+    future.add_done_callback(record_failure)
+    return jsonify(response), 202
+
+
+@app.route('/api/v1/sensory/telemetry/encrypted', methods=['POST'])
+def receive_encrypted_sensory_telemetry():
+    """Verify a Base64 Fernet envelope and store aggregate metrics only."""
+    encrypted_body = request.get_data(cache=False, as_text=False).strip()
+    if not encrypted_body:
+        return jsonify({'error': 'Encrypted telemetry body is required'}), 400
+    passphrase = os.getenv('GGG_VAULT_PASSPHRASE')
+    if not passphrase:
+        return jsonify({'error': 'Encrypted telemetry vault is not configured'}), 503
+
+    try:
+        gateway_vault = app.extensions['gateway_vault']
+        if gateway_vault is None:
+            gateway_vault = EncryptedFileVault(
+                Path(os.getenv(
+                    'GGG_GATEWAY_VAULT_DIR',
+                    'sensory_telemetry_gateway_vault',
+                )),
+                passphrase,
+            )
+            app.extensions['gateway_vault'] = gateway_vault
+        token = base64.b64decode(encrypted_body, validate=True)
+        if token.startswith(GATEWAY_MAGIC):
+            decrypted = decrypt_gateway_envelope(token, passphrase)
+        else:
+            decrypted = gateway_vault.cipher.decrypt(token)
+        payload = json.loads(decrypted.decode('utf-8'))
+    except (ValueError, InvalidToken):
+        return jsonify({'error': 'Invalid Fernet telemetry envelope'}), 400
+
+    if not isinstance(payload, dict):
+        return jsonify({'error': 'Telemetry envelope must contain an object'}), 400
+    try:
+        packet_count = payload['packet_count']
+        total_bytes = payload['total_bytes']
+        batch_digest = payload['batch_digest_sha256']
+        if (
+            isinstance(packet_count, bool)
+            or not isinstance(packet_count, int)
+            or not 1 <= packet_count <= 256
+            or isinstance(total_bytes, bool)
+            or not isinstance(total_bytes, int)
+            or not 0 <= total_bytes <= 16_777_216
+            or not isinstance(batch_digest, str)
+            or len(batch_digest) != 64
+            or any(character not in '0123456789abcdef' for character in batch_digest)
+        ):
+            raise ValueError('aggregate metric outside allowed range')
+    except (KeyError, ValueError, TypeError):
+        return jsonify({'error': 'Invalid sanitized telemetry metrics'}), 400
+
+    record = {
+        'schema': 'ggg.zero-pii.telemetry.gateway.v1',
+        'packet_count': packet_count,
+        'total_bytes': total_bytes,
+        'batch_digest_sha256': batch_digest,
+    }
+    gateway_vault.append(record)
+    return jsonify({
+        'status': 'accepted',
+        'packet_count': packet_count,
+        'batch_digest_sha256': batch_digest,
+    }), 202
+
+
+def decrypt_gateway_envelope(envelope, passphrase):
+    minimum_size = (
+        len(GATEWAY_MAGIC)
+        + GATEWAY_SALT_BYTES
+        + GATEWAY_IV_BYTES
+        + GATEWAY_MAC_BYTES
+    )
+    if len(envelope) <= minimum_size:
+        raise ValueError('encrypted envelope is too short')
+    offset = len(GATEWAY_MAGIC)
+    salt = envelope[offset:offset + GATEWAY_SALT_BYTES]
+    offset += GATEWAY_SALT_BYTES
+    iv = envelope[offset:offset + GATEWAY_IV_BYTES]
+    offset += GATEWAY_IV_BYTES
+    ciphertext = envelope[offset:-GATEWAY_MAC_BYTES]
+    received_mac = envelope[-GATEWAY_MAC_BYTES:]
+    key_material = hashlib.pbkdf2_hmac(
+        'sha256',
+        passphrase.encode('utf-8'),
+        salt,
+        GATEWAY_KDF_ITERATIONS,
+        dklen=64,
+    )
+    authenticated = envelope[:-GATEWAY_MAC_BYTES]
+    expected_mac = hmac.new(
+        key_material[32:], authenticated, hashlib.sha256
+    ).digest()
+    if not hmac.compare_digest(received_mac, expected_mac):
+        raise ValueError('encrypted envelope authentication failed')
+    decryptor = Cipher(
+        algorithms.AES(key_material[:32]),
+        modes.CBC(iv),
+    ).decryptor()
+    padded = decryptor.update(ciphertext) + decryptor.finalize()
+    padding_length = padded[-1]
+    if not 1 <= padding_length <= 16:
+        raise ValueError('invalid encrypted envelope padding')
+    if padded[-padding_length:] != bytes([padding_length]) * padding_length:
+        raise ValueError('invalid encrypted envelope padding')
+    return padded[:-padding_length]
+
+
+@app.route('/api/v1/sensory/status', methods=['GET'])
+def sensory_status():
+    return jsonify(sensory_vault.status())
 
 
 @app.route('/downloads/<path:filename>')

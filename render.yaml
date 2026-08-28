@@ -1,0 +1,38 @@
+# Render deployment blueprint for the air-gap attestation submission service.
+# Deploy with: https://dashboard.render.com/blueprints -> New Blueprint Instance,
+# pointing at this repository. See airgap_attestation/api/nonce_service.py for
+# the FastAPI app this serves, and airgap_attestation/CLIENT_ONBOARDING.md for
+# the client-facing workflow this API backs.
+
+services:
+  - type: web
+    name: airgap-attestation-api
+    runtime: python
+    plan: starter
+    region: oregon
+    branch: main
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn airgap_attestation.api.nonce_service:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /healthz
+    autoDeploy: true
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      # SQLite file for the SubmissionStore (airgap_attestation/api/store.py);
+      # must live on the persistent disk below, not the ephemeral container fs.
+      - key: AIRGAP_SUBMISSIONS_DB
+        value: /var/data/submissions.db
+      # Shared secret the air-gapped runner's export step presents to
+      # POST /v1/internal/submissions/{id}/bundle. Render generates and
+      # stores a random value for this at first deploy; rotate from the
+      # dashboard, never commit a real value into this file.
+      - key: AIRGAP_INTERNAL_INGEST_KEY
+        generateValue: true
+
+    disk:
+      name: airgap-submissions-data
+      mountPath: /var/data
+      sizeGB: 1
