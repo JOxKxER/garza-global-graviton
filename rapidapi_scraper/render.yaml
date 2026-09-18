@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: data-extraction-microservice
+    runtime: python
+    buildCommand: pip install -r rapidapi_scraper/requirements.txt
+    startCommand: uvicorn rapidapi_scraper.app:app --host 0.0.0.0 --port $PORT

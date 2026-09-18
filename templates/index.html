@@ -13,468 +13,104 @@
         textarea, input { width: 100%; background: #0f172a; color: #38bdf8; border: 1px solid #334155; padding: 0.75rem; border-radius: 4px; font-family: monospace; margin-top: 0.5rem; box-sizing: border-box; }
         pre { background: #0f172a; padding: 1rem; margin-top: 1rem; border-radius: 4px; color: #38bdf8; white-space: pre-wrap; max-height: 220px; overflow-y: auto; }
         .module { margin-bottom: 2rem; }
-        .master-box { border: 2px solid #38bdf8; background: #0f172a; padding: 1.5rem; border-radius: 6px; margin-bottom: 2rem; }
         .fluid-panel { border: 1px solid #22c55e; background: #10231b; padding: 1.5rem; border-radius: 6px; margin-bottom: 2rem; }
-        .fluid-panel h2 { color: #86efac; margin-top: 0; }
-        .tooltip { border-bottom: 1px dotted #86efac; cursor: help; }
-        .playground-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-        .playground-card { background: #0f172a; border: 1px solid #334155; padding: 1rem; border-radius: 4px; }
-        .metric { color: #86efac; font-size: 1.25rem; font-weight: bold; }
-        .download-list { display: grid; gap: 0.75rem; }
-        .download-link { display: block; color: #7dd3fc; padding: 0.75rem; border: 1px solid #334155; border-radius: 4px; text-decoration: none; }
-        .download-link:hover { background: #0f172a; border-color: #38bdf8; }
-        details { background: #0f172a; border: 1px solid #334155; border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 0.75rem; }
-        summary { color: #7dd3fc; cursor: pointer; font-weight: bold; }
-        @media (max-width: 700px) { .playground-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>GRAVITON FIELD OPS SUITE</h1>
-        <p>Air-Gapped Tactical Utilities, Fluid Pipeline Vault, & Offline AI Engine</p>
+        <p>Air-Gapped Tactical Utilities, Fluid Pipeline Vault, & Proxy Presence Engine</p>
         <hr style="border-color: #334155; margin: 1.5rem 0;">
         
-        <!-- MASTER EXECUTION BUTTON -->
-        <div class="master-box">
-            <h3 style="margin-top:0; color:#38bdf8;">MASTER SYSTEM EXECUTION</h3>
-            <p>Trigger and verify all 10 tactical subsystems simultaneously with a single master command.</p>
-            <button onclick="runAllSystems()" style="background:#0284c7; font-size:15px; width:100%;">⚡ START THEM ALL (FULL SYSTEM EXECUTION)</button>
-            <pre id="master-output">Awaiting master sequence execution...</pre>
-        </div>
-        
-        <div class="module">
-            <h3>1. GPS Signal Stress-Tester (Telemetry Vault)</h3>
-            <button onclick="runGPS()">Run Diagnostics Test</button>
-            <pre id="gps-output">Awaiting test execution...</pre>
-        </div>
-
-        <div class="module">
-            <h3>2. Local Offline AI Research Assistant (Ollama)</h3>
-            <textarea id="ai-prompt" rows="2">Explain how toroidal tensor manifolds optimize data compression.</textarea>
-            <button onclick="runAI()">Query Local AI</button>
-            <pre id="ai-output">Awaiting query...</pre>
-        </div>
-
-        <div class="module">
-            <h3>3. Mobile Hotspot & Edge-Mesh Booster</h3>
-            <button onclick="runHotspotBoost()">Optimize Hotspot Pipeline</button>
-            <pre id="hotspot-output">Awaiting hotspot optimization...</pre>
-        </div>
-
-        <div class="module">
-            <h3>4. Fluid Parametric Storage Manifold</h3>
-            <button onclick="runFluidCompression()">Compress to Manifold</button>
-            <pre id="fluid-output">Awaiting fluid compression execution...</pre>
-        </div>
-
-        <div class="module">
-            <h3>5. Hardened Security & Biometric Vault</h3>
-            <input type="password" id="vault-pin" placeholder="Enter PIN / Biometric Code (e.g. 0000)">
-            <button onclick="runSecurityLock()">Scramble & Lock Vault</button>
-            <pre id="security-output">Vault status: Armed and secure.</pre>
-        </div>
-
-        <div class="module">
-            <h3>6. 4D Spatial Vector & Quaternion Engine</h3>
-            <button onclick="runQuaternionTransform()">Execute 4D Transformation</button>
-            <pre id="quaternion-output">Awaiting spatial coordinate calculation...</pre>
-        </div>
-
-        <div class="module">
-            <h3>7. Merkle Distributed Integrity Verifier</h3>
-            <button onclick="runMerkleVerify()">Generate Merkle Root</button>
-            <pre id="merkle-output">Awaiting block verification...</pre>
-        </div>
-
-        <div class="module">
-            <h3>8. Toroidal Node Mesh Routing Engine</h3>
-            <button onclick="runToroidalRoute()">Simulate Toroidal Routing</button>
-            <pre id="toroidal-output">Awaiting node path simulation...</pre>
-        </div>
-
-        <div class="module">
-            <h3>9. Asynchronous Telemetry & Event Stream Pipeline</h3>
-            <button onclick="runAsyncStream()">Ingest & Process Stream</button>
-            <pre id="async-output">Awaiting async stream batch...</pre>
-        </div>
-
-        <!-- NEW: Fractal Entropy Module -->
-        <div class="module">
-            <h3>10. Shannon Entropy & Fractal Signal Processor</h3>
-            <p>Measure stream information density and model Menger Sponge structural scattering.</p>
-            <button onclick="runFractalEntropy()">Analyze Signal Entropy</button>
-            <pre id="fractal-output">Awaiting signal analysis...</pre>
-        </div>
-
-        <section class="fluid-panel" aria-labelledby="fluid-title">
-            <h2 id="fluid-title">Fluid Compression & Analytics</h2>
-            <p>
-                Fluid compression represents repeating information with a smooth mathematical
-                pattern instead of storing every rigid bit separately.
-                <span class="tooltip" title="A ratio of 2.0 means the compressed data is half the original size.">Hover for a plain-English ratio explanation.</span>
-            </p>
-            <div class="playground-grid">
-                <div class="playground-card">
-                    <h3>Try a File or Telemetry Stream</h3>
-                    <label for="fluid-file">Choose a small file</label>
-                    <input id="fluid-file" type="file">
-                    <label for="fluid-text">Or paste everyday telemetry</label>
-                    <textarea id="fluid-text" rows="6" placeholder="Example: temperature=21.4, speed=58, battery=87"></textarea>
-                    <button onclick="runFluidPlayground()">Compare Storage</button>
-                    <p id="fluid-status">Ready for a local browser-only comparison.</p>
-                </div>
-                <div class="playground-card">
-                    <h3>Live Comparison</h3>
-                    <p>Original size: <span class="metric" id="fluid-original-size">0 B</span></p>
-                    <p>Compressed size: <span class="metric" id="fluid-compressed-size">0 B</span></p>
-                    <p>Compression ratio: <span class="metric" id="fluid-ratio">0.00x</span></p>
-                    <label for="fluid-reconstruction">Reconstruction output</label>
-                    <pre id="fluid-reconstruction">Your reconstructed data will appear here.</pre>
-                </div>
+        <section class="fluid-panel">
+            <h2 style="color: #00ffcc; margin-top:0;">Local Storage & Secure Transmission Vault</h2>
+            <div style="background: #0f172a; padding: 12px; border-radius: 6px; margin: 10px 0; border: 1px solid #334155;">
+                <label style="display:block; margin-bottom:6px; color:#38bdf8;"><input type="checkbox" id="toggle-wifi" checked style="width:auto; margin-right:8px;"> Enable Continuous Wi-Fi Proximity Threat Detection</label>
+                <label style="display:block; color:#38bdf8;"><input type="checkbox" id="toggle-autolock" checked style="width:auto; margin-right:8px;"> Auto-Lock Vault Immediately on Untrusted Node Presence</label>
             </div>
-        </section>
-
-        <section class="module" aria-labelledby="consumer-apps-title">
-            <h2 id="consumer-apps-title">Downloadable Applications</h2>
-            <p>Simple tools for everyday files and telemetry. Download an app, open it from a terminal, and keep your data on your own computer.</p>
-            <div class="playground-grid">
-                <div class="playground-card">
-                    <h3>Graviton Fluid Compression Desktop Utility</h3>
-                    <p>Compresses a local file into a smaller copy and checks that it can be restored exactly. Your file stays on your computer.</p>
-                    <a class="download-link" href="/downloads/graviton_fluid_compression_utility.py" download>Download compression utility</a>
-                    <details>
-                        <summary>How to use it</summary>
-                        <p>Install Python, open a terminal in the download folder, and run <strong>python graviton_fluid_compression_utility.py your-file.txt</strong>.</p>
-                    </details>
-                </div>
-                <div class="playground-card">
-                    <h3>Lightweight Telemetry Client App</h3>
-                    <p>Reads a CSV telemetry file and shows the number of records, the available fields, and the latest reading in plain text.</p>
-                    <a class="download-link" href="/downloads/graviton_telemetry_client.py" download>Download telemetry client</a>
-                    <details>
-                        <summary>How to use it</summary>
-                        <p>Install Python, then run <strong>python graviton_telemetry_client.py telemetry.csv</strong>. It works offline and sends no data.</p>
-                    </details>
-                </div>
+            <div id="vaultControls">
+                <button onclick="runWifiScan()" style="background: #17a2b8;">Scan Wi-Fi Proximity</button>
+                <button onclick="triggerBiometricVault()" style="background: #28a745;">Verify Biometrics & Open Vault</button>
             </div>
+            <div id="vaultResult" style="margin-top: 10px; color: #00ffcc;"></div>
         </section>
 
-        <section class="module" aria-labelledby="downloads-title">
-            <h2 id="downloads-title">Downloads & Clients</h2>
-            <p>Choose a launcher, install the dependencies, and start the workspace from the folder you downloaded.</p>
-            <div class="download-list">
-                <a class="download-link" href="/downloads/start_graviton.bat" download>Download Graviton launcher</a>
-                <a class="download-link" href="/downloads/launch_engine.bat" download>Download offline workspace launcher</a>
-                <a class="download-link" href="/downloads/requirements.txt" download>Download Python dependencies</a>
-            </div>
-            <details>
-                <summary>Setup help</summary>
-                <p>Install Python 3.11 or newer, run <strong>pip install -r requirements.txt</strong>, then launch the workspace script for your platform.</p>
-            </details>
-        </section>
-
-        <section class="module" aria-labelledby="onboarding-title">
-            <h2 id="onboarding-title">Getting Started</h2>
-            <span class="badge" id="onboarding-status">Ready</span>
-            <details open>
-                <summary>Start here: run one module</summary>
-                <p>Begin with the Fluid Compression panel, then compare its ratio and reconstructed output before running the full system.</p>
-            </details>
-            <details>
-                <summary>What does mesh routing do?</summary>
-                <p>It estimates the shortest wraparound path between two nodes and reports the expected travel time.</p>
-            </details>
-            <details>
-                <summary>What does signal analysis do?</summary>
-                <p>It measures how varied a signal is and shows whether the stream looks easy or difficult to compress.</p>
-            </details>
-            <details>
-                <summary>How do I track an order?</summary>
-                <p>Use the client key and workload controls above. Successful submissions appear in the live consensus log and can be exported as audit receipts.</p>
-            </details>
-        </section>
+        <div class="module">
+            <h3>11. Software-Defined Proxy Presence Engine (Shannon Entropy)</h3>
+            <p>Analyze telemetry fluctuations and 4D spatial vector transformations for human presence.</p>
+            <button onclick="runProxyPresence()">Run Proxy Presence Scan</button>
+            <pre id="presence-output">Awaiting presence engine scan...</pre>
+        </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function loadSampleCmc() {
-            const blob = new Blob(["M108 Aerospace Telemetry Packet Test Data"], { type: "text/plain" });
-            const file = new File([blob], "defense_cad_packet_v4.dat", { type: "text/plain" });
-            const dT = new DataTransfer();
-            dT.items.add(file);
-            document.getElementById('cmcFile').files = dT.files;
-            document.getElementById('cmcResult').innerText = "Loaded sample defense packet: defense_cad_packet_v4.dat (Ready for secure parse)";
-        }
-        
-        function formatBytes(bytes) {
+        function formatVaultBytes(bytes) {
             if (bytes < 1024) return `${bytes} B`;
             if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
-            return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+            return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
         }
 
-        async function compressAndRestore(source) {
-            if (!('CompressionStream' in window) || !('DecompressionStream' in window)) {
-                throw new Error('This browser does not support the local compression demo.');
-            }
-            const compressedStream = new Blob([source]).stream().pipeThrough(new CompressionStream('gzip'));
-            const compressed = await new Response(compressedStream).arrayBuffer();
-            const restoredStream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
-            const restored = await new Response(restoredStream).arrayBuffer();
-            return { compressed, restored };
+        let vaultCountdownTimer = null;
+        function renderVaultExplorer(data) {
+            const capacity = data.storage_capacity || {};
+            const files = data.local_file_paths || [];
+            document.getElementById('vaultControls').style.display = 'none';
+            document.getElementById('vaultResult').innerHTML = `
+                <div style="background:#071a14;border:1px solid #14532d;border-radius:6px;padding:14px;">
+                    <div style="font-weight:bold;color:#86efac;">Vault verified and unlocked (500MB Limit Active)</div>
+                    <div><strong>Active session:</strong> <span id="vault-countdown">${data.auto_lock_countdown || '180s'}</span></div>
+                    <div><strong>Available capacity:</strong> ${formatVaultBytes(Number(capacity.free_bytes || 0))} free / ${formatVaultBytes(Number(capacity.total_bytes || 0))} total</div>
+                    <div style="margin: 10px 0;">
+                        <input type="file" id="vault-file-upload" multiple style="display: none;">
+                        <button id="vault-upload-btn" style="background: #0284c7; padding: 6px 12px; color: #fff; border:none; border-radius:4px;">Upload File (Up to 500MB)</button>
+                    </div>
+                    <ul id="vault-file-list" style="margin:6px 0 0 18px;color:#c7f9cc; max-height: 150px; overflow-y: auto;">
+                        ${(files.length ? files.map(path => `<li style="margin-bottom: 4px;"><input type="checkbox" value="${path}" style="margin-right: 6px;"> ${path}</li>`).join('') : '<li>No files stored.</li>')}
+                    </ul>
+                    <div style="margin-top: 12px; display: flex; gap: 8px;">
+                        <button id="vault-download-btn" style="background: #334155; padding: 6px 10px;">Download</button>
+                        <button id="vault-delete-btn" style="background: #7f1d1d; padding: 6px 10px;">Delete</button>
+                    </div>
+                </div>`;
+
+            $('#vault-upload-btn').click(() => $('#vault-file-upload').click());
+            $('#vault-file-upload').change(e => {
+                let formData = new FormData();
+                for (let file of e.target.files) formData.append('file-upload[]', file);
+                $.ajax({ url: '/api/v1/upload', method: 'POST', data: formData, processData: false, contentType: false, success: () => triggerBiometricVault() });
+            });
+            $('#vault-download-btn').click(() => {
+                let sel = $('#vault-file-list input:checked').val();
+                if (sel) window.location.href = '/api/v1/download/' + encodeURIComponent(sel.split('\\').pop().split('/').pop());
+            });
+            $('#vault-delete-btn').click(() => {
+                let sel = $('#vault-file-list input:checked').val();
+                if (sel) $.post('/api/v1/delete', { file: sel }, () => triggerBiometricVault());
+            });
         }
 
-        async function runFluidPlayground() {
-            const file = document.getElementById('fluid-file').files[0];
-            const text = document.getElementById('fluid-text').value;
-            const status = document.getElementById('fluid-status');
-            if (!file && !text) {
-                status.innerText = 'Choose a file or paste telemetry first.';
-                return;
-            }
-
-            status.innerText = 'Comparing locally...';
-            try {
-                const source = file ? await file.arrayBuffer() : new TextEncoder().encode(text).buffer;
-                const result = await compressAndRestore(source);
-                const originalSize = source.byteLength;
-                const compressedSize = result.compressed.byteLength;
-                const ratio = compressedSize ? originalSize / compressedSize : 0;
-                document.getElementById('fluid-original-size').innerText = formatBytes(originalSize);
-                document.getElementById('fluid-compressed-size').innerText = formatBytes(compressedSize);
-                document.getElementById('fluid-ratio').innerText = `${ratio.toFixed(2)}x`;
-
-                if (file) {
-                    const preview = new TextDecoder().decode(result.restored.slice(0, 512));
-                    document.getElementById('fluid-reconstruction').innerText =
-                        preview || `[Binary file reconstructed: ${result.restored.byteLength} bytes]`;
-                } else {
-                    document.getElementById('fluid-reconstruction').innerText =
-                        new TextDecoder().decode(result.restored);
-                }
-                status.innerText = 'Complete. Your data stayed in this browser.';
-            } catch (error) {
-                status.innerText = `Demo unavailable: ${error.message}`;
-            }
+        async function updateSecurityConfig() {
+            await $.ajax({ url: '/api/security-config', method: 'POST', contentType: 'application/json', data: JSON.stringify({ wifi_detection_enabled: $('#toggle-wifi').is(':checked'), auto_lock_on_untrusted: $('#toggle-autolock').is(':checked') }) });
         }
 
-        async function runAllSystems() {
-            document.getElementById('onboarding-status').innerText = 'Running';
-            document.getElementById('master-output').innerText = "Executing all 10 modules across the stack...";
-            let res = await fetch('/tools/run-all', { method: 'POST' });
-            let data = await res.json();
-            document.getElementById('master-output').innerText = JSON.stringify(data, null, 2);
-            document.getElementById('onboarding-status').innerText = data.failed_subsystems ? 'Review' : 'Complete';
+        async function runWifiScan() {
+            let res = await fetch('/api/wifi-proximity-scan', { method: 'POST' });
+            document.getElementById('vaultResult').innerText = JSON.stringify(await res.json(), null, 2);
         }
-        async function runGPS() {
-            let res = await fetch('/tools/gps-simulator', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ packet_loss: 25, noise_level: 12 }) });
+
+        async function triggerBiometricVault() {
+            await updateSecurityConfig();
+            let res = await fetch('/api/biometric-session', { method: 'POST' });
             let data = await res.json();
-            document.getElementById('gps-output').innerText = JSON.stringify(data, null, 2);
+            if (res.status === 200 && data.status === 'verified') renderVaultExplorer(data);
+            else document.getElementById('vaultResult').innerText = JSON.stringify(data, null, 2);
         }
-        async function runAI() {
-            let promptText = document.getElementById('ai-prompt').value;
-            let res = await fetch('/tools/ai-research', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ prompt: promptText }) });
-            let data = await res.json();
-            document.getElementById('ai-output').innerText = data.response;
-        }
-        async function runHotspotBoost() {
-            let res = await fetch('/tools/hotspot-booster', { method: 'POST' });
-            let data = await res.json();
-            document.getElementById('hotspot-output').innerText = JSON.stringify(data, null, 2);
-        }
-        async function runFluidCompression() {
-            let res = await fetch('/tools/fluid-compress', { method: 'POST' });
-            let data = await res.json();
-            document.getElementById('fluid-output').innerText = JSON.stringify(data, null, 2);
-        }
-        async function runSecurityLock() {
-            let pinCode = document.getElementById('vault-pin').value;
-            let res = await fetch('/tools/security-lock', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ pin: pinCode }) });
-            let data = await res.json();
-            document.getElementById('security-output').innerText = JSON.stringify(data, null, 2);
-        }
-        async function runQuaternionTransform() {
-            let res = await fetch('/tools/quaternion-transform', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ coords: [15.5, 8.2, 3.1], angles: [0.78, 1.57, 0.33] }) });
-            let data = await res.json();
-            document.getElementById('quaternion-output').innerText = JSON.stringify(data, null, 2);
-        }
-        async function runMerkleVerify() {
-            let res = await fetch('/tools/merkle-verify', { method: 'POST' });
-            let data = await res.json();
-            document.getElementById('merkle-output').innerText = JSON.stringify(data, null, 2);
-        }
-        async function runToroidalRoute() {
-            let res = await fetch('/tools/toroidal-route', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: [1, 2], target: [14, 13] }) });
-            let data = await res.json();
-            document.getElementById('toroidal-output').innerText = JSON.stringify(data, null, 2);
-        }
-        async function runAsyncStream() {
-            let res = await fetch('/tools/async-stream', { method: 'POST' });
-            let data = await res.json();
-            document.getElementById('async-output').innerText = JSON.stringify(data, null, 2);
-        }
-        async function runFractalEntropy() {
-            let res = await fetch('/tools/fractal-entropy', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ stream: "X9-AEROSPACE-ENCRYPTED-NOISE-55412", depth: 4 }) });
-            let data = await res.json();
-            document.getElementById('fractal-output').innerText = JSON.stringify(data, null, 2);
+
+        async function runProxyPresence() {
+            let res = await fetch('/tools/proxy-presence-engine', { method: 'POST' });
+            document.getElementById('presence-output').innerText = JSON.stringify(await res.json(), null, 2);
         }
     </script>
 </body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Security Vault</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            width: 400px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Security Vault</h1>
-        <input type="password" id="pinInput" placeholder="Enter PIN">
-        <button onclick="lockFile()">Lock File</button>
-        <button onclick="unlockFile()">Unlock File</button>
-        <script>
-        function loadSampleCmc() {
-            const blob = new Blob(["M108 Aerospace Telemetry Packet Test Data"], { type: "text/plain" });
-            const file = new File([blob], "defense_cad_packet_v4.dat", { type: "text/plain" });
-            const dT = new DataTransfer();
-            dT.items.add(file);
-            document.getElementById('cmcFile').files = dT.files;
-            document.getElementById('cmcResult').innerText = "Loaded sample defense packet: defense_cad_packet_v4.dat (Ready for secure parse)";
-        }
-        
-            async function lockFile() {
-                const pin = document.getElementById('pinInput').value;
-                try {
-                    const response = await fetch('/tools/security-lock', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ pin })
-                    });
-                    if (response.ok) {
-                        alert('File locked successfully!');
-                    } else {
-                        alert('Failed to lock file.');
-                    }
-                } catch (error) {
-                    console.error('Error locking file:', error);
-                }
-            }
-
-            async function unlockFile() {
-                const pin = document.getElementById('pinInput').value;
-                try {
-                    const response = await fetch('/tools/security-lock', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ pin })
-                    });
-                    if (response.ok) {
-                        alert('File unlocked successfully!');
-                    } else {
-                        alert('Failed to unlock file.');
-                    }
-                } catch (error) {
-                    console.error('Error unlocking file:', error);
-                }
-            }
-        </script>
-    </div>
-</body>
-</html><!-- Siemens NX CMC Processor Module -->
-<div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
-    <h3 style="color: #00ffcc;">Advanced CAD Replacement Processor <span style="font-size: 12px; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; vertical-align: middle; margin-left: 10px;">FREEMIUM</span></h3>
-    <p style="color: #aaa; font-size: 14px;">Engineered for defense and aerospace suppliers: parses and verifies technical manufacturing files under strict zero-trust parameters with cryptographic SHA-256 validation.<br><br><span style="color: #ffaa00; font-size: 13px; font-weight: bold;">Freemium Tier:</span> <span style="color: #aaa; font-size: 13px;">Limited to 3 file parses per day.</span> <a href="#" style="color: #00ffcc; font-size: 13px; text-decoration: none; border-bottom: 1px solid #00ffcc; margin-left: 10px;">Upgrade to Defense Enterprise</a></p>
-    <input type="file" id="cmcFile" style="margin: 10px 0; color: #fff;" />
-    <button onclick="loadSampleCmc()" style="background: #444; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Load Sample File</button><button onclick="uploadCmcFile()" style="background: #007bff; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Process CAD File</button>
-    <div id="cmcResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
-</div>
-
-<!-- Air-Gapped 3D Printer Freemium Module -->
-<div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
-    <h3 style="color: #00ffcc;">Secure Air-Gapped Slicing Utility <span style="font-size: 12px; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; vertical-align: middle; margin-left: 10px;">FREEMIUM</span></h3>
-    <p style="color: #aaa; font-size: 14px;">Designed for air-gapped tactical networks: validates G-code and telemetry completely offline to ensure zero external data leakage for secure manufacturing facilities.<br><br><span style="color: #ffaa00; font-size: 13px; font-weight: bold;">Freemium Tier:</span> <span style="color: #aaa; font-size: 13px;">Max 5MB G-Code telemetry evaluation.</span> <a href="#" style="color: #00ffcc; font-size: 13px; text-decoration: none; border-bottom: 1px solid #00ffcc; margin-left: 10px;">Upgrade to Defense Enterprise</a></p>
-    <textarea id="gcodeData" rows="3" placeholder="Enter G-code or telemetry..." style="width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 8px; margin: 10px 0;"></textarea>
-    <button onclick="runSecurePrint()" style="background: #28a745; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Validate Secure Print Job</button>
-    <div id="printResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
-</div>
-
-<script>
-        function loadSampleCmc() {
-            const blob = new Blob(["M108 Aerospace Telemetry Packet Test Data"], { type: "text/plain" });
-            const file = new File([blob], "defense_cad_packet_v4.dat", { type: "text/plain" });
-            const dT = new DataTransfer();
-            dT.items.add(file);
-            document.getElementById('cmcFile').files = dT.files;
-            document.getElementById('cmcResult').innerText = "Loaded sample defense packet: defense_cad_packet_v4.dat (Ready for secure parse)";
-        }
-        
-async function uploadCmcFile() {
-    let fileInput = document.getElementById('cmcFile');
-    if(fileInput.files.length === 0) { alert('Select a file first'); return; }
-    let formData = new FormData();
-    formData.append('file', fileInput.files[0]);
-    let res = await fetch('/api/process-cmc', { method: 'POST', body: formData });
-    let data = await res.json();
-    document.getElementById('cmcResult').innerText = JSON.stringify(data, null, 2);
-}
-
-async function runSecurePrint() {
-    let gcode = document.getElementById('gcodeData').value;
-    let res = await fetch('/api/secure-print', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gcode: gcode })
-    });
-    let data = await res.json();
-    document.getElementById('printResult').innerText = JSON.stringify(data, null, 2);
-}
-</script>
-<!-- Local Storage & Secure Transmission Vault (Freemium) -->
-<div class="panel-card" style="margin-top: 20px; padding: 20px; background: #111; border: 1px solid #333; border-radius: 8px;">
-    <h3 style="color: #00ffcc;">Local Storage & Secure Transmission Vault <span style="font-size: 12px; background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; vertical-align: middle; margin-left: 10px;">FREEMIUM</span></h3>
-    <p style="color: #aaa; font-size: 14px;">
-        Deploy <strong>unlimited local data storage</strong> constrained strictly by your physical hardware capacity (completely self-hosted on your machine with zero cloud rent or artificial server caps). 
-        Includes cryptographic file lockers, secure peer-to-peer sending, and advanced environmental security layers.
-    </p>
-    <div style="background: #1a1a1a; padding: 12px; border-radius: 6px; margin: 10px 0; border: 1px dashed #444;">
-        <p style="color: #ffaa00; font-size: 13px; margin: 0 0 5px 0;"><strong>Active Enterprise Security Protocols:</strong></p>
-        <ul style="color: #ccc; font-size: 13px; margin: 0; padding-left: 20px;">
-            <li><strong>Wi-Fi Proximity Check:</strong> Scans local wireless channels to confirm zero unauthorized nodes or nearby devices are present before granting vault access.</li>
-            <li><strong>Repeating Biometric Auto-Lock:</strong> Enforces periodic re-verification prompts so vaults automatically lock if left unattended.</li>
-        </ul>
-    </div>
-    <button onclick="runWifiScan()" style="background: #17a2b8; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Scan Wi-Fi Proximity</button>
-    <button onclick="triggerBiometricVault()" style="background: #28a745; color: #fff; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer;">Verify Biometrics & Open Vault</button>
-    <div id="vaultResult" style="margin-top: 10px; color: #00ffcc; font-family: monospace;"></div>
-</div>
-
-<script>
-async function runWifiScan() {
-    let res = await fetch('/api/wifi-proximity-scan', { method: 'POST' });
-    let data = await res.json();
-    document.getElementById('vaultResult').innerText = JSON.stringify(data, null, 2);
-}
-
-async function triggerBiometricVault() {
-    let res = await fetch('/api/biometric-session', { method: 'POST' });
-    let data = await res.json();
-    document.getElementById('vaultResult').innerText = JSON.stringify(data, null, 2);
-}
-</script>
+</html>

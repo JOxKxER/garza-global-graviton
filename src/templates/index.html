@@ -33,6 +33,9 @@
         .btn-blue { background: var(--blue); }
         .btn-orange { background: var(--orange); color: #000; }
         .log-box { background: #050505; border: 1px solid var(--border); border-radius: 4px; padding: 12px; height: 100px; overflow-y: auto; font-family: monospace; font-size: 11px; color: #7ee787; white-space: pre-wrap; margin-bottom: 12px; }
+        .video-wrapper { position: relative; width: 100%; padding-top: 56.25%; margin-bottom: 16px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+        .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
+        .video-caption { font-size: 12px; color: #8b949e; margin: -8px 0 16px 0; }
     </style>
 </head>
 <body>
@@ -41,6 +44,15 @@
         <h1>Garza Global Graviton</h1>
         <span class=\"badge\">COMMERCIAL API ACTIVE</span>
     </div>
+
+    <!-- Benchmark Demo: Local Edge Computing vs. Cloud API Latency -->
+    <div class=\"video-wrapper\">
+        <video controls preload=\"metadata\" playsinline>
+            <source src=\"ggg-edge-benchmark.mp4\" type=\"video/mp4\">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p class=\"video-caption\">Benchmark demo: local edge computing vs. cloud API latency comparison.</p>
 
     <!-- Self-Serve Commercial Pricing -->
     <div class=\"pricing-grid\">

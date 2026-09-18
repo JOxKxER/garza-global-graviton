@@ -1,0 +1,28 @@
+{
+  "output_dir": "dataset_revisions",
+  "revision": "",
+  "max_concurrency": 4,
+  "requests_per_second": 1.0,
+  "timeout_seconds": 30.0,
+  "max_retries": 4,
+  "backoff_base_seconds": 1.0,
+  "user_agents": [
+    "PublicDataPipeline/1.0 (+https://your-domain.example/contact)",
+    "Mozilla/5.0 (compatible; PublicDataPipeline/1.0)"
+  ],
+  "sources": [
+    {
+      "name": "federal-register-documents",
+      "url": "https://www.federalregister.gov/api/v1/documents.json?per_page=20&order=newest",
+      "format": "json",
+      "records_path": "results",
+      "record_selector": "",
+      "fields": [
+        {"name": "title", "selector": "title", "required": true},
+        {"name": "summary", "selector": "abstract"},
+        {"name": "observed_at", "selector": "publication_date", "required": true},
+        {"name": "target_url", "selector": "html_url"}
+      ]
+    }
+  ]
+}

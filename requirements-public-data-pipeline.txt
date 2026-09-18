@@ -1,0 +1,5 @@
+httpx==0.28.1
+beautifulsoup4==4.15.0
+aiohttp
+pyarrow
+boto3==1.43.83

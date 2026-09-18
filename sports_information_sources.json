@@ -1,0 +1,149 @@
+{
+  "schema_version": "sports-information-sources.v1",
+  "purpose": "Informational sports analytics and public-data provenance",
+  "access_policy": "Use only public sources whose terms permit automated access.",
+  "source_types": [
+    {
+      "kind": "odds",
+      "data_fields": [
+        "event_id",
+        "league",
+        "home_team",
+        "away_team",
+        "commence_time",
+        "bookmaker",
+        "market",
+        "outcome",
+        "price_american",
+        "point",
+        "observed_at"
+      ],
+      "quality_checks": [
+        "HTTP status and JSON/schema validation",
+        "UTC observation timestamp",
+        "duplicate fingerprint",
+        "source and bookmaker retained"
+      ],
+      "examples": [
+        "licensed odds API",
+        "permitted public odds-comparison feed",
+        "permitted sportsbook HTML page"
+      ]
+    },
+    {
+      "kind": "schedule",
+      "data_fields": [
+        "event_id",
+        "sport",
+        "league",
+        "home_team",
+        "away_team",
+        "start_time",
+        "venue",
+        "status"
+      ],
+      "quality_checks": [
+        "ISO 8601 timestamp parsing",
+        "team-name normalization",
+        "event identifier reconciliation"
+      ],
+      "examples": ["league schedule feed", "team schedule page"]
+    },
+    {
+      "kind": "historical_stats",
+      "data_fields": [
+        "event_id",
+        "team",
+        "opponent",
+        "won",
+        "point_diff",
+        "offense_rating",
+        "defense_rating",
+        "sample_date"
+      ],
+      "quality_checks": [
+        "numeric bounds",
+        "sample-size tracking",
+        "duplicate event detection",
+        "train/test time separation"
+      ],
+      "examples": ["public game logs", "open league statistics"]
+    },
+    {
+      "kind": "player_statistics",
+      "data_fields": ["team", "player", "offense_rating", "defense_rating", "availability", "sample_date"],
+      "quality_checks": ["numeric bounds", "player/team identity normalization", "availability bounds", "sample-size tracking"],
+      "examples": ["public player game logs", "open league player statistics"]
+    },
+    {
+      "kind": "coach_statistics",
+      "data_fields": ["team", "coach", "win_rate", "season", "sample_size"],
+      "quality_checks": ["win-rate bounds", "season-aware aggregation", "sample-size tracking", "historical-only feature use"],
+      "examples": ["public coaching records", "open league coaching statistics"]
+    },
+    {
+      "kind": "injuries",
+      "data_fields": [
+        "team",
+        "player_or_unit",
+        "status",
+        "impact",
+        "reported_at",
+        "source_url"
+      ],
+      "quality_checks": [
+        "report timestamp retained",
+        "impact bounded to configured range",
+        "stale report detection",
+        "source provenance retained"
+      ],
+      "examples": ["official team injury report", "league availability report"]
+    },
+    {
+      "kind": "sentiment",
+      "data_fields": [
+        "team",
+        "score",
+        "sample_count",
+        "observed_at",
+        "source_url"
+      ],
+      "quality_checks": [
+        "score bounded from -1 to 1",
+        "sample count retained",
+        "bot/spam filtering documented",
+        "sentiment never overrides outcome statistics"
+      ],
+      "examples": ["public news headlines", "permitted public social aggregate"]
+    },
+    {
+      "kind": "prediction_market",
+      "data_fields": [
+        "event_id",
+        "category",
+        "question",
+        "outcome",
+        "probability",
+        "observed_at",
+        "source_url"
+      ],
+      "quality_checks": [
+        "probability between 0 and 1",
+        "market status retained",
+        "outcome labels retained",
+        "source category separated from sportsbook odds"
+      ],
+      "examples": ["public Polymarket market data", "public Kalshi market data"]
+    }
+  ],
+  "processing_stages": [
+    "fetch with rate limits and retries",
+    "parse source-specific structure",
+    "normalize names, timestamps, and numeric fields",
+    "validate required fields and bounds",
+    "deduplicate with SHA-256 row fingerprints",
+    "store raw provenance and observation time",
+    "derive model features without overwriting source facts",
+    "publish model outputs with uncertainty and informational-only labels"
+  ]
+}

@@ -37,4 +37,52 @@ android/app/build/
 android/.idea/
 android/local.properties
 
+# trading_app: local price-history cache and real credentials. Never commit
+# a populated .env here -- only trading_app/.env.example is tracked.
+trading_app_cache/
+trading_app_cache_*/
+trading_app_swarm_demo_cache/
+trading_app_swarm_demo_bus.db*
+trading_app_adaptive_demo_cache/
+trading_app_adaptive_demo_bus.db*
+trading_app/.env
 
+# advanced_pipeline.py / feed_generator.py / syndication_worker.py / run_system.py:
+# runtime data directories, SQLite state ledgers, and logs -- all regenerated
+# automatically on first run, none of it is source.
+/data_inbox/
+/assets_out/
+/quarantine/
+/distribution_archive/
+/syndication_quarantine/
+pipeline_state.db
+feed_state.db
+syndication_state.db
+advanced_pipeline.log
+feed_generator.log
+syndication_worker.log
+run_system.log
+
+
+
+test_*.dat
+*.dat
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.log
+build_output/
+build_output_dist/
+src-tauri/target/
+build_stage/
+*.zip
+*.mp4
+.server_state.json
+.env
+.env.*
+!.env.example
+broker_creds.py
+alpaca_recovery_code.txt
+*_creds.py
+*_recovery_code.txt

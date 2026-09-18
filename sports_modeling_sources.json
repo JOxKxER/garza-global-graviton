@@ -1,0 +1,34 @@
+{
+  "sources": [
+    {
+      "name": "permitted-historical-games",
+      "kind": "games",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/games.json"
+    },
+    {
+      "name": "permitted-injury-reports",
+      "kind": "injuries",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/injuries.json"
+    },
+    {
+      "name": "permitted-public-headlines",
+      "kind": "sentiment",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/headlines.json"
+    },
+    {
+      "name": "permitted-player-statistics",
+      "kind": "player_statistics",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/players.json"
+    },
+    {
+      "name": "permitted-coach-statistics",
+      "kind": "coach_statistics",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/coaches.json"
+    }
+  ]
+}

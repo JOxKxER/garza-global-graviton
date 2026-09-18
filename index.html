@@ -3,116 +3,587 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code Editor App</title>
+    <title>Garza Global Graviton (GGG) - Local Edge C2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ggg: {
+                            bg: '#0b0f19',
+                            panel: '#131c2e',
+                            accent: '#ff5500',
+                            accentdim: '#cc4400',
+                            red: '#ff3366',
+                            teal: '#00ffcc',
+                            border: '#2a1f1d',
+                            muted: '#9ca3af'
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['"Courier New"', 'Courier', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: #131c2e;
+            --accent: #ff5500;
+            --accent-glow: rgba(255, 85, 0, 0.2);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: #2a1f1d;
+            --danger: #ff3366;
+            --success: #00ffcc;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 950px; display: grid; gap: 20px; }
+        
+        header { border: 2px dashed var(--accent); padding: 15px; background: rgba(255, 85, 0, 0.05); display: flex; flex-direction: column; gap: 10px; border-radius: 4px; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--accent); flex-wrap: wrap; gap: 5px; }
+        h1 { font-size: 1.1rem; color: var(--accent); letter-spacing: 1px; text-align: center; text-transform: uppercase; }
+        
+        /* Shortcut Jump Menu */
+        .shortcut-bar { display: flex; justify-content: center; gap: 15px; font-size: 0.75rem; background: #070a12; padding: 8px; border: 1px solid var(--border); border-radius: 4px; text-transform: uppercase; }
+        .shortcut-bar a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .shortcut-bar a:hover { color: var(--accent); text-shadow: 0 0 5px var(--accent-glow); }
+
+        .panel { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 6px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .panel h2 { font-size: 1rem; margin-bottom: 15px; color: var(--text-main); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        
+        label { display: block; font-size: 0.8rem; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase; }
+        input, select, textarea { width: 100%; background: #070a12; border: 1px solid var(--border); color: var(--text-main); padding: 10px; border-radius: 4px; font-size: 0.9rem; margin-bottom: 15px; }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+        
+        .status-badge { display: inline-block; font-size: 0.75rem; background: rgba(255, 51, 102, 0.1); border: 1px solid var(--danger); padding: 4px 10px; border-radius: 4px; color: var(--danger); font-weight: bold; }
+        .status-online { background: rgba(0, 255, 204, 0.1); border-color: var(--success); color: var(--success); }
+        
+        button { background: var(--accent); color: #000; border: none; padding: 10px 15px; font-weight: bold; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; }
+        button:hover { background: #ff7733; }
+
+        /* Zero-Trust Status Monitor Styles */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px; }
+        .stat-cell { background: #070a12; border: 1px solid var(--border); border-radius: 4px; padding: 12px; }
+        .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .stat-value { font-size: 1rem; color: var(--success); font-weight: bold; }
+        .stat-value.pending { color: var(--text-muted); }
+        .model-list { margin-top: 15px; background: #070a12; border: 1px solid var(--border); border-radius: 4px; padding: 12px; font-size: 0.8rem; display: none; }
+        .model-list ul { margin: 8px 0 0 18px; color: var(--text-muted); }
+        .model-list li { margin-bottom: 3px; }
+
+        /* FAQ & Troubleshooting Styles */
+        .faq-section { font-size: 0.85rem; line-height: 1.5; color: var(--text-muted); }
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .faq-q { color: var(--accent); font-weight: bold; margin-bottom: 4px; }
+        .faq-a { padding-left: 10px; border-left: 2px solid var(--border); }
+        code { background: #070a12; color: var(--success); padding: 2px 5px; border-radius: 3px; font-size: 0.8rem; }
+    </style>
 </head>
 <body>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'geo')">Spatial / GPS</button>
-        <button class="tab-btn" onclick="switchTab(event, 'motion')">Motion & Inertial</button>
-        <button class="tab-btn" onclick="switchTab(event, 'status')">Device & Node</button>
-        <button class="tab-btn" onclick="switchTab(event, 'log')">Field Event</button>
+    <div class="container">
+        <header>
+            <h1>[ --- GARZA GLOBAL GRAVITON (GGG) ORGANIC C2 --- ]</h1>
+            <div class="header-top">
+                <span id="node-serial">NODE SERIAL: GEN-1926-236</span>
+                <span id="session-counter">SESSION ID: 000000</span>
+                <span id="shield-status">SHIELD STATUS: CRYPTOGRAPHICALLY SEALED</span>
+            </div>
+            <!-- Quick Shortcut Jump Menu -->
+            <div class="shortcut-bar">
+                <a href="#panel-status">⚙️ C2 Status</a>
+                <span style="color: var(--border);">|</span>
+                <a href="#panel-ai">🎯 Target Endpoint</a>
+                <span style="color: var(--border);">|</span>
+                <a href="#panel-faq">📖 FAQ</a>
+                <span style="color: var(--border);">|</span>
+                <a href="#community">⬇️ Community</a>
+                <span style="color: var(--border);">|</span>
+                <a href="#enterprise">🤝 Enterprise</a>
+            </div>
+        </header>
+
+        <!-- Zero-Trust Endpoint Checker -->
+        <div class="panel" id="panel-status">
+            <h2>⚙️ C2 Node Health & Status <span style="font-size:0.6rem; color:var(--text-muted); letter-spacing:1px;">— READ-ONLY SWEEP</span></h2>
+            <div style="margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <label>Daemon Link State (192.168.1.236:11434):</label>
+                    <div id="daemon-status" class="status-badge">Checking local endpoint...</div>
+                </div>
+                <button onclick="verifyOllamaDaemon()">Re-check Connection</button>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-cell">
+                    <div class="stat-label">Round-Trip Latency</div>
+                    <div class="stat-value pending" id="stat-latency">—</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-label">Models Detected</div>
+                    <div class="stat-value pending" id="stat-models">—</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-label">Last Sweep</div>
+                    <div class="stat-value pending" id="stat-lastcheck">—</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-label">Sweep Count</div>
+                    <div class="stat-value" id="stat-sweeps">0</div>
+                </div>
+            </div>
+            <div class="model-list" id="model-inventory">
+                <span style="color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px;">Model Inventory (from /api/tags)</span>
+                <ul id="model-inventory-list"></ul>
+            </div>
+        </div>
+
+        <div class="panel" id="panel-ai">
+            <h2>🎯 Target Endpoint Configuration</h2>
+            <label for="api-endpoint">Daemon Base URL (Targeting Local Machine IP: 192.168.1.236):</label>
+            <input type="text" id="api-endpoint" value="http://192.168.1.236:11434">
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: -8px;">Zero-trust posture: this dashboard issues read-only <code>GET</code> status requests. It never transmits prompts, payloads, or state to the endpoint.</p>
+        </div>
+
+        <!-- FAQ & Troubleshooting Panel -->
+        <div class="panel faq-section" id="panel-faq">
+            <h2>📖 FAQ & Troubleshooting Guide</h2>
+            
+            <div class="faq-item">
+                <div class="faq-q">Q: What does this dashboard actually do?</div>
+                <div class="faq-a">
+                    It is a zero-trust, read-only C2 status monitor. It issues lightweight <code>GET</code> requests against the target daemon (<code>/</code> and <code>/api/tags</code>) to report link state, round-trip latency, and installed model inventory. No prompts, writes, or state are ever sent — there is no chat surface and no backend execution logic on this page.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">Q: How do I bring the target daemon online for monitoring?</div>
+                <div class="faq-a">
+                    On the target machine (192.168.1.236), launch PowerShell and initialize Ollama with CORS permissions enabled:<br>
+                    <code>$env:OLLAMA_ORIGINS="*"</code><br>
+                    <code>ollama serve</code><br>
+                    Once active, the daemon status above will turn green and the model inventory will populate automatically.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">Q: Why is the Daemon Status showing offline?</div>
+                <div class="faq-a">
+                    Browsers block local scripts from talking to background ports unless the origin environment variable is open. Make sure <code>ollama serve</code> is running in your background terminal.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">Q: Why use the local IP address (192.168.1.236) instead of localhost?</div>
+                <div class="faq-a">
+                    Targeting your machine's physical network IP adapter guarantees correct socket resolution across local boundary policies without triggering loopback blockages in static HTML previews.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">Q: What is the independent session counter?</div>
+                <div class="faq-a">
+                    The <code>SESSION ID</code> readout in the header is a self-contained tick loop that increments once per second from zero on every page load. It is not tied to the endpoint checker or any other component — it simply measures how long this monitoring session has been alive.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">Q: Is this node completely private and offline?</div>
+                <div class="faq-a">
+                    Yes. All execution loops run locally on hardware without routing telemetry or state data through external cloud gateways.
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- TAB 1: GEO -->
-    <div id="geo" class="panel active">
-        <h2>Precision Geolocation</h2>
-        <pre id="geo-data">Acquiring satellite lock...</pre>
-        <button class="action" onclick="requestGeoPermission()">Enable GPS Feed</button>
-    </div>
+    <!-- ================================================================
+         COMMUNITY DOWNLOAD — free personal daemon, source & manifesto
+         ================================================================ -->
+    <section id="community" class="relative py-16 px-6 border-t-2 border-dashed border-ggg-accent/60 w-full max-w-[950px]">
+        <div class="max-w-3xl mx-auto text-center">
 
-    <!-- TAB 2: MOTION -->
-    <div id="motion" class="panel">
-        <h2>Motion & Orientation</h2>
-        <pre id="motion-data">Awaiting sensor handshake...</pre>
-        <button class="action" onclick="requestMotionPermission()">Enable Sensors</button>
-    </div>
+            <p class="text-ggg-accent text-xs tracking-[0.35em] uppercase mb-3">[ --- FREE FOR PERSONAL USE --- ]</p>
+            <h2 class="text-2xl md:text-3xl font-bold uppercase tracking-wider text-white mb-4">
+                Community <span class="text-ggg-accent">Download</span>
+            </h2>
+            <p class="text-ggg-muted text-sm leading-relaxed max-w-xl mx-auto mb-10">
+                The personal edition of the GGG Sovereign Edge Daemon — full metabolic pacing,
+                zero-copy I/O, and local inference containment. Free forever for individuals,
+                researchers, and non-commercial deployments.
+            </p>
 
-    <!-- TAB 3: STATUS -->
-    <div id="status" class="panel">
-        <h2>Node & Network Health</h2>
-        <pre id="status-data">Checking environment...</pre>
-    </div>
+            <!-- Primary CTA -->
+            <a href="https://github.com/JOxKxER/global-graviton-gauntlet-/releases/latest"
+               target="_blank" rel="noopener noreferrer"
+               class="inline-block bg-ggg-accent hover:bg-ggg-accentdim text-black font-bold uppercase text-sm tracking-[0.2em] px-10 py-4 rounded transition-colors shadow-lg shadow-ggg-accent/10 mb-6">
+                ⬇ Download Personal Daemon (v1.4.5)
+            </a>
 
-    <!-- TAB 4: MANUAL LOG -->
-    <div id="log" class="panel">
-        <h2>Field Event Logger</h2>
-        <textarea id="log-notes" rows="4" style="width:100%; background:#090d16; color:#fff; border:none; padding:0.5rem; border-radius:0.5rem;" placeholder="Enter tactical or logistics notes..."></textarea>
-        <button class="action" onclick="submitLog()">Transmit Packet</button>
-    </div>
+            <p class="text-ggg-muted text-[11px] uppercase tracking-wider mb-10">
+                Windows · macOS · Linux — no account, no telemetry, no activation key
+            </p>
 
-<script>
-    let telemetryBuffer = [];
+            <!-- Secondary links -->
+            <div class="flex flex-wrap justify-center gap-4 text-xs">
+                <a href="https://github.com/JOxKxER/global-graviton-gauntlet-"
+                   target="_blank" rel="noopener noreferrer"
+                   class="border border-ggg-border bg-ggg-panel hover:border-ggg-accent text-gray-300 px-5 py-2.5 rounded transition-colors">
+                    📜 View Non-Commercial Source &amp; License
+                </a>
+                <a href="MANIFESTO.md" download
+                   class="border border-ggg-border bg-ggg-panel hover:border-ggg-accent text-gray-300 px-5 py-2.5 rounded transition-colors">
+                    📖 Read the Sovereign Manifesto
+                </a>
+            </div>
 
-    function switchTab(evt, tabId) {
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        evt.currentTarget.classList.add('active');
-    }
+            <p class="text-ggg-muted text-[11px] mt-8 leading-relaxed">
+                Commercial deployment? See <a href="#enterprise" class="text-ggg-accent hover:underline">Enterprise Integration &amp; Partnerships</a> below.
+            </p>
+        </div>
+    </section>
 
-    // 1. Geolocation Stream
-    function requestGeoPermission() {
-        if ('geolocation' in navigator) {
-            navigator.geolocation.watchPosition(pos => {
-                const data = {
-                    lat: pos.coords.latitude,
-                    lon: pos.coords.longitude,
-                    alt: pos.coords.altitude,
-                    speed: pos.coords.speed,
-                    heading: pos.coords.heading,
-                    timestamp: pos.timestamp
-                };
-                document.getElementById('geo-data').innerText = JSON.stringify(data, null, 2);
-                telemetryBuffer.push({ type: 'geo', payload: data });
-            }, err => alert(err.message), { enableHighAccuracy: true });
+    <!-- ================================================================
+         ENTERPRISE INTEGRATION & PARTNERSHIPS (Tailwind)
+         Garza Global Graviton LLC — Sovereign Edge Daemon Licensing
+         ================================================================ -->
+    <section id="enterprise" class="relative py-20 px-6 border-t-2 border-dashed border-ggg-accent/60 w-full max-w-[950px]">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- Section header -->
+            <div class="text-center mb-14">
+                <p class="text-ggg-accent text-xs tracking-[0.35em] uppercase mb-3">[ --- COMMERCIAL PATHWAYS OPEN --- ]</p>
+                <h2 class="text-3xl md:text-4xl font-bold uppercase tracking-wider text-white mb-4">
+                    Enterprise Integration <span class="text-ggg-accent">&amp;</span> Partnerships
+                </h2>
+                <p class="text-ggg-muted max-w-2xl mx-auto text-sm leading-relaxed">
+                    The GGG Sovereign Edge Daemon — metabolic pacing, zero-copy I/O, vectorized memory
+                    sanitation, and air-gapped inference — is available for commercial license. Three
+                    pathways, one principle: <span class="text-ggg-teal">your infrastructure, your data, your keys.</span>
+                </p>
+            </div>
+
+            <!-- Licensing pathway cards -->
+            <div class="grid md:grid-cols-3 gap-6 mb-16">
+
+                <!-- Pathway 1: Major Tech / OEM -->
+                <div class="bg-ggg-panel border border-ggg-border rounded-lg p-6 hover:border-ggg-accent transition-colors shadow-lg shadow-black/40 flex flex-col">
+                    <div class="text-ggg-accent text-2xl mb-3">▣</div>
+                    <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-2">Technology OEM License</h3>
+                    <p class="text-ggg-muted text-xs leading-relaxed mb-4 flex-1">
+                        Embed the daemon directly into your operating system, browser, or productivity
+                        suite. Source-available escrow, per-unit royalty or flat-fee structure, and
+                        co-branded "Powered by GGG" certification.
+                    </p>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                        <li><span class="text-ggg-teal">▸</span> Full source escrow + audit rights</li>
+                        <li><span class="text-ggg-teal">▸</span> White-label daemon binaries</li>
+                        <li><span class="text-ggg-teal">▸</span> Joint engineering liaison, 12-month SLA</li>
+                    </ul>
+                    <p class="text-ggg-accent text-xs font-bold uppercase tracking-wider">From $250K / yr</p>
+                </div>
+
+                <!-- Pathway 2: Cloud Providers -->
+                <div class="bg-ggg-panel border border-ggg-accent rounded-lg p-6 shadow-lg shadow-ggg-accent/10 flex flex-col relative">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-ggg-accent text-black text-[10px] font-bold uppercase px-3 py-1 rounded">Most Deployed</span>
+                    <div class="text-ggg-accent text-2xl mb-3">☁</div>
+                    <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-2">Cloud Edge Program</h3>
+                    <p class="text-ggg-muted text-xs leading-relaxed mb-4 flex-1">
+                        Offer sovereign, air-gapped edge nodes as a first-class SKU in your marketplace.
+                        Reference architectures for DDIL / disconnected estates, GovCloud-style enclaves,
+                        and regulated-industry landing zones.
+                    </p>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                        <li><span class="text-ggg-teal">▸</span> Marketplace listing + metered billing hooks</li>
+                        <li><span class="text-ggg-teal">▸</span> Terraform/Bicep reference modules included</li>
+                        <li><span class="text-ggg-teal">▸</span> Revenue-share or committed-use pricing</li>
+                    </ul>
+                    <p class="text-ggg-accent text-xs font-bold uppercase tracking-wider">Metered · Rev-Share Available</p>
+                </div>
+
+                <!-- Pathway 3: Hardware Networks -->
+                <div class="bg-ggg-panel border border-ggg-border rounded-lg p-6 hover:border-ggg-accent transition-colors shadow-lg shadow-black/40 flex flex-col">
+                    <div class="text-ggg-accent text-2xl mb-3">⛁</div>
+                    <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-2">Hardware &amp; Network Alliance</h3>
+                    <p class="text-ggg-muted text-xs leading-relaxed mb-4 flex-1">
+                        Ship the daemon factory-flashed on routers, ruggedized edge servers, and NPU/GPU
+                        appliances. Hardware-attested boot chain and per-device cryptographic node serials
+                        included.
+                    </p>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                        <li><span class="text-ggg-teal">▸</span> Firmware images for ARM64 / x86-64</li>
+                        <li><span class="text-ggg-teal">▸</span> Per-device attestation + seal manifests</li>
+                        <li><span class="text-ggg-teal">▸</span> Volume tiers from 1K units</li>
+                    </ul>
+                    <p class="text-ggg-accent text-xs font-bold uppercase tracking-wider">Per-Unit · Volume Tiers</p>
+                </div>
+            </div>
+
+            <!-- Compliance strip -->
+            <div class="flex flex-wrap justify-center gap-3 mb-16 text-[11px] uppercase tracking-wider">
+                <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">CMMC L2 Ready</span>
+                <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">Air-Gap Certified Build</span>
+                <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">FIPS-Aligned Crypto</span>
+                <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">Zero Cloud Telemetry</span>
+                <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">DDIL / JADC2 Proven</span>
+            </div>
+
+            <!-- Contact form -->
+            <div class="max-w-2xl mx-auto bg-ggg-panel border border-ggg-border rounded-lg p-8 shadow-xl shadow-black/50">
+                <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-1">Partnership Inquiry</h3>
+                <p class="text-ggg-muted text-xs mb-6">Responses within one business day. NDA available on request.</p>
+
+                <form id="partner-form" class="space-y-5" novalidate
+                      action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <!-- Honeypot: invisible to humans, trips basic spam bots -->
+                    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"
+                           class="hidden" aria-hidden="true">
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div>
+                            <label for="pf-name" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Full Name *</label>
+                            <input id="pf-name" name="name" type="text" required
+                                   class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition"
+                                   placeholder="J. Garza">
+                        </div>
+                        <div>
+                            <label for="pf-company" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Organization *</label>
+                            <input id="pf-company" name="company" type="text" required
+                                   class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition"
+                                   placeholder="Hyperscaler Cloud Co.">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div>
+                            <label for="pf-email" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Work Email *</label>
+                            <input id="pf-email" name="email" type="email" required
+                                   class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition"
+                                   placeholder="partnerships@example.com">
+                        </div>
+                        <div>
+                            <label for="pf-pathway" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Commercial Pathway *</label>
+                            <select id="pf-pathway" name="pathway" required
+                                    class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition">
+                                <option value="">Select a pathway…</option>
+                                <option value="oem">Technology OEM License</option>
+                                <option value="cloud">Cloud Edge Program</option>
+                                <option value="hardware">Hardware &amp; Network Alliance</option>
+                                <option value="other">Other / Custom Structure</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="pf-message" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Inquiry Details *</label>
+                        <textarea id="pf-message" name="message" rows="4" required
+                                  class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition resize-y"
+                                  placeholder="Deployment scale, target platforms, timeline…"></textarea>
+                    </div>
+
+                    <p id="pf-error" class="hidden text-ggg-red text-xs"></p>
+
+                    <button type="submit" id="pf-submit"
+                            class="w-full bg-ggg-accent hover:bg-ggg-accentdim text-black font-bold uppercase text-xs tracking-[0.2em] py-3.5 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Transmit Partnership Inquiry
+                    </button>
+
+                    <p id="pf-loading" class="hidden text-center text-ggg-muted text-xs uppercase tracking-wider animate-pulse">
+                        ⟳ Transmitting over secure channel…
+                    </p>
+
+                    <p id="pf-success" class="hidden text-center text-ggg-teal text-xs uppercase tracking-wider border border-ggg-teal/40 rounded py-3">
+                        ✓ Inquiry transmitted. Our partnerships team will respond within one business day.
+                    </p>
+
+                    <p id="pf-offline" class="hidden text-center text-ggg-muted text-xs border border-ggg-border rounded py-3 px-4">
+                        ⚠ Endpoint unreachable (offline posture active). Inquiry sealed to the local vault — email partners@garzaglobalgraviton.com when connected.
+                    </p>
+                </form>
+            </div>
+
+            <p class="text-center text-ggg-muted text-[11px] mt-8 uppercase tracking-wider">
+                © 2026 Garza Global Graviton LLC — Sovereign Edge Intelligence Architecture
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // 1. Independent Session Counter — self-contained 1Hz tick, starts at zero per load.
+        let sessionTicks = 0;
+        const sessionStartedAt = Date.now();
+        setInterval(() => {
+            sessionTicks++;
+            document.getElementById('session-counter').innerText = "SESSION ID: " + String(sessionTicks).padStart(6, '0');
+        }, 1000);
+
+        // 2. Zero-Trust Endpoint Checker — read-only GET sweeps against the target daemon.
+        let sweepCount = 0;
+        async function verifyOllamaDaemon() {
+            const endpointInput = document.getElementById('api-endpoint').value.trim().replace(/\/+$/, '');
+            const badge = document.getElementById('daemon-status');
+            const latencyCell = document.getElementById('stat-latency');
+            const modelsCell = document.getElementById('stat-models');
+            const lastCheckCell = document.getElementById('stat-lastcheck');
+            const inventory = document.getElementById('model-inventory');
+            const inventoryList = document.getElementById('model-inventory-list');
+
+            badge.innerText = "SWEEPING 192.168.1.236:11434...";
+            badge.className = "status-badge";
+
+            const startedAt = performance.now();
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+                // Read-only tag sweep: reports daemon health + installed model inventory.
+                const response = await fetch(endpointInput + '/api/tags', {
+                    method: 'GET',
+                    signal: controller.signal,
+                    mode: 'cors'
+                });
+                clearTimeout(timeoutId);
+
+                const latencyMs = performance.now() - startedAt;
+                sweepCount++;
+                document.getElementById('stat-sweeps').innerText = sweepCount;
+                lastCheckCell.innerText = new Date().toLocaleTimeString();
+                lastCheckCell.className = "stat-value";
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const models = (data.models || []).map(m => m.name || 'unknown');
+
+                    badge.innerText = "ONLINE [OLLAMA ACTIVE AT 192.168.1.236]";
+                    badge.className = "status-badge status-online";
+                    latencyCell.innerText = latencyMs.toFixed(0) + " ms";
+                    latencyCell.className = "stat-value";
+                    modelsCell.innerText = models.length;
+                    modelsCell.className = "stat-value";
+
+                    inventoryList.innerHTML = '';
+                    if (models.length > 0) {
+                        models.forEach(name => {
+                            const li = document.createElement('li');
+                            li.textContent = name;
+                            inventoryList.appendChild(li);
+                        });
+                    } else {
+                        const li = document.createElement('li');
+                        li.textContent = "No models pulled on target — run: ollama pull qwen2.5-coder:latest";
+                        inventoryList.appendChild(li);
+                    }
+                    inventory.style.display = 'block';
+                } else {
+                    throw new Error('HTTP ' + response.status);
+                }
+            } catch (err) {
+                sweepCount++;
+                document.getElementById('stat-sweeps').innerText = sweepCount;
+                lastCheckCell.innerText = new Date().toLocaleTimeString();
+                lastCheckCell.className = "stat-value";
+                badge.innerText = "OFFLINE [RUN 'ollama serve' ON TARGET WITH OLLAMA_ORIGINS=*]";
+                badge.className = "status-badge";
+                latencyCell.innerText = "timeout";
+                latencyCell.className = "stat-value pending";
+                modelsCell.innerText = "—";
+                modelsCell.className = "stat-value pending";
+                inventory.style.display = 'none';
+            }
         }
-    }
 
-    // 2. Motion & Orientation
-    function requestMotionPermission() {
-        if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-            DeviceMotionEvent.requestPermission().then(response => {
-                if (response === 'granted') startMotionListeners();
-            });
-        } else {
-            startMotionListeners();
-        }
-    }
+        // Run check on load, then auto-sweep every 15 seconds.
+        setTimeout(verifyOllamaDaemon, 500);
+        setInterval(verifyOllamaDaemon, 15000);
 
-    function startMotionListeners() {
-        window.addEventListener('devicemotion', (e) => {
-            const data = {
-                accel: { x: e.acceleration.x, y: e.acceleration.y, z: e.acceleration.z },
-                rotation: { alpha: e.rotationRate.alpha, beta: e.rotationRate.beta, gamma: e.rotationRate.gamma }
+        // 3. Enterprise inquiry form — async POST to the configured endpoint with
+        //    loading / success / error states and a local-vault fallback when offline.
+        document.getElementById('partner-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const err = document.getElementById('pf-error');
+            const ok = document.getElementById('pf-success');
+            const offline = document.getElementById('pf-offline');
+            const loading = document.getElementById('pf-loading');
+            const btn = document.getElementById('pf-submit');
+
+            const name = form.name.value.trim();
+            const company = form.company.value.trim();
+            const email = form.email.value.trim();
+            const pathway = form.pathway.value;
+            const message = form.message.value.trim();
+
+            // Client-side validation
+            [err, ok, offline].forEach(el => el.classList.add('hidden'));
+            if (!name || !company || !pathway || !message || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+                err.textContent = '⚠ All fields are required and the email address must be valid.';
+                err.classList.remove('hidden');
+                return;
+            }
+
+            // Honeypot tripped — silently drop the submission.
+            if (form._gotcha.value) {
+                ok.classList.remove('hidden');
+                form.reset();
+                return;
+            }
+
+            // Loading state
+            btn.disabled = true;
+            btn.textContent = 'Transmitting…';
+            loading.classList.remove('hidden');
+
+            const payload = {
+                name, company, email, pathway, message,
+                _subject: `GGG Partnership Inquiry — ${company} (${pathway})`,
+                _replyto: email,
+                source: 'ggg-c2-dashboard',
+                timestamp: new Date().toISOString()
             };
-            document.getElementById('motion-data').innerText = JSON.stringify(data, null, 2);
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    form.reset();
+                    ok.classList.remove('hidden');
+                } else {
+                    // Endpoint reachable but rejected the payload (4xx/5xx)
+                    let detail = `HTTP ${response.status}`;
+                    try {
+                        const body = await response.json();
+                        if (body && body.errors) detail = body.errors.map(x => x.message).join(', ');
+                    } catch { /* non-JSON error body */ }
+                    err.textContent = `⚠ Transmission rejected: ${detail}. Verify the form endpoint configuration.`;
+                    err.classList.remove('hidden');
+                }
+            } catch (fetchErr) {
+                // Network-level failure (offline, DNS, CORS) — seal locally per air-gapped posture.
+                try {
+                    const key = `ggg_inquiry_${Date.now()}`;
+                    localStorage.setItem(key, JSON.stringify(payload));
+                } catch { /* storage full — inquiry stays in-session */ }
+                offline.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Transmit Partnership Inquiry';
+                loading.classList.add('hidden');
+            }
         });
-    }
-
-    // 3. Status Polling
-    setInterval(async () => {
-        let batteryInfo = {};
-        if ('getBattery' in navigator) {
-            const b = await navigator.getBattery();
-            batteryInfo = { level: b.level, charging: b.charging };
-        }
-        const netInfo = navigator.connection ? { type: navigator.connection.effectiveType, downlink: navigator.connection.downlink } : {};
-        
-        document.getElementById('status-data').innerText = JSON.stringify({
-            battery: batteryInfo,
-            network: netInfo,
-            online: navigator.onLine,
-            queuedPackets: telemetryBuffer.length
-        }, null, 2);
-    }, 2000);
-
-    function submitLog() {
-        const notes = document.getElementById('log-notes').value;
-        alert("Packet queued locally: " + notes);
-        document.getElementById('log-notes').value = '';
-    }
-</script>
+    </script>
 </body>
-</html>
 </html>

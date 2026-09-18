@@ -1,3 +1,72 @@
+# Garza Global Graviton LLC — Sovereign Platform
+
+**Garza Global Graviton LLC** builds sovereign, 100% air-gapped edge
+computing systems — hardware and software that run entirely on local
+infrastructure, with zero mandatory network dependency, zero cloud
+telemetry, and zero vendor-side visibility into your data.
+
+## v1.4.0 — Mobile-Responsive Web Hub
+
+The node's local web hub ([`index.html`](index.html)) is now fully
+mobile-responsive as of **v1.4.0**: brand bars, the hardware plaque, the
+physics benchmark table, and the local Ollama bridge all reflow cleanly on
+phones and tablets (screens under 768px), with buttons, inputs, and panels
+expanding to full width for comfortable touch interaction, and the physics
+benchmark table gaining smooth horizontal scrolling instead of a broken
+layout.
+
+### 100% Air-Gapped Sovereign Edge
+
+Every node runs as a **Synthetic Data Center**: a single piece of local,
+air-gapped hardware organized like a living organism, paced and defended by
+cooperating biological daemons that never touch the network:
+
+- **Metabolic Heart** — paces admission and pulses the node's cadence at
+  microsecond precision.
+- **Liver** — scrubs stale memory in-place with vectorized zeroization,
+  never leaving residue.
+- **Lungs** — inhale and exhale data through a zero-copy ring buffer,
+  moving bytes without ever duplicating them.
+- **Immune System** — a zero-trust scanner that quarantines and
+  neutralizes any byte pattern it does not recognize.
+
+Because every buffer is a single preallocated `memoryview` over a `numpy`
+array, data moves through the organism without a single extra copy, and
+because the node is air-gapped, every daemon above runs at local hardware
+speed, not network speed.
+
+- **Local-only by construction.** The Ollama bridge only accepts
+  `localhost` / `127.0.0.1` / `[::1]` endpoints; remote hosts are rejected
+  before any request is ever sent, keeping the bridge 100% offline by
+  construction.
+- **Sovereign data ownership.** Nothing leaves the device unless you
+  explicitly choose to send it — there is no cloud dependency in the
+  critical path.
+
+### Download the release bundle
+
+Grab the latest packaged sovereign app from the GitHub Releases page:
+
+```
+https://github.com/JOxKxER/garza-global-graviton/releases/latest
+```
+
+Or click **Download Sovereign App** directly from the top of the local web
+hub ([`index.html`](index.html)).
+
+### Connect your local Ollama instance
+
+1. Install and start [Ollama](https://ollama.com) on the same machine (or
+   another host reachable at `localhost`/loopback).
+2. Pull a model, e.g. `ollama pull llama3.2:3b`.
+3. Open `index.html` in a browser and, in the **Local Ollama Bridge**
+   panel, confirm the endpoint (default `http://localhost:11434`) and model
+   name, then click **Check Status**.
+4. Once the badge shows **ONLINE**, use the **Live Local Benchmark** panel
+   or the chat row to send prompts — everything runs locally, offline.
+
+---
+
 # Air-Gap Zero-Network-Leakage Attestation Platform
 
 Cryptographic proof, for prospective enterprise buyers, that a sensitive

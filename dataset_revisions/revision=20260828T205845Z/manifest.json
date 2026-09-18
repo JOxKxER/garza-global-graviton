@@ -1,0 +1,14 @@
+{
+  "manifest_version": "1.0",
+  "dataset_schema": "public-domain-target.v1",
+  "revision": "20260828T205845Z",
+  "created_at": "2026-08-28T20:58:45.887534Z",
+  "format": "gzip-compressed NDJSON",
+  "compression": "gzip",
+  "encoding": "UTF-8",
+  "record_count": 0,
+  "partitions": [],
+  "integrity": "SHA-256 of each compressed partition",
+  "upload_target": "S3-compatible object storage",
+  "failed_sources": 1
+}

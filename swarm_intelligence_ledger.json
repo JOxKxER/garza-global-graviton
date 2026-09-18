@@ -1,0 +1,11 @@
+[
+  {
+    "timestamp": "2026-08-28T15:30:12.420424",
+    "source_id": "AlphaWhale_99",
+    "asset": "BTC-USD",
+    "direction": "BUY",
+    "confidence": 0.89,
+    "rationale": "Unusual volume spike & liquidity sweep detected.",
+    "status": "tracked"
+  }
+]

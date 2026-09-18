@@ -1,0 +1,59 @@
+{
+  "requests_per_second": 1.0,
+  "timeout_seconds": 20,
+  "max_retries": 3,
+  "user_agents": [
+    "GravitonSportsAnalytics/1.0 (+local informational use)"
+  ],
+  "sources": [
+    {
+      "name": "the-odds-api",
+      "provider": "odds",
+      "url": "https://api.the-odds-api.com/v4/sports/{sport_key}/odds",
+      "all_sports": true,
+      "headers": {},
+      "params": {
+        "apiKey": "${ODDS_API_KEY}",
+        "regions": "us",
+        "markets": "h2h,spreads,totals",
+        "oddsFormat": "american"
+      }
+    },
+    {
+      "name": "polymarket-public-markets",
+      "provider": "polymarket",
+      "url": "https://gamma-api.polymarket.com/markets?active=true&closed=false&limit=100",
+      "sport": "prediction-market",
+      "headers": {},
+      "params": {}
+    },
+    {
+      "name": "kalshi-public-markets",
+      "provider": "kalshi",
+      "enabled": true,
+      "url": "https://api.elections.kalshi.com/trade-api/v2/markets",
+      "limit": 100
+    },
+    {
+      "name": "public-historical-games",
+      "provider": "modeling",
+      "kind": "games",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/games.json"
+    },
+    {
+      "name": "public-injury-reports",
+      "provider": "modeling",
+      "kind": "injuries",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/injuries.json"
+    },
+    {
+      "name": "public-team-sentiment",
+      "provider": "modeling",
+      "kind": "sentiment",
+      "enabled": false,
+      "url": "https://replace-with-permitted-public-source.example/sentiment.json"
+    }
+  ]
+}

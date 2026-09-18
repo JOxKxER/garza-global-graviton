@@ -1,0 +1,46 @@
+{
+  "output_dir": "multi_crawler_revisions",
+  "queue_size": 1000,
+  "max_concurrency": 4,
+  "requests_per_second": 1.0,
+  "timeout_seconds": 30,
+  "max_retries": 3,
+  "user_agents": [
+    "GravitonMultiCrawler/1.0 (+contact URL)"
+  ],
+  "crawlers": [
+    {
+      "name": "county-zoning-permits",
+      "data_type": "municipal_permits",
+      "enabled": false,
+      "url": "https://replace-with-permitted-county-portal.example/permits",
+      "record_selector": "tr.permit",
+      "fields": {
+        "permit_id": "td.permit-id",
+        "issue_date": "td.issue-date",
+        "address": "td.address",
+        "zip_code": "td.zip",
+        "zoning_class": "td.zoning",
+        "description": "td.description"
+      },
+      "headers": {},
+      "params": {}
+    },
+    {
+      "name": "public-transit-status",
+      "data_type": "logistics_transit",
+      "enabled": false,
+      "url": "https://replace-with-permitted-transit-feed.example/status",
+      "record_selector": "article.route-status",
+      "fields": {
+        "route_id": ".route-id",
+        "status": ".status",
+        "observed_time": ".observed-time",
+        "location": ".location",
+        "description": ".description"
+      },
+      "headers": {},
+      "params": {}
+    }
+  ]
+}

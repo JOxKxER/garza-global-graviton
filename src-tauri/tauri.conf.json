@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Global Graviton Gauntlet",
+  "version": "1.4.5",
+  "identifier": "com.garzaglobalgraviton.gauntlet",
+  "build": {
+    "frontendDist": "../",
+    "devUrl": "http://localhost:8080"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Global Graviton Gauntlet (#GGG)",
+        "width": 1280,
+        "height": 860,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false,
+        "visible": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' http://localhost:11434 http://127.0.0.1:11434"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [],
+    "category": "DeveloperTool",
+    "shortDescription": "Sovereign offline AI workspace — Garza Global Graviton LLC",
+    "longDescription": "Global Graviton Gauntlet (#GGG): an air-gapped Synthetic Data Center console wrapping a local Ollama loopback. 100% offline-first, zero cloud telemetry."
+  }
+}

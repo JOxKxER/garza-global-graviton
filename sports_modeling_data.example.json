@@ -1,0 +1,24 @@
+{
+  "games": [
+    {"team": "Chicago Bears", "opponent": "Tennessee Titans", "won": true, "point_diff": 3, "offense_rating": 101.5, "defense_rating": 97.0},
+    {"team": "Chicago Bears", "opponent": "Tennessee Titans", "won": false, "point_diff": -2, "offense_rating": 99.0, "defense_rating": 98.5},
+    {"team": "Tennessee Titans", "opponent": "Chicago Bears", "won": false, "point_diff": -3, "offense_rating": 98.0, "defense_rating": 101.0},
+    {"team": "Tennessee Titans", "opponent": "Chicago Bears", "won": true, "point_diff": 2, "offense_rating": 100.0, "defense_rating": 99.5}
+  ],
+  "injuries": [
+    {"team": "Chicago Bears", "status": "questionable", "impact": 0.5},
+    {"team": "Tennessee Titans", "status": "questionable", "impact": 0.5}
+  ],
+  "sentiment": [
+    {"team": "Chicago Bears", "score": 0.0},
+    {"team": "Tennessee Titans", "score": 0.0}
+  ],
+  "player_statistics": [
+    {"team": "Chicago Bears", "player": "Example player", "points_per_game": 0.0, "defense_rating": 0.0, "availability": 1.0},
+    {"team": "Tennessee Titans", "player": "Example player", "points_per_game": 0.0, "defense_rating": 0.0, "availability": 1.0}
+  ],
+  "coach_statistics": [
+    {"team": "Chicago Bears", "coach": "Example coach", "win_rate": 0.5},
+    {"team": "Tennessee Titans", "coach": "Example coach", "win_rate": 0.5}
+  ]
+}

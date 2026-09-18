@@ -1,47 +1,32 @@
 import asyncio
-import time
-import random
+import aiosqlite
+import json
+from datetime import datetime
 
-class AsynchronousTelemetryPipeline:
-    def __init__(self):
-        self.queue = asyncio.Queue()
-        self.processed_count = 0
+DB_PATH = "V:\\03_Source_Code\\data_in\\mesh_telemetry.db"
 
-    async def ingest_stream(self, data_packet):
-        """Simulates asynchronous queuing of incoming tactical or telemetry frames."""
-        await self.queue.put(data_packet)
-        return {"status": "queued", "packet_id": data_packet.get("id")}
+async def process_mesh_queue():
+    print("Initializing async mesh dispatcher...")
+    async with aiosqlite.connect(DB_PATH) as db:
+        # Insert a sample pending message to test the pipeline
+        await db.execute(
+            """INSERT OR IGNORE INTO mesh_messages (message_id, sender, receiver, payload, status) 
+               VALUES (?, ?, ?, ?, ?)""",
+            ("msg_001", "Node_Alpha", "Node_Beta", json.dumps({"task": "telemetry_sync"}), "pending")
+        )
+        await db.commit()
+        
+        # Fetch pending messages
+        async with db.execute("SELECT message_id, sender, receiver, payload FROM mesh_messages WHERE status = 'pending'") as cursor:
+            async for row in cursor:
+                msg_id, sender, receiver, payload = row
+                print(f"Processing message {msg_id} from {sender} to {receiver}...")
+                await asyncio.sleep(0.5) # Simulate asynchronous data dispatch
+                
+                # Mark as processed
+                await db.execute("UPDATE mesh_messages SET status = 'completed' WHERE message_id = ?", (msg_id,))
+                await db.commit()
+                print(f"Message {msg_id} successfully synced across mesh.")
 
-    async def worker_processor(self):
-        """Background worker that continuously processes the data queue without blocking."""
-        results = []
-        while not self.queue.empty():
-            packet = await self.queue.get()
-            # Simulate non-blocking asynchronous processing delay
-            await asyncio.sleep(0.05)
-            self.processed_count += 1
-            results.endswith if hasattr(results, 'endswith') else None # placeholder logic
-            results.append({
-                "processed_id": packet.get("id"),
-                "status": "Vector Optimized",
-                "latency_overhead_ms": round(random.uniform(0.8, 2.4), 2)
-            })
-            self.queue.task_done()
-        return results
-
-    def run_pipeline_sync(self, batch_size=5):
-        """Synchronous wrapper to execute the async event loop from Flask routes."""
-        async def _run():
-            # Ingest a batch of simulated streaming packets
-            for i in range(batch_size):
-                await self.ingest_stream({
-                    "id": f"FRAME-90{i}",
-                    "timestamp": time.time(),
-                    "sensor_payload": random.randint(100, 999)
-                })
-            
-            processed_logs = await self.worker_processor()
-            return processed_logs
-
-        # Run the async execution loop
-        return asyncio.run(_run())
+if __name__ == "__main__":
+    asyncio.run(process_mesh_queue())

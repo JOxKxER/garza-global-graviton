@@ -1,0 +1,14 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY requirements-public-data-pipeline.txt .
+RUN pip install --no-cache-dir -r requirements-public-data-pipeline.txt
+
+COPY public_data_pipeline.py run_pipeline_and_publish.py pipeline.json ./
+RUN mkdir -p /app/dataset_revisions
+
+CMD ["python", "run_pipeline_and_publish.py", "--config", "pipeline.json"]
