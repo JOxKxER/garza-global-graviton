@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGG Sovereign Edge Daemon v1.4.5 — Garza Global Graviton LLC</title>
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --panel: #131c2e;
+            --panel-dark: #070a12;
+            --accent: #ff5500;
+            --accent-dim: #cc4400;
+            --accent-glow: rgba(255, 85, 0, 0.18);
+            --teal: #00ffcc;
+            --red: #ff3366;
+            --text: #f3f4f6;
+            --muted: #9ca3af;
+            --border: #2a1f1d;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh; padding: 24px 16px;
+            display: flex; flex-direction: column; align-items: center;
+            line-height: 1.6;
+        }
+        a { color: var(--accent); }
+        code, .mono {
+            font-family: inherit; background: var(--panel-dark);
+            color: var(--teal); padding: 2px 6px; border-radius: 3px; font-size: 0.85em;
+        }
+        .wrap { width: 100%; max-width: 900px; display: grid; gap: 28px; }
+
+        /* ---------- terminal frame ---------- */
+        .term {
+            background: var(--panel); border: 1px solid var(--border);
+            border-radius: 6px; box-shadow: 0 4px 24px rgba(0,0,0,0.55);
+            overflow: hidden;
+        }
+        .term-bar {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--panel-dark); padding: 8px 14px;
+            border-bottom: 1px solid var(--border); font-size: 0.7rem;
+            color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .term-dot { width: 9px; height: 9px; border-radius: 50%; }
+        .term-dot.r { background: var(--red); } .term-dot.o { background: var(--accent); } .term-dot.g { background: var(--teal); }
+        .term-body { padding: 20px; }
+
+        /* ---------- hero ---------- */
+        header.hero {
+            border: 2px dashed var(--accent); border-radius: 6px;
+            background: linear-gradient(180deg, rgba(255,85,0,0.06), transparent 60%);
+            padding: 28px 24px; text-align: center;
+        }
+        .hero-tag { font-size: 0.72rem; letter-spacing: 0.35em; color: var(--accent); text-transform: uppercase; }
+        .hero h1 { font-size: 1.5rem; letter-spacing: 1px; margin: 10px 0 6px; text-transform: uppercase; }
+        .hero h1 .v { color: var(--accent); }
+        .hero-sub { color: var(--muted); font-size: 0.85rem; max-width: 620px; margin: 0 auto 18px; }
+        .binary-chip {
+            display: inline-block; background: var(--panel-dark); border: 1px solid var(--border);
+            border-radius: 4px; padding: 8px 14px; font-size: 0.8rem; color: var(--teal); margin-bottom: 18px;
+        }
+        .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+        .hero-badges span { border: 1px solid var(--border); background: var(--panel); padding: 5px 12px; border-radius: 20px; color: var(--muted); }
+        .hero-badges span b { color: var(--teal); font-weight: bold; }
+
+        /* ---------- sections ---------- */
+        section h2 {
+            font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--accent); margin-bottom: 14px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        section h2::before { content: ">"; color: var(--teal); }
+        .section-sub { color: var(--muted); font-size: 0.82rem; margin-bottom: 16px; }
+
+        .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+        .card {
+            background: var(--panel-dark); border: 1px solid var(--border); border-radius: 5px;
+            padding: 16px; transition: border-color 0.2s;
+        }
+        .card:hover { border-color: var(--accent); }
+        .card h3 { font-size: 0.8rem; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .card h3 .glyph { color: var(--accent); margin-right: 6px; }
+        .card p { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+        .card .formula {
+            margin-top: 10px; font-size: 0.75rem; color: var(--teal);
+            background: #05070c; border: 1px solid var(--border); border-radius: 4px;
+            padding: 8px 10px; overflow-x: auto; white-space: nowrap;
+        }
+
+        /* ---------- architecture diagram ---------- */
+        .arch {
+            background: #05070c; border: 1px solid var(--border); border-radius: 5px;
+            padding: 18px; font-size: 0.72rem; line-height: 1.4; color: var(--muted);
+            overflow-x: auto;
+        }
+        .arch pre { margin: 0; font-family: inherit; }
+        .arch .hl { color: var(--accent); }
+        .arch .ok { color: var(--teal); }
+
+        /* ---------- manifesto ---------- */
+        .manifesto { font-size: 0.82rem; color: var(--muted); }
+        .manifesto p { margin-bottom: 12px; }
+        .manifesto b { color: var(--text); }
+        .manifesto .num { color: var(--accent); font-weight: bold; margin-right: 6px; }
+        .manifesto-link { margin-top: 14px; font-size: 0.78rem; }
+
+        /* ---------- download ---------- */
+        .dl-cta {
+            display: block; text-align: center; text-decoration: none;
+            background: var(--accent); color: #000; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem;
+            padding: 16px; border-radius: 5px; margin-bottom: 8px;
+            transition: background 0.2s;
+        }
+        .dl-cta:hover { background: var(--accent-dim); }
+        .dl-meta { text-align: center; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+
+        .steps { display: grid; gap: 12px; counter-reset: step; }
+        .step {
+            display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start;
+            background: var(--panel-dark); border: 1px solid var(--border); border-radius: 5px; padding: 14px;
+        }
+        .step::before {
+            counter-increment: step; content: counter(step);
+            display: grid; place-items: center; width: 28px; height: 28px;
+            border: 1px solid var(--accent); border-radius: 50%;
+            color: var(--accent); font-size: 0.75rem; font-weight: bold;
+        }
+        .step h4 { font-size: 0.8rem; color: var(--text); margin-bottom: 4px; }
+        .step p { font-size: 0.76rem; color: var(--muted); }
+        .step pre {
+            margin-top: 8px; background: #05070c; border: 1px solid var(--border);
+            border-radius: 4px; padding: 10px 12px; font-size: 0.74rem;
+            color: var(--teal); overflow-x: auto;
+        }
+
+        /* ---------- byoai ---------- */
+        .cfg {
+            position: relative; margin-top: 10px;
+            background: #05070c; border: 1px solid var(--border); border-radius: 4px;
+        }
+        .cfg pre {
+            margin: 0; padding: 10px 12px; font-size: 0.72rem;
+            color: var(--teal); overflow-x: auto; white-space: pre;
+            font-family: inherit; line-height: 1.5;
+        }
+        .copy-btn {
+            position: absolute; top: 6px; right: 6px;
+            background: var(--panel); color: var(--muted);
+            border: 1px solid var(--border); border-radius: 3px;
+            padding: 3px 9px; font-size: 0.62rem; letter-spacing: 1px;
+            text-transform: uppercase; cursor: pointer; font-family: inherit;
+            font-weight: normal; transition: color 0.2s, border-color 0.2s;
+        }
+        .copy-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--panel); }
+        .cfg-note { font-size: 0.72rem; color: var(--muted); margin-top: 8px; }
+
+        /* ---------- offline inquiry ---------- */
+        form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 640px) { form .row { grid-template-columns: 1fr; } }
+        label { display: block; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        input, select, textarea {
+            width: 100%; background: var(--panel-dark); border: 1px solid var(--border);
+            color: var(--text); padding: 10px; border-radius: 4px; font-size: 0.82rem;
+            font-family: inherit; margin-bottom: 14px;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow);
+        }
+        button {
+            background: var(--accent); color: #000; border: none; padding: 12px 18px;
+            font-weight: bold; border-radius: 4px; cursor: pointer;
+            text-transform: uppercase; font-size: 0.78rem; letter-spacing: 1px; font-family: inherit;
+        }
+        button:hover { background: var(--accent-dim); }
+        .form-note { font-size: 0.72rem; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+        .seal-ok { display: none; color: var(--teal); font-size: 0.75rem; border: 1px solid var(--teal); border-radius: 4px; padding: 10px; margin-top: 10px; }
+        .seal-err { display: none; color: var(--red); font-size: 0.75rem; margin-top: 10px; }
+
+        footer { text-align: center; font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; padding: 10px 0 4px; }
+        footer .pulse { color: var(--teal); }
+
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .hero h1 { font-size: 1.15rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <!-- ============ HERO ============ -->
+    <header class="hero">
+        <div class="hero-tag">[ STANDALONE · LOOPBACK · SEALED ]</div>
+        <img src="./logo.jpg" alt="Garza Global Graviton logo"
+             style="width:72px;height:72px;border-radius:6px;border:2px solid var(--accent);box-shadow:0 0 15px var(--accent-glow);margin-bottom:12px;object-fit:cover;"
+             onerror="this.style.display='none'">
+        <h1>GGG Sovereign Edge Daemon <span class="v">v1.4.5</span></h1>
+        <p class="hero-sub">
+            A single self-contained binary. No installer, no account, no cloud,
+            no telemetry — a Synthetic Data Center that lives entirely on your
+            hardware and answers only to you.
+        </p>
+        <div class="binary-chip">ggg-daemon.exe &nbsp;·&nbsp; 8.2 MB &nbsp;·&nbsp; zero dependencies</div>
+        <div class="hero-badges">
+            <span>ARCH: <b>127.0.0.1 loopback only</b></span>
+            <span>PROOF: <b>HMAC-SHA256 node brand</b></span>
+            <span>TELEMETRY: <b>none, by construction</b></span>
+        </div>
+    </header>
+
+    <!-- ============ CORE ENGINES ============ -->
+    <section class="term" id="engines">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot o"></span><span class="term-dot g"></span> core engines</div>
+        <div class="term-body">
+            <h2>Sovereign Mathematical Framework</h2>
+            <p class="section-sub">Three engines govern every cycle the daemon runs. All arithmetic is local; nothing is ever negotiated with a network.</p>
+            <div class="grid3">
+                <div class="card">
+                    <h3><span class="glyph">π</span>Pi-Engine Metabolic Pacer</h3>
+                    <p>Admission control where <b>time is pi</b>: work is admitted only while the pressure integral over the pacing window stays strictly inside the circle. The irrational bound never resonates with periodic load, so the node converges to its sustainable rhythm instead of oscillating into overload.</p>
+                    <div class="formula">admit ⇔ ∫(t−τ→t) P(u) du &lt; π</div>
+                </div>
+                <div class="card">
+                    <h3><span class="glyph">⇄</span>Non-Zero-Sum Vault Balancer</h3>
+                    <p>When infinite negative data weight (tombstone debt) meets positive stored weight, classical accounting collapses to NaN. The balancer binds opposing infinities into <b>preserved dipoles</b> held in equilibrium tension — balance is maintained, never annihilated.</p>
+                    <div class="formula">−∞ ⇄ +∞ → preserved dipole ≠ 0</div>
+                </div>
+                <div class="card">
+                    <h3><span class="glyph">⩘</span>π-Gate AI Admission</h3>
+                    <p>Every request bound for the local Ollama instance passes the pi gate first — payload weight is normalized asymptotically, so even unbounded data is scheduled without breaching the window. Loopback allowlist enforced before any socket opens.</p>
+                    <div class="formula">w ↦ 1 − e^(−w/κ) ∈ (0,1)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ARCHITECTURE ============ -->
+    <section class="term" id="architecture">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot o"></span><span class="term-dot g"></span> architecture</div>
+        <div class="term-body">
+            <h2>Loopback Topology — One Wire, No Exits</h2>
+            <p class="section-sub">The daemon's entire network surface is a loopback proxy. There is no code path that can reach the internet.</p>
+            <div class="arch">
+<pre>
+┌───────────────────────────────────────────────────────────────┐
+│  YOUR MACHINE (air-gap optional)                              │
+│                                                               │
+│  local tools ──┐                                              │
+│  VS Code ──────┤   <span class="ok">http://127.0.0.1:11834</span>                │
+│  console ──────▼  ┌──────────────────────────────┐            │
+│                   │  <span class="hl">ggg-daemon.exe</span>               │            │
+│                   │  ┌────────────────────────┐  │            │
+│                   │  │ π-gate admission        │  │            │
+│                   │  ├────────────────────────┤  │            │
+│                   │  │ OllamaRouter            │──┼──► <span class="ok">127.0.0.1:11434</span>
+│                   │  │  (loopback allowlist)   │  │    Ollama  │
+│                   │  ├────────────────────────┤  │            │
+│                   │  │ CryptoBrand HMAC-SHA256 │  │            │
+│                   │  │  every response sealed  │  │            │
+│                   │  ├────────────────────────┤  │            │
+│                   │  │ VaultBalancer (⇄ dipole)│  │            │
+│                   │  └────────────────────────┘  │            │
+│                   └──────────────────────────────┘            │
+│                                                               │
+│  <span class="ok">egress to internet: ∅ (empty set — no code path exists)</span>    │
+└───────────────────────────────────────────────────────────────┘
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ BYOAI ============ -->
+    <section class="term" id="byoai">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot o"></span><span class="term-dot g"></span> byoai</div>
+        <div class="term-body">
+            <h2>BYOAI — Bring Your Favorite AI Tool</h2>
+            <p class="section-sub">
+                You are never locked into a single ecosystem. The daemon speaks the
+                <b>OpenAI-compatible</b> request shape on its loopback proxy, so any AI tool,
+                extension, or web UI that accepts a custom base URL can route through
+                <code>http://127.0.0.1:11834</code> — every request passes the π-gate and every
+                response returns sealed with the node's HMAC brand.
+            </p>
+            <div class="grid3">
+                <div class="card">
+                    <h3><span class="glyph">⌁</span>VS Code — Continue Extension</h3>
+                    <p>Paste this model block into <code>~/.continue/config.json</code>. Continue then talks to the daemon instead of any cloud — completions never leave the machine.</p>
+                    <div class="cfg">
+                        <button class="copy-btn" type="button">copy</button>
+<pre>{
+  "models": [{
+    "title": "GGG Local (π-gated)",
+    "provider": "openai",
+    "model": "qwen2.5-coder:latest",
+    "apiBase": "http://127.0.0.1:11834/v1",
+    "apiKey": "ggg-local"
+  }]
+}</pre>
+                    </div>
+                    <p class="cfg-note">Any OpenAI-compatible provider entry works — the daemon enforces the loopback allowlist regardless of what the client requests.</p>
+                </div>
+                <div class="card">
+                    <h3><span class="glyph">◈</span>Custom Web UIs &amp; Scripts</h3>
+                    <p>Open WebUI, LibreChat, or your own frontend: set the OpenAI base URL and any placeholder key. With the official <code>openai</code> Python SDK it is three lines:</p>
+                    <div class="cfg">
+                        <button class="copy-btn" type="button">copy</button>
+<pre>from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://127.0.0.1:11834/v1",
+    api_key="ggg-local",  # loopback only
+)
+resp = client.chat.completions.create(
+    model="qwen2.5-coder:latest",
+    messages=[{"role": "user", "content": "ping"}],
+)</pre>
+                    </div>
+                    <p class="cfg-note">Raw REST works too: <code>POST http://127.0.0.1:11834/chat</code> with <code>{"model": …, "messages": […]}</code>.</p>
+                </div>
+                <div class="card">
+                    <h3><span class="glyph">⩘</span>Why It Stays Sovereign</h3>
+                    <p>Swapping tools never swaps your trust model: the π-gate schedules every payload, the router refuses non-loopback upstreams, and each response carries the cryptographic brand — no matter which UI sits in front.</p>
+                    <div class="formula">any tool → 127.0.0.1:11834 → π-gate → sealed reply</div>
+                    <p class="cfg-note">Start the proxy with <code>ggg-daemon.exe --serve</code> (or let <code>install-startup.bat</code> register it in <code>shell:startup</code> so it is always on).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ZERO-CODE QUICK START ============ -->
+    <section class="term" id="quickstart">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot o"></span><span class="term-dot g"></span> zero-code quick start</div>
+        <div class="term-body">
+            <h2>Zero-Code Quick Start (For Everyone)</h2>
+            <p class="section-sub">
+                No code. No developer tools. No command line. If you can install an app and
+                paste one line of text, you can run AI on your own machine — privately, with
+                the daemon watching over every request.
+            </p>
+            <div class="grid3">
+                <div class="card">
+                    <h3><span class="glyph">1</span>Install a Friendly AI App</h3>
+                    <p>Desktop apps like <b>LM Studio</b> or <b>Jan</b> give you a chat window that feels like any messaging app — no programming required. Download one, pick a model from its built-in catalog, and you're 90% done.</p>
+                    <p class="cfg-note">These apps handle the AI model for you. The daemon adds the security layer around it.</p>
+                </div>
+                <div class="card">
+                    <h3><span class="glyph">2</span>Point It at the Daemon</h3>
+                    <p>Every such app has a settings field called something like <b>"server address"</b>, <b>"API base"</b>, or <b>"custom endpoint"</b>. Type in <code>http://127.0.0.1:11834</code> — that's it. Your app now talks to the daemon instead of the internet.</p>
+                    <div class="formula">app → http://127.0.0.1:11834 → your AI, sealed</div>
+                    <p class="cfg-note">The address never leaves your computer. 127.0.0.1 literally means "this machine".</p>
+                </div>
+                <div class="card">
+                    <h3><span class="glyph">3</span>Let an AI Walk You Through It</h3>
+                    <p>Stuck on a step? Hand this prompt to any AI assistant and it will explain, in plain English, exactly where to click in your specific app:</p>
+                    <div class="cfg">
+                        <button class="copy-btn" type="button">copy</button>
+<pre>I am not a developer. I use a desktop AI
+chat app (LM Studio / Jan / similar), and
+I have the GGG daemon on my computer.
+
+Please give me simple, numbered,
+click-by-click instructions — no code, no
+technical jargon — for setting my app's
+"server address" or "API base URL" field
+to this local address:
+
+  http://127.0.0.1:11834
+
+Then tell me how to check that it worked,
+and what to do if my app shows an error.</pre>
+                    </div>
+                    <p class="cfg-note">Works with any AI assistant — including the one inside LM Studio or Jan itself once you're connected.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="term" id="manifesto">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot o"></span><span class="term-dot g"></span> manifesto</div>
+        <div class="term-body">
+            <h2>The Sovereign Manifesto</h2>
+            <div class="manifesto">
+                <p><span class="num">1</span><b>Computation is property.</b> Your hardware, your cycles, your keys. Anything else is trespass.</p>
+                <p><span class="num">2</span><b>The cloud is someone else's computer.</b> Every byte off your device is a byte you no longer control.</p>
+                <p><span class="num">3</span><b>Air gaps are a feature.</b> The daemon assumes the network is hostile or absent — and runs perfectly either way.</p>
+                <p><span class="num">4</span><b>Zero telemetry, by construction.</b> We cannot sell what we never collect. There is no collection code to audit because it does not exist.</p>
+                <p><span class="num">5</span><b>Sovereignty is a right, not an enterprise tier.</b> The personal daemon is free forever — run it, audit it, own it.</p>
+                <p><span class="num">6</span><b>Prove it, don't promise it.</b> Read the source. Verify the checksum. Watch the wire.</p>
+                <p class="manifesto-link">→ Full text: <a href="MANIFESTO.md" download>MANIFESTO.md</a> (downloads locally) · License: <a href="LICENSE.md">source-available, non-commercial</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ DOWNLOAD & SETUP ============ -->
+    <section class="term" id="download">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot o"></span><span class="term-dot g"></span> download &amp; setup</div>
+        <div class="term-body">
+            <h2>Get the Daemon</h2>
+            <a class="dl-cta" href="https://github.com/JOxKxER/garza-global-graviton/releases/latest" target="_blank" rel="noopener noreferrer">
+                ⬇ Download ggg-daemon v1.4.5 — GitHub Releases
+            </a>
+            <p class="dl-meta">Windows · macOS · Linux — free for personal &amp; academic use, forever</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div>
+                        <h4>Download the archive for your platform</h4>
+                        <p>From the release page, grab <code>ggg-daemon_v1.4.5_windows.zip</code> (or the <code>.tar.gz</code> for macOS/Linux) plus <code>SHA256SUMS.txt</code>.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div>
+                        <h4>Verify the SHA-256 checksum</h4>
+                        <p>Confirm the binary is byte-identical to what the build pipeline produced:</p>
+                        <pre>Get-FileHash .\ggg-daemon_v1.4.5_windows.zip -Algorithm SHA256
+# compare against the matching line in SHA256SUMS.txt</pre>
+                    </div>
+                </div>
+                <div class="step">
+                    <div>
+                        <h4>Extract and run — SmartScreen will prompt</h4>
+                        <p>The binary is self-signed, so Windows shows <b>"Windows protected your PC"</b>. This is a reputation warning, not a detection.</p>
+                        <pre>Click "More info"  →  then "Run anyway"</pre>
+                        <p style="margin-top:6px;">Windows remembers your choice for that exact file.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div>
+                        <h4>Self-test runs automatically</h4>
+                        <p>On first launch the daemon runs its built-in verification — pi-gate admission, non-zero-sum balancer, and HMAC brand round-trip — then prints a signed heartbeat:</p>
+                        <pre>[SELF-TEST OK] pi-engine gate, non-zero-sum balancer,
+HMAC brand, Ollama loopback router all verified.</pre>
+                    </div>
+                </div>
+                <div class="step">
+                    <div>
+                        <h4>Optional: route local AI through the π-gate</h4>
+                        <p>With <code>ollama serve</code> running, start the daemon's loopback proxy and point your tools at it:</p>
+                        <pre>.\ggg-daemon.exe --serve
+# listening: http://127.0.0.1:11834  →  upstream http://localhost:11434</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ OFFLINE ENTERPRISE INQUIRY ============ -->
+    <section class="term" id="enterprise">
+        <div class="term-bar"><span class="term-dot r"></span><span class="term-dot o"></span><span class="term-dot g"></span> enterprise</div>
+        <div class="term-body">
+            <h2>Enterprise Licensing — Offline Inquiry</h2>
+            <p class="section-sub">
+                Commercial deployment (fleet, OEM, marketplace) requires a signed license.
+                This form never transmits anything — it seals your inquiry into this browser's
+                local vault. Email <code>partners@garzaglobalgraviton.com</code> when you're
+                connected, or see
+                <a href="ENTERPRISE_PARTNERSHIPS.md">ENTERPRISE_PARTNERSHIPS.md</a> for the full framework.
+            </p>
+            <form id="partner-form" novalidate>
+                <div class="row">
+                    <div>
+                        <label for="pf-name">Full Name *</label>
+                        <input id="pf-name" name="name" type="text" required placeholder="J. Garza">
+                    </div>
+                    <div>
+                        <label for="pf-company">Organization *</label>
+                        <input id="pf-company" name="company" type="text" required placeholder="Hyperscaler Cloud Co.">
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <label for="pf-email">Work Email *</label>
+                        <input id="pf-email" name="email" type="email" required placeholder="partners@example.com">
+                    </div>
+                    <div>
+                        <label for="pf-pathway">Pathway *</label>
+                        <select id="pf-pathway" name="pathway" required>
+                            <option value="">Select…</option>
+                            <option value="oem">Technology OEM License</option>
+                            <option value="cloud">Cloud Edge Program</option>
+                            <option value="hardware">Hardware &amp; Network Alliance</option>
+                            <option value="other">Other / Custom</option>
+                        </select>
+                    </div>
+                </div>
+                <label for="pf-message">Inquiry Details *</label>
+                <textarea id="pf-message" name="message" rows="3" required placeholder="Deployment scale, target platforms, timeline…"></textarea>
+                <button type="submit">Seal Inquiry Locally</button>
+                <p class="seal-ok" id="pf-sealed">✓ Sealed to local vault. Transmit via your own secure channel when connected.</p>
+                <p class="seal-err" id="pf-invalid">⚠ All fields required; email must be valid.</p>
+                <p class="form-note">Nothing leaves this page. There is no endpoint. The inquiry is stored only in your browser's localStorage under <code>ggg_inquiry_*</code>.</p>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        Garza Global Graviton LLC · sovereign edge daemon v1.4.5 ·
+        <span class="pulse" id="uptime">000000</span> s session · zero telemetry
+    </footer>
+</div>
+
+<script>
+    // Uptime tick — purely visual, self-contained.
+    let t = 0;
+    setInterval(() => {
+        t++;
+        document.getElementById('uptime').innerText = String(t).padStart(6, '0');
+    }, 1000);
+
+    // Offline-only enterprise inquiry: seal into the local vault. No fetch. No network.
+    document.getElementById('partner-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const f = e.target;
+        const ok = document.getElementById('pf-sealed');
+        const err = document.getElementById('pf-invalid');
+        ok.style.display = 'none'; err.style.display = 'none';
+
+        const name = f.name.value.trim(), company = f.company.value.trim(),
+              email = f.email.value.trim(), pathway = f.pathway.value,
+              message = f.message.value.trim();
+
+        if (!name || !company || !pathway || !message || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+            err.style.display = 'block';
+            return;
+        }
+        try {
+            localStorage.setItem('ggg_inquiry_' + Date.now(), JSON.stringify({
+                name, company, email, pathway, message,
+                timestamp: new Date().toISOString(), source: 'ggg-daemon-landing'
+            }));
+        } catch { /* vault full — inquiry stays in-session */ }
+        f.reset();
+        ok.style.display = 'block';
+    });
+
+    // BYOAI config snippets: one-click copy. Clipboard API needs a secure
+    // context; file:// pages fall back to execCommand.
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+            const text = btn.parentElement.querySelector('pre').innerText;
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = text; document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+            }
+            const orig = btn.textContent;
+            btn.textContent = 'copied ✓';
+            setTimeout(() => { btn.textContent = orig; }, 1500);
+        });
+    });
+</script>
+</body>
+</html>

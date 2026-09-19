@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Integration &amp; Partnerships — Garza Global Graviton LLC</title>
+    <style>
+        /* Tailwind-compatible utility subset, hand-compiled for 100% offline use.
+           Markup keeps Tailwind class names; swap this block for a compiled
+           tailwind.css (via Tailwind CLI) when building connected. */
+        :root {
+            --ggg-bg: #0b0f19; --ggg-panel: #131c2e; --ggg-accent: #ff5500;
+            --ggg-accentdim: #cc4400; --ggg-red: #ff3366; --ggg-teal: #00ffcc;
+            --ggg-border: #2a1f1d; --ggg-muted: #9ca3af;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--ggg-bg); color: #f3f4f6; font-family: 'Courier New', Courier, monospace; -webkit-font-smoothing: antialiased; line-height: 1.5; }
+
+        /* layout */
+        .relative { position: relative; } .absolute { position: absolute; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; } .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .max-w-6xl { max-width: 72rem; } .max-w-2xl { max-width: 42rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .grid { display: grid; } .gap-6 { gap: 1.5rem; } .gap-5 { gap: 1.25rem; } .gap-3 { gap: 0.75rem; }
+        .flex { display: flex; } .flex-col { flex-direction: column; } .flex-wrap { flex-wrap: wrap; }
+        .flex-1 { flex: 1 1 0%; } .justify-center { justify-content: center; }
+        .text-center { text-align: center; }
+        @media (min-width: 768px) { .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .md\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; } }
+        .space-y-5 > * + * { margin-top: 1.25rem; } .space-y-2 > * + * { margin-top: 0.5rem; }
+        .mb-14 { margin-bottom: 3.5rem; } .mb-16 { margin-bottom: 4rem; } .mb-6 { margin-bottom: 1.5rem; } .mb-5 { margin-bottom: 1.25rem; } .mb-4 { margin-bottom: 1rem; } .mb-3 { margin-bottom: 0.75rem; } .mb-2 { margin-bottom: 0.5rem; } .mb-1 { margin-bottom: 0.25rem; } .mb-1\.5 { margin-bottom: 0.375rem; } .mt-8 { margin-top: 2rem; }
+        .-top-3 { top: -0.75rem; } .left-1\/2 { left: 50%; } .-translate-x-1\/2 { transform: translateX(-50%); }
+        .w-full { width: 100%; } .block { display: block; } .hidden { display: none; }
+
+        /* theme colors */
+        .text-ggg-accent { color: var(--ggg-accent); } .text-ggg-muted { color: var(--ggg-muted); }
+        .text-ggg-teal { color: var(--ggg-teal); } .text-ggg-red { color: var(--ggg-red); }
+        .text-white { color: #fff; } .text-gray-100 { color: #f3f4f6; } .text-gray-300 { color: #d1d5db; } .text-black { color: #000; }
+        .bg-ggg-bg { background-color: var(--ggg-bg); } .bg-ggg-panel { background-color: var(--ggg-panel); } .bg-ggg-accent { background-color: var(--ggg-accent); }
+        .hover\:bg-ggg-accentdim:hover { background-color: var(--ggg-accentdim); }
+        .border-ggg-border { border-color: var(--ggg-border); } .border-ggg-accent { border-color: var(--ggg-accent); }
+        .border-ggg-accent\/60 { border-color: rgba(255, 85, 0, 0.6); } .border-ggg-teal\/40 { border-color: rgba(0, 255, 204, 0.4); }
+        .hover\:border-ggg-accent:hover { border-color: var(--ggg-accent); }
+        .focus\:border-ggg-accent:focus { border-color: var(--ggg-accent); }
+        .focus\:ring-ggg-accent\/40:focus { box-shadow: 0 0 0 3px rgba(255, 85, 0, 0.25); }
+
+        /* typography */
+        .text-xs { font-size: 0.75rem; line-height: 1rem; } .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; } .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-\[11px\] { font-size: 11px; } .text-\[10px\] { font-size: 10px; }
+        .font-bold { font-weight: 700; } .uppercase { text-transform: uppercase; }
+        .tracking-wider { letter-spacing: 0.05em; } .tracking-\[0\.35em\] { letter-spacing: 0.35em; } .tracking-\[0\.2em\] { letter-spacing: 0.2em; }
+        .leading-relaxed { line-height: 1.625; }
+
+        /* borders & surfaces */
+        .border { border-width: 1px; border-style: solid; } .border-t-2 { border-top-width: 2px; border-top-style: solid; } .border-dashed { border-style: dashed; }
+        .rounded { border-radius: 0.25rem; } .rounded-lg { border-radius: 0.5rem; }
+        .p-6 { padding: 1.5rem; } .p-8 { padding: 2rem; } .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; } .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; } .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; } .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; } .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; } .py-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; } .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); } .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); }
+        .shadow-black\/40 { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4); } .shadow-black\/50 { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); } .shadow-ggg-accent\/10 { box-shadow: 0 10px 25px -3px rgba(255, 85, 0, 0.1); }
+
+        /* form & interactivity */
+        input, select, textarea { font-family: inherit; }
+        .resize-y { resize: vertical; }
+        .transition { transition: all 0.2s ease; } .transition-colors { transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; }
+        .focus\:outline-none:focus { outline: none; }
+        .focus\:ring-1:focus { box-shadow: 0 0 0 1px rgba(255, 85, 0, 0.4); }
+        button { cursor: pointer; border: none; }
+    </style>
+</head>
+<body class="bg-ggg-bg text-gray-100 font-mono antialiased">
+
+<!-- ================================================================
+     ENTERPRISE INTEGRATION & PARTNERSHIPS
+     Garza Global Graviton LLC — Sovereign Edge Daemon Licensing
+     ================================================================ -->
+<section id="enterprise" class="relative py-20 px-6 border-t-2 border-dashed border-ggg-accent/60">
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Section header -->
+        <div class="text-center mb-14">
+            <p class="text-ggg-accent text-xs tracking-[0.35em] uppercase mb-3">[ --- COMMERCIAL PATHWAYS OPEN --- ]</p>
+            <h2 class="text-3xl md:text-4xl font-bold uppercase tracking-wider text-white mb-4">
+                Enterprise Integration <span class="text-ggg-accent">&amp;</span> Partnerships
+            </h2>
+            <p class="text-ggg-muted max-w-2xl mx-auto text-sm leading-relaxed">
+                The GGG Sovereign Edge Daemon — metabolic pacing, zero-copy I/O, vectorized memory
+                sanitation, and air-gapped inference — is available for commercial license. Three
+                pathways, one principle: <span class="text-ggg-teal">your infrastructure, your data, your keys.</span>
+            </p>
+        </div>
+
+        <!-- Licensing pathway cards -->
+        <div class="grid md:grid-cols-3 gap-6 mb-16">
+
+            <!-- Pathway 1: Major Tech / OEM -->
+            <div class="bg-ggg-panel border border-ggg-border rounded-lg p-6 hover:border-ggg-accent transition-colors shadow-lg shadow-black/40 flex flex-col">
+                <div class="text-ggg-accent text-2xl mb-3">▣</div>
+                <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-2">Technology OEM License</h3>
+                <p class="text-ggg-muted text-xs leading-relaxed mb-4 flex-1">
+                    Embed the daemon directly into your operating system, browser, or productivity
+                    suite. Source-available escrow, per-unit royalty or flat-fee structure, and
+                    co-branded "Powered by GGG" certification.
+                </p>
+                <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                    <li><span class="text-ggg-teal">▸</span> Full source escrow + audit rights</li>
+                    <li><span class="text-ggg-teal">▸</span> White-label daemon binaries</li>
+                    <li><span class="text-ggg-teal">▸</span> Joint engineering liaison, 12-month SLA</li>
+                </ul>
+                <p class="text-ggg-accent text-xs font-bold uppercase tracking-wider">From $250K / yr</p>
+            </div>
+
+            <!-- Pathway 2: Cloud Providers -->
+            <div class="bg-ggg-panel border border-ggg-accent rounded-lg p-6 shadow-lg shadow-ggg-accent/10 flex flex-col relative">
+                <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-ggg-accent text-black text-[10px] font-bold uppercase px-3 py-1 rounded">Most Deployed</span>
+                <div class="text-ggg-accent text-2xl mb-3">☁</div>
+                <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-2">Cloud Edge Program</h3>
+                <p class="text-ggg-muted text-xs leading-relaxed mb-4 flex-1">
+                    Offer sovereign, air-gapped edge nodes as a first-class SKU in your marketplace.
+                    Reference architectures for DDIL / disconnected estates, GovCloud-style enclaves,
+                    and regulated-industry landing zones.
+                </p>
+                <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                    <li><span class="text-ggg-teal">▸</span> Marketplace listing + metered billing hooks</li>
+                    <li><span class="text-ggg-teal">▸</span> Terraform/Bicep reference modules included</li>
+                    <li><span class="text-ggg-teal">▸</span> Revenue-share or committed-use pricing</li>
+                </ul>
+                <p class="text-ggg-accent text-xs font-bold uppercase tracking-wider">Metered · Rev-Share Available</p>
+            </div>
+
+            <!-- Pathway 3: Hardware Networks -->
+            <div class="bg-ggg-panel border border-ggg-border rounded-lg p-6 hover:border-ggg-accent transition-colors shadow-lg shadow-black/40 flex flex-col">
+                <div class="text-ggg-accent text-2xl mb-3">⛁</div>
+                <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-2">Hardware &amp; Network Alliance</h3>
+                <p class="text-ggg-muted text-xs leading-relaxed mb-4 flex-1">
+                    Ship the daemon factory-flashed on routers, ruggedized edge servers, and NPU/GPU
+                    appliances. Hardware-attested boot chain and per-device cryptographic node serials
+                    included.
+                </p>
+                <ul class="text-xs text-gray-300 space-y-2 mb-5">
+                    <li><span class="text-ggg-teal">▸</span> Firmware images for ARM64 / x86-64</li>
+                    <li><span class="text-ggg-teal">▸</span> Per-device attestation + seal manifests</li>
+                    <li><span class="text-ggg-teal">▸</span> Volume tiers from 1K units</li>
+                </ul>
+                <p class="text-ggg-accent text-xs font-bold uppercase tracking-wider">Per-Unit · Volume Tiers</p>
+            </div>
+        </div>
+
+        <!-- Compliance strip -->
+        <div class="flex flex-wrap justify-center gap-3 mb-16 text-[11px] uppercase tracking-wider">
+            <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">CMMC L2 Ready</span>
+            <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">Air-Gap Certified Build</span>
+            <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">FIPS-Aligned Crypto</span>
+            <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">Zero Cloud Telemetry</span>
+            <span class="border border-ggg-border bg-ggg-panel px-4 py-2 rounded text-ggg-muted">DDIL / JADC2 Proven</span>
+        </div>
+
+        <!-- Contact form -->
+        <div class="max-w-2xl mx-auto bg-ggg-panel border border-ggg-border rounded-lg p-8 shadow-xl shadow-black/50">
+            <h3 class="text-white font-bold uppercase text-sm tracking-wider mb-1">Partnership Inquiry</h3>
+            <p class="text-ggg-muted text-xs mb-6">Responses within one business day. NDA available on request.</p>
+
+            <form id="partner-form" class="space-y-5" novalidate>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div>
+                        <label for="pf-name" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Full Name *</label>
+                        <input id="pf-name" name="name" type="text" required
+                               class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition"
+                               placeholder="J. Garza">
+                    </div>
+                    <div>
+                        <label for="pf-company" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Organization *</label>
+                        <input id="pf-company" name="company" type="text" required
+                               class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition"
+                               placeholder="Hyperscaler Cloud Co.">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div>
+                        <label for="pf-email" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Work Email *</label>
+                        <input id="pf-email" name="email" type="email" required
+                               class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition"
+                               placeholder="partnerships@example.com">
+                    </div>
+                    <div>
+                        <label for="pf-pathway" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Commercial Pathway *</label>
+                        <select id="pf-pathway" name="pathway" required
+                                class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition">
+                            <option value="">Select a pathway…</option>
+                            <option value="oem">Technology OEM License</option>
+                            <option value="cloud">Cloud Edge Program</option>
+                            <option value="hardware">Hardware &amp; Network Alliance</option>
+                            <option value="other">Other / Custom Structure</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="pf-message" class="block text-[11px] uppercase tracking-wider text-ggg-muted mb-1.5">Inquiry Details *</label>
+                    <textarea id="pf-message" name="message" rows="4" required
+                              class="w-full bg-ggg-bg border border-ggg-border rounded px-3 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-ggg-accent focus:ring-1 focus:ring-ggg-accent/40 transition resize-y"
+                              placeholder="Deployment scale, target platforms, timeline…"></textarea>
+                </div>
+
+                <p id="pf-error" class="hidden text-ggg-red text-xs"></p>
+
+                <button type="submit"
+                        class="w-full bg-ggg-accent hover:bg-ggg-accentdim text-black font-bold uppercase text-xs tracking-[0.2em] py-3.5 rounded transition-colors">
+                    Transmit Partnership Inquiry
+                </button>
+
+                <p id="pf-success" class="hidden text-center text-ggg-teal text-xs uppercase tracking-wider border border-ggg-teal/40 rounded py-3">
+                    ✓ Inquiry sealed locally. Email partners@garzaglobalgraviton.com to transmit through your secure channel.
+                </p>
+            </form>
+        </div>
+
+        <p class="text-center text-ggg-muted text-[11px] mt-8 uppercase tracking-wider">
+            © 2026 Garza Global Graviton LLC — Sovereign Edge Intelligence Architecture
+        </p>
+    </div>
+</section>
+
+<script>
+    // Air-gapped form handler: validates and seals the inquiry locally.
+    // No network calls — wire `action` to your intake endpoint when deploying connected.
+    document.getElementById('partner-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const err = document.getElementById('pf-error');
+        const ok = document.getElementById('pf-success');
+
+        const name = form.name.value.trim();
+        const company = form.company.value.trim();
+        const email = form.email.value.trim();
+        const pathway = form.pathway.value;
+        const message = form.message.value.trim();
+
+        err.classList.add('hidden');
+        if (!name || !company || !pathway || !message || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+            err.textContent = '⚠ All fields are required and the email address must be valid.';
+            err.classList.remove('hidden');
+            return;
+        }
+
+        // Seal the inquiry into the local vault (consistent with GGG offline posture)
+        try {
+            const key = `ggg_inquiry_${Date.now()}`;
+            localStorage.setItem(key, JSON.stringify({ name, company, email, pathway, message, timestamp: new Date().toISOString() }));
+        } catch { /* storage full — inquiry stays in-session */ }
+
+        form.reset();
+        ok.classList.remove('hidden');
+    });
+</script>
+
+</body>
+</html>

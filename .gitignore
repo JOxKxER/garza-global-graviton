@@ -1,0 +1,49 @@
+﻿# ==================================================================
+#  GGG Sovereign Edge Daemon - public repo .gitignore
+#  The daemon is pure-stdlib Python + a landing page; there are no
+#  runtime data dirs to exclude. Keep this lean and daemon-only.
+# ==================================================================
+
+# --- Python build / packaging output ---
+dist/
+build/
+build_stage/
+*.exe
+__pycache__/
+*.pyc
+.venv/
+venv/
+.coverage
+.pytest_cache/
+htmlcov/
+coverage.xml
+
+# --- Release artifacts (built, never committed) ---
+*.zip
+*.mp4
+*.sha256
+
+# --- Local state, logs, secrets (never commit) ---
+*.log
+*log*.txt
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+test_*.dat
+*.dat
+.server_state.json
+
+# --- Secrets: belt-and-suspenders ---
+.env
+.env.*
+!.env.example
+broker_creds.py
+alpaca_recovery_code.txt
+*_creds.py
+*_recovery_code.txt
+vault_secrets/
+
+# --- Quarantine / scratch ---
+_QUARANTINE/
+index.html.*.bak

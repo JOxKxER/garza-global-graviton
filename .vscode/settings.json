@@ -1,0 +1,10 @@
+{
+  "llama-vscode.enabled": true,
+  "llama-vscode.api_type": "ollama",
+  "llama-vscode.api_base": "http://localhost:11434",
+  "llama-vscode.ai_model": "qwen2.5-coder:latest",
+  "llama-vscode.api_key": "ollama",
+  "llama-vscode.rag_enabled": true,
+  "ollama.baseUrl": "http://localhost:11434",
+  "ollama.model": "qwen2.5-coder:latest"
+}

@@ -1,0 +1,23 @@
+flask
+gunicorn
+numpy
+python-dotenv
+cryptography
+fastapi
+python-multipart
+uvicorn
+pydantic
+pywin32; sys_platform == "win32"
+pandas
+requests
+aiohttp
+yfinance
+pyarrow
+httpx
+beautifulsoup4
+streamlit
+webull-openapi-python-sdk
+# alpaca-py is only required for live/paper broker execution via Alpaca
+# (trading_app/execution/broker_client.py::AlpacaBroker). The offline dry
+# run (run_dry_run.py) does not need it.
+# alpaca-py
